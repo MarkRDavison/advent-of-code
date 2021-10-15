@@ -1,0 +1,39 @@
+stages:
+  - configure
+  - build
+  - test
+
+configurestuff:
+  stage: configure
+  image: rikorose/gcc-cmake
+  script:
+   - mkdir build
+   - cd build
+   - cmake ..
+  artifacts:
+    paths:
+     - build
+
+buildstuff:
+  stage: build
+  image: rikorose/gcc-cmake
+  script:
+   - cd build
+   - cmake --build .
+  artifacts:
+    paths:
+     - build
+  dependencies:
+    - configurestuff
+
+teststuff:
+  stage: test
+  image: rikorose/gcc-cmake
+  script:
+   - cd build
+   - ctest . -C Debug
+  artifacts:
+    paths:
+     - build
+  dependencies:
+    - buildstuff
