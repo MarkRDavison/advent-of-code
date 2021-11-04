@@ -7,42 +7,16 @@ before_script:
     - pip install conan
 
 stages:
-  - configure
   - build
-  - test
-
-configurestuff:
-  stage: configure
-  script:
-   - mkdir build
-   - cd build
-   - ls -R
-   - conan install ..
-   - cmake ..
-  artifacts:
-    paths:
-     - build
 
 buildstuff:
   stage: build
   script:
+   - mkdir build
    - cd build
+   - conan install ..
    - ls -R
+   - cmake ..
    - cmake --build .
-  artifacts:
-    paths:
-     - build
-  dependencies:
-    - configurestuff
-
-teststuff:
-  stage: test
-  script:
    - ls -R
-   - cd build
    - ctest . -C Debug
-  artifacts:
-    paths:
-     - build
-  dependencies:
-    - buildstuff
