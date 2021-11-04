@@ -5,9 +5,10 @@ project(main)
 set(SOURCES 
   src/main.cpp
 ) 
+#set(HEADERS src/lib.hpp)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/build/conanbuildinfo.cmake)
-#set(HEADERS src/lib.hpp)
+
 conan_basic_setup()
 
 add_executable(main ${SOURCES} ${HEADERS})
@@ -15,7 +16,8 @@ add_executable(main ${SOURCES} ${HEADERS})
 set_property(TARGET main PROPERTY CXX_STANDARD 17)
 set_property(TARGET main PROPERTY CXX_STANDARD_REQUIRED ON)
 
+MESSAGE(STATUS ${CONAN_LIBS})
 
 target_link_libraries(main
-    PRIVATE ${CONAN_LIBS}
+    PUBLIC ${CONAN_LIBS}
 )

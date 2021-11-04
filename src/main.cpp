@@ -1,5 +1,8 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
+#include <zeno-engine/Core/zeno-engine.h>
+#include <zeno-engine/Core/Logger.hpp>
+#include <zeno-engine/Core/Vector2.hpp>
 
 int main()
 {
@@ -18,7 +21,12 @@ int main()
         }}
     };
 
-    std::cout << json.dump() << std::endl;
+    auto logger = ze::Logger(ze::Severity::Info);
+    logger.log(ze::Severity::Info, json.dump());
+    zeno_engine();
 
+    auto vec = ze::Vector2f(25.3f, 1111.1f);
+
+    logger.log(ze::Severity::Info, std::to_string(vec.x) + "/" + std::to_string(vec.y));
     return 0;
 }
