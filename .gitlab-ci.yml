@@ -5,19 +5,46 @@ before_script:
     - apt-get -y install cmake
     - apt-get -y install python3 python3-pip
     - pip install conan
+    - conan config set storage.path=./build
 
 stages:
+  - configure
   - build
+  - test
+
+configurestuff:
+  stage: configure
+  script:
+   - mkdir build
+   - cd build
+   - ls -R
+   - conan install ..
+   - cmake ..
+  artifacts:
+    paths:
+     - build
 
 buildstuff:
   stage: build
   script:
-   - mkdir build
    - cd build
-   - conan install ..
    - ls -R
-   - cmake ..
    - cmake --build .
+  artifacts:
+    paths:
+     - build
+  dependencies:
+    - configurestuff
+
+teststuff:
+  stage: test
+  script:
    - ls -R
+   - cd build
    - ctest . -C Debug
    - ./bin/main
+  artifacts:
+    paths:
+     - build
+  dependencies:
+    - buildstuff
