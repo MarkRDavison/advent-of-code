@@ -3,7 +3,10 @@ image: gcc
 before_script:
     - apt-get update
     - apt-get -y install cmake
+    - add-apt-repository ppa:deadsnakes/ppa
+    - apt-get update
     - apt-get -y install conan
+    
 
 stages:
   - configure
