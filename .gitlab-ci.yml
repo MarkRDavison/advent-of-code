@@ -17,7 +17,6 @@ configurestuff:
   script:
    - mkdir build
    - cd build
-   - ls -R
    - conan install ..
    - cmake ..
   artifacts:
@@ -28,7 +27,7 @@ buildstuff:
   stage: build
   script:
    - cd build
-   - ls -R
+   - conan install ..
    - cmake --build .
   artifacts:
     paths:
@@ -39,7 +38,6 @@ buildstuff:
 teststuff:
   stage: test
   script:
-   - ls -R
    - cd build
    - ctest . -C Debug
    - ./bin/main
