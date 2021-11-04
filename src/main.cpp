@@ -1,7 +1,24 @@
 #include <iostream>
-#include <cstdlib>
+#include <nlohmann/json.hpp>
 
-int main(int _argc, char **_argv) {
-    std::cout << "Hello world!" << std::endl;
-    return EXIT_SUCCESS;
+int main()
+{
+    nlohmann::json json = {
+        {"pi", 3.14},
+        {"happy", true},
+        {"name", "Kuba"},
+        {"nothing", nullptr},
+        {"answer", {
+            {"everything", 42}
+        }},
+        {"list", {1, 2, 3}},
+        {"object", {
+            {"currency", "PLN"},
+            {"value", 100.0}
+        }}
+    };
+
+    std::cout << json.dump() << std::endl;
+
+    return 0;
 }

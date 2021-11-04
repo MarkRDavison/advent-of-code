@@ -3,6 +3,7 @@ image: gcc
 before_script:
     - apt-get update
     - apt-get -y install cmake
+    - apt-get -y install conan
 
 stages:
   - configure
@@ -14,6 +15,7 @@ configurestuff:
   script:
    - mkdir build
    - cd build
+   - conan install ..
    - cmake ..
   artifacts:
     paths:
@@ -33,6 +35,7 @@ buildstuff:
 teststuff:
   stage: test
   script:
+   - ls -R
    - cd build
    - ctest . -C Debug
   artifacts:
