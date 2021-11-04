@@ -28,7 +28,7 @@ buildstuff:
   stage: build
   script:
    - cd build
-   - conan install .. --buildconan 
+   - conan install .. --build
    - cmake --build .
   artifacts:
     paths:
