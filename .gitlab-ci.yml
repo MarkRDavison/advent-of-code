@@ -20,3 +20,4 @@ buildstuff:
    - cmake --build .
    - ls -R
    - ctest . -C Debug
+   - ./bin/main
