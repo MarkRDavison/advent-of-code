@@ -14,7 +14,6 @@ configurestuff:
   script:
    - mkdir build
    - cd build
-   - conan install .. --build=zeno-engine
    - conan install ..
    - cmake ..
   artifacts:
@@ -25,7 +24,6 @@ buildstuff:
   stage: build
   script:
    - cd build
-   - conan install .. --build=zeno-engine
    - conan install ..
    - cmake --build .
   artifacts:

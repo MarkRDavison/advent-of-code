@@ -1,6 +1,6 @@
 [requires]
 nlohmann_json/3.9.1
-zeno-engine/0.8@beta/stable
+zeno-engine/0.9@beta/stable
 
 [generators]
 cmake
