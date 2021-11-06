@@ -1,12 +1,13 @@
 #include <2020/Day16Puzzle.hpp>
 #include <zeno-engine/Utility/StringExtensions.hpp>
+#include <unordered_set>
 #include <algorithm>
 #include <cassert>
 #include <sstream>
 #include <fstream>
 #include <iostream>
 #include <numeric>
-#include <unordered_set>
+#include <list>
 
 namespace TwentyTwenty {
 
