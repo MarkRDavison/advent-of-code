@@ -3,6 +3,7 @@
 #include <zeno-engine/Core/Clock.hpp>
 #include <Core/MD5.hpp>
 #include <algorithm>
+#include <thread>
 
 namespace TwentyFifteen {
 	
