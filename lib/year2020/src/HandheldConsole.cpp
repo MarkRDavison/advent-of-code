@@ -1,5 +1,6 @@
 #include <2020/HandheldConsole.hpp>
 #include <zeno-engine/Utility/StringExtensions.hpp>
+#include <exception>
 #include <cassert>
 
 namespace TwentyTwenty {
