@@ -3,6 +3,8 @@
 #include <unordered_map>
 #include <algorithm>
 #include <numeric>
+#include <limits>
+#include <cmath>
 
 namespace TwentyFifteen {
 	
@@ -68,7 +70,6 @@ namespace TwentyFifteen {
 			std::cout << "\t(" << i.cost << " gold)\t - " << i.name << "\n";
 		}
 
-		// part 2: 233 too high
 		return { std::to_string(result.first.second), std::to_string(result.second.second) };
 	}
 	
