@@ -3,7 +3,6 @@
 #include <functional>
 #include <algorithm>
 #include <numeric>
-#include <Bits.h>
 
 namespace TwentyFifteen {
 	
