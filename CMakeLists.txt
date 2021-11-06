@@ -1,23 +1,16 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(main)
+cmake_policy(SET CMP0074 NEW)
 
-set(SOURCES 
-  src/main.cpp
-) 
-#set(HEADERS src/lib.hpp)
-
+PROJECT(AdventOfCode 
+	VERSION 1
+	LANGUAGES CXX)
+	
+set(PROJECT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 include(${CMAKE_CURRENT_SOURCE_DIR}/build/conanbuildinfo.cmake)
-
 conan_basic_setup()
 
-add_executable(main ${SOURCES} ${HEADERS})
-
-set_property(TARGET main PROPERTY CXX_STANDARD 17)
-set_property(TARGET main PROPERTY CXX_STANDARD_REQUIRED ON)
-
-MESSAGE(STATUS ${CONAN_LIBS})
-
-target_link_libraries(main
-    PUBLIC ${CONAN_LIBS}
-)
+ADD_SUBDIRECTORY(lib)
+ADD_SUBDIRECTORY(app)
+ENABLE_TESTING()
+ADD_SUBDIRECTORY(test)

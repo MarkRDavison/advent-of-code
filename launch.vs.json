@@ -1,0 +1,25 @@
+{
+  "version": "0.2.1",
+  "defaults": {},
+  "configurations": [
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "advent-of-code-test.exe (test\\advent-of-code-test.exe)",
+      "name": "advent-of-code-test.exe (test\\advent-of-code-test.exe)",
+      "args": [
+        "~[slow]"
+      ]
+    },
+    {
+      "name": "advent-of-code.exe (bin\\advent-of-code.exe)",
+      "project": "CMakeLists.txt",
+      "projectTarget": "advent-of-code.exe (bin\\advent-of-code.exe)",
+      "type": "default",
+      "args": [
+        "2020 25 ./data/2020/Day25.txt"
+      ]
+    }
+  ]
+}
+// Test search example "year2020-test:Day 1 "
