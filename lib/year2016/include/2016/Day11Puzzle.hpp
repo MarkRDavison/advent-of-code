@@ -3,6 +3,7 @@
 
 #include <Core/PuzzleBase.hpp>
 #include <Core/States.hpp>
+#include <limits>
 #include <tuple>
 #include <set>
 

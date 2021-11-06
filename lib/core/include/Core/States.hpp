@@ -1,13 +1,14 @@
 #ifndef INCLUDED_ADVENT_OF_CODE_CORE_STATES_HPP_
 #define INCLUDED_ADVENT_OF_CODE_CORE_STATES_HPP_
 
+#include <Core/Pathfinding.hpp>
 #include <unordered_map>
 #include <unordered_set>
 #include <functional>
 #include <iostream>
+#include <limits>
 #include <vector>
 #include <queue>
-#include <Core/Pathfinding.hpp>
 
 namespace core {
 
