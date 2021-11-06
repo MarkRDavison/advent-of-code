@@ -5,8 +5,9 @@
 #include <fstream>
 #include <iostream>
 #include <cassert>
-#include <bitset>
 #include <numeric>
+#include <bitset>
+#include <cmath>
 
 namespace TwentyTwenty {
 
@@ -179,9 +180,9 @@ namespace TwentyTwenty {
 	}
 
 	std::string Day20Puzzle::doPart1(const Parsed& _parsed) {
-		assert(sqrt(_parsed.size()) * sqrt(_parsed.size()) == _parsed.size());
+		assert(std::sqrt(_parsed.size()) * std::sqrt(_parsed.size()) == _parsed.size());
 
-		const unsigned size = static_cast<unsigned>(sqrt(_parsed.size()));
+		const unsigned size = static_cast<unsigned>(std::sqrt(_parsed.size()));
 
 
 		for (unsigned i = 0; i < _parsed.size(); ++i) {
