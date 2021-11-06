@@ -1,5 +1,6 @@
 #include <catch/catch.hpp>
 #include <2016/Day08Puzzle.hpp>
+#include <cstring>
 
 namespace TwentySixteen {
 
