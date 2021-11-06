@@ -1,5 +1,6 @@
 #include <2015/Day20Puzzle.hpp>
 #include <zeno-engine/Utility/StringExtensions.hpp>
+#include <cmath>
 
 constexpr TwentyFifteen::BigNumberThing THRESHOLD = 100;
 
