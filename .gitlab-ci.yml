@@ -25,7 +25,7 @@ buildstuff:
   script:
    - cd build
    - conan install ..
-   - cmake --build . -j 8
+   - cmake --build . -j 2
   artifacts:
     paths:
      - build
