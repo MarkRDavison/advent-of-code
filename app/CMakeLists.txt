@@ -5,6 +5,7 @@ ADD_EXECUTABLE(${AppMain} "main.cpp" )
 SET_PROPERTY(TARGET ${AppMain} PROPERTY CXX_STANDARD 17)
 SET_PROPERTY(TARGET ${AppMain} PROPERTY CXX_STANDARD_REQUIRED ON)
 TARGET_LINK_LIBRARIES(${AppMain} PRIVATE advent-of-code-core)
+TARGET_LINK_LIBRARIES(${AppMain} PRIVATE advent-of-code-year2021)
 
 target_link_libraries(${AppMain} PUBLIC ${CONAN_LIBS})
 

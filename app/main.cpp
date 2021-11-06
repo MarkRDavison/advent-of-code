@@ -4,6 +4,7 @@
 #include <zeno-engine/Core/Vector2.hpp>
 #include <Core/InitialisationInfo.hpp>
 #include <Core/PuzzleConstructor.hpp>
+#include <Puzzles2021.hpp>
 
 int main(int _argc, char** _argv) {
     auto logger = ze::Logger(ze::Severity::Info);
@@ -13,6 +14,7 @@ int main(int _argc, char** _argv) {
 
     logger.log(ze::Severity::Info, std::to_string(vec.x) + "/" + std::to_string(vec.y));
 
+    REGISTER_YEAR(TwentyTwentyOne, 2021);
 
 
     core::IPuzzleBase* puzzle = core::PuzzleConstructor::createPuzzle(core::InitialisationInfo::parseArguments(_argc, _argv));

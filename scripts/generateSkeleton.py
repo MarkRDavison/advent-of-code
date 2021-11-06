@@ -76,7 +76,7 @@ class SkeletonGenerator:
 		f.write('ADD_LIBRARY(${LIB_NAME} ${LIB_SOURCE_FILES} ${LIB_HEADER_FILES})\n')
 		f.write('TARGET_INCLUDE_DIRECTORIES(${LIB_NAME} PUBLIC ${LIBRARY_INCLUDE_PATH})\n')
 		f.write('TARGET_LINK_LIBRARIES(${LIB_NAME} PUBLIC advent-of-code-core)\n')
-		f.write('TARGET_LINK_LIBRARIES(${LIB_NAME} PUBLIC zeno)\n')
+		f.write('TARGET_LINK_LIBRARIES(${LIB_NAME} PUBLIC ${CONAN_LIBS})\n')
 
 		f.close()
 		
@@ -151,7 +151,7 @@ class SkeletonGenerator:
 		f = open(fileName,"w+")
 
 		f.write('#include <{year}/Day{day}Puzzle.hpp>\n'.format(year=self.year, day=dayStr))
-		f.write('#include <zeno/Utility/StringExtensions.hpp>\n')
+		f.write('#include <zeno-engine/Utility/StringExtensions.hpp>\n')
 		f.write('\n')
 		f.write('namespace {ns} {{\n'.format(ns=self.createNamespace()))
 		f.write('	\n')
@@ -205,7 +205,7 @@ class SkeletonGenerator:
 		f.write('ADD_EXECUTABLE(${EXE_NAME} "../main.cpp" ${LIB_TEST_FILES})\n')
 		f.write('TARGET_LINK_LIBRARIES(${EXE_NAME} PUBLIC advent-of-code-core)\n')
 		f.write('TARGET_LINK_LIBRARIES(${EXE_NAME} PUBLIC "advent-of-code-${MODULE_NAME_LOWER}")\n')
-		f.write('TARGET_LINK_LIBRARIES(${EXE_NAME} PUBLIC zeno)\n')
+		f.write('TARGET_LINK_LIBRARIES(${EXE_NAME} PUBLIC ${CONAN_LIBS})\n')
 		f.write('TARGET_INCLUDE_DIRECTORIES(${EXE_NAME} PUBLIC "${PROJECT_SOURCE_DIR}/thirdparty/catch/include")\n')
 		f.write('SET_PROPERTY(TARGET ${EXE_NAME} PROPERTY CXX_STANDARD 17)\n')
 		f.write('SET_PROPERTY(TARGET ${EXE_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)\n')
