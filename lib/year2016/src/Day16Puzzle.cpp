@@ -1,5 +1,6 @@
 #include <2016/Day16Puzzle.hpp>
 #include <zeno-engine/Utility/StringExtensions.hpp>
+#include <algorithm>
 
 namespace TwentySixteen {
 	
