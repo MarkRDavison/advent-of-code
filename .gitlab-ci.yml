@@ -35,14 +35,7 @@ buildstuff:
 teststuff:
   stage: test
   script:
-   - cd build/bin
-   - ./advent-of-code-core-test ~[slow]  
-   - ./advent-of-code-year2015-test ~[slow]
-   - ./advent-of-code-year2016-test ~[slow]
-   - ./advent-of-code-year2017-test ~[slow]
-   - ./advent-of-code-year2018-test ~[slow]
-   - ./advent-of-code-year2019-test ~[slow]
-   - ./advent-of-code-year2020-test ~[slow]
-   - ./advent-of-code-year2021-test ~[slow]
+   - cd build
+   - ctest . -C Debug --label-exclude slow --no-label-summary
   dependencies:
     - buildstuff
