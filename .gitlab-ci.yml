@@ -36,5 +36,6 @@ teststuff:
   stage: test
   script:
    - cd build
+   - ls -R
   dependencies:
     - buildstuff
