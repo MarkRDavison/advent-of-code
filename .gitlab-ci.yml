@@ -1,7 +1,7 @@
 image: conanio/gcc11-ubuntu16.04
 
 before_script:
-    - conan remote add gitlab https://gitlab.markdavison.kiwi/api/v4/projects/10/packages/conan
+    - conan remote add gitlab ${CI_API_V4_URL}/projects/10/packages/conan
     - conan user gitlab+deploy-token-2 --remote gitlab -p ${CI_JOB_TOKEN}
 
 stages:
