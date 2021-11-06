@@ -27,7 +27,7 @@ namespace TwentyFifteen {
 		const auto& part1 = network.getShortestPathVisitingAll();
 		const auto& part2 = network.getLongestPathVisitingAll();
 
-		return { std::to_string(part1.second), std::to_string(part2.second) };
+		return { std::to_string(static_cast<int>(part1.second)), std::to_string(static_cast<int>(part2.second)) };
 	}
 
 	void Day09Puzzle::populateNetwork(core::EdgeNetwork& _network, const std::vector<std::string>& _input) {

@@ -21,6 +21,8 @@ int main(int _argc, char** _argv) {
     REGISTER_YEAR(TwentyTwenty,     2020);
     REGISTER_YEAR(TwentyTwentyOne,  2021);
 
+    std::cout << "2015 - Day 19 DOES NOT WORK" << std::endl;
+
     core::IPuzzleBase* puzzle = core::PuzzleConstructor::createPuzzle(core::InitialisationInfo::parseArguments(_argc, _argv));
 
     if (puzzle == nullptr) {
