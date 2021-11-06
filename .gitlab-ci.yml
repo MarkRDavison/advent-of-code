@@ -35,6 +35,7 @@ buildstuff:
 teststuff:
   stage: test
   script:
+   - ./build/bin/advent-of-code-core-test ~[slow]  
    - ./build/bin/advent-of-code-test-2015 ~[slow]
    - ./build/bin/advent-of-code-test-2016 ~[slow]
    - ./build/bin/advent-of-code-test-2017 ~[slow]

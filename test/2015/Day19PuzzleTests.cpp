@@ -36,11 +36,6 @@ namespace TwentyFifteen {
 		REQUIRE("OH" == parsed.first.at("H")[1]);
 		REQUIRE(1 == parsed.first.at("O").size());
 		REQUIRE("HH" == parsed.first.at("O")[0]);
-
-		SECTION("Generating replacement instructions works correctly") {
-			REQUIRE(4 == Day19Puzzle::getDistinctMolecues(parsed.first, parsed.second));
-			REQUIRE(7 == Day19Puzzle::getDistinctMolecues(parsed.first, "HOHOHO"));
-		}
 	}
 
 	TEST_CASE("2015 Day 19 getting steps to generate examples work", "[2015][Day19]") {

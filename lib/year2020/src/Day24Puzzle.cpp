@@ -142,7 +142,6 @@ namespace TwentyTwenty {
 			maxDistance++;
 			flipTiles(*current, *next, maxDistance);
 			part2 = countBlackTiles(*next);
-			std::cout << "Day " << i << ": " << part2 << std::endl;
 			std::swap(current, next);
 		}
 

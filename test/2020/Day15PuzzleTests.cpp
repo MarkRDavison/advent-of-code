@@ -3,7 +3,7 @@
 
 namespace TwentyTwenty {
 
-	TEST_CASE("Day 15 Examples work", "[2020][Day15]") {
+	TEST_CASE("Day 15 Examples work", "[2020][Day15][slow]") {
 	    const std::vector<std::string> input = {
 			"0,3,6"
 		};
