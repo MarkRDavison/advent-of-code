@@ -71,7 +71,7 @@ namespace TwentyTwenty {
 			operation.value = std::stoi(parts[1]);
 			break;
 		default:
-			throw std::exception("Invalid Operation");
+			throw std::runtime_error("Invalid Operation");
 		}
 
 		return operation;
