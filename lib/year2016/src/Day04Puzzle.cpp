@@ -62,7 +62,7 @@ namespace TwentySixteen {
 		return true;
 	}
 	bool Day04Puzzle::isNorthPoleRoom(const std::string& _roomInfo, int& _sectorId, const std::string& _key) {
-		const auto& split = ze::StringExtensions::splitStringByDelimeter(_roomInfo, "-[]");
+		auto split = ze::StringExtensions::splitStringByDelimeter(_roomInfo, "-[]");
 		_sectorId = std::stoi(split[split.size() - 2]);
 
 		for (unsigned i = 0; i < split.size() - 2; ++i) {
