@@ -1,6 +1,8 @@
 #include <2020/Day09Puzzle.hpp>
 #include <zeno-engine/Utility/StringExtensions.hpp>
 #include <algorithm>
+#include <limits>
+#include <cmath>
 
 namespace TwentyTwenty {
 	
