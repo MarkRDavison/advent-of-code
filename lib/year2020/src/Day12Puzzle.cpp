@@ -2,8 +2,9 @@
 #include <zeno-engine/Utility/StringExtensions.hpp>
 #include <zeno-engine/Core/Vector2.hpp>
 #include <zeno-engine/Core/Mat4x4.hpp>
-#include <algorithm>
 #include <unordered_map>
+#include <algorithm>
+#include <cmath>
 
 namespace TwentyTwenty {
 	
