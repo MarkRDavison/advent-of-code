@@ -37,8 +37,5 @@ teststuff:
   script:
    - cd build
    - ctest .
-  artifacts:
-    paths:
-     - build
   dependencies:
     - buildstuff
