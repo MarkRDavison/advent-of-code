@@ -3,6 +3,7 @@
 #include <Core/MD5.hpp>
 #include <algorithm>
 #include <thread>
+#include <atomic>
 #include <mutex>
 
 namespace TwentySixteen {
