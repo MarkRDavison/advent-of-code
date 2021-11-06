@@ -1,6 +1,6 @@
 #include <2020/HandheldConsole.hpp>
 #include <zeno-engine/Utility/StringExtensions.hpp>
-#include <exception>
+#include <stdexcept>
 #include <cassert>
 
 namespace TwentyTwenty {
@@ -18,7 +18,7 @@ namespace TwentyTwenty {
 		if (_opCode == "jmp") {
 			return ConsoleOperation::OpType::JMP;
 		}
-		throw std::exception("Invalid Operation");
+		throw std::runtime_error("Invalid Operation");
 	}
 
 	HandheldConsole::HandheldConsole(const std::vector<std::string>& _input) :
