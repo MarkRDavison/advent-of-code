@@ -3,6 +3,7 @@
 #include <zeno-engine/Core/Vector2.hpp>
 #include <Core/MD5.hpp>
 #include <functional>
+#include <limits>
 
 namespace TwentySixteen {
 	
