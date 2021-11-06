@@ -1,5 +1,4 @@
 #include <Core/Pathfinding.hpp>
-#include <algorithm>
 #include <iostream>
 #include <cmath>
 

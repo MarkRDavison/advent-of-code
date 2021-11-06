@@ -4,6 +4,7 @@
 #include <zeno-engine/Core/Vector2.hpp>
 #include <unordered_map>
 #include <unordered_set>
+#include <algorithm>
 #include <vector>
 #include <queue>
 
