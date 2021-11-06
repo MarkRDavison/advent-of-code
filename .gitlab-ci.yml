@@ -35,16 +35,14 @@ buildstuff:
 teststuff:
   stage: test
   script:
-   - cd build
-   - ls
-   - ls -R
-   - ./bin/advent-of-code-core-test ~[slow]  
-   - ./bin/advent-of-code-test-2015 ~[slow]
-   - ./bin/advent-of-code-test-2016 ~[slow]
-   - ./bin/advent-of-code-test-2017 ~[slow]
-   - ./bin/advent-of-code-test-2018 ~[slow]
-   - ./bin/advent-of-code-test-2019 ~[slow]
-   - ./bin/advent-of-code-test-2020 ~[slow]
-   - ./bin/advent-of-code-test-2021 ~[slow]
+   - cd build/bin
+   - ./advent-of-code-core-test ~[slow]  
+   - ./advent-of-code-year2015-test ~[slow]
+   - ./advent-of-code-year2016-test ~[slow]
+   - ./advent-of-code-year2017-test ~[slow]
+   - ./advent-of-code-year2018-test ~[slow]
+   - ./advent-of-code-year2019-test ~[slow]
+   - ./advent-of-code-year2020-test ~[slow]
+   - ./advent-of-code-year2021-test ~[slow]
   dependencies:
     - buildstuff
