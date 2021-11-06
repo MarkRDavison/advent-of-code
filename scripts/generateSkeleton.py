@@ -202,7 +202,7 @@ class SkeletonGenerator:
 		f.write('\n')
 		f.write('FILE(GLOB_RECURSE LIB_TEST_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")\n')
 		f.write('\n')
-		f.write('ADD_EXECUTABLE(${EXE_NAME} "../main.cpp" ${LIB_TEST_FILES})\n')
+		f.write('ADD_EXECUTABLE(${EXE_NAME} "main.cpp" ${LIB_TEST_FILES})\n')
 		f.write('TARGET_LINK_LIBRARIES(${EXE_NAME} PUBLIC advent-of-code-core)\n')
 		f.write('TARGET_LINK_LIBRARIES(${EXE_NAME} PUBLIC "advent-of-code-${MODULE_NAME_LOWER}")\n')
 		f.write('TARGET_LINK_LIBRARIES(${EXE_NAME} PUBLIC ${CONAN_LIBS})\n')
