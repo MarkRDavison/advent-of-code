@@ -15,7 +15,7 @@ configurestuff:
    - mkdir build
    - cd build
    - conan install ..
-   - cmake ..
+   - cmake .. -DCMAKE_BUILD_TYPE=Release
   artifacts:
     paths:
      - build
@@ -36,6 +36,6 @@ teststuff:
   stage: test
   script:
    - cd build
-   - ctest . -C Debug --label-exclude slow --no-label-summary
+   - ctest . -C Release --label-exclude slow --no-label-summary
   dependencies:
     - buildstuff
