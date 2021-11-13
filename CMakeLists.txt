@@ -38,13 +38,13 @@ target_include_directories("zeno-engine-interface" INTERFACE ${CONAN_INCLUDE_DIR
 target_link_directories("zeno-engine-interface" INTERFACE ${CONAN_LIB_DIRS_ZENO-ENGINE})
 
 IF (NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "Debug")
-	target_link_libraries("zeno-engine-interface" INTERFACE zeno-engine-utility-d)
-	target_link_libraries("zeno-engine-interface" INTERFACE zeno-engine-core-d)	
+	target_link_libraries("zeno-engine-interface" INTERFACE zeno-engine-utility-s-d)
+	target_link_libraries("zeno-engine-interface" INTERFACE zeno-engine-core-s-d)	
 ELSE(CMAKE_BUILD_TYPE STREQUAL "Release" ||
 		CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo" ||
 		CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
-	target_link_libraries("zeno-engine-interface" INTERFACE zeno-engine-utility)
-	target_link_libraries("zeno-engine-interface" INTERFACE zeno-engine-core)
+	target_link_libraries("zeno-engine-interface" INTERFACE zeno-engine-utility-s)
+	target_link_libraries("zeno-engine-interface" INTERFACE zeno-engine-core-s)
 ENDIF()
 
 
