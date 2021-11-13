@@ -15,7 +15,13 @@ TARGET_LINK_LIBRARIES(${AppMain} PRIVATE advent-of-code-year2019)
 TARGET_LINK_LIBRARIES(${AppMain} PRIVATE advent-of-code-year2020)
 TARGET_LINK_LIBRARIES(${AppMain} PRIVATE advent-of-code-year2021)
 target_link_libraries(${AppMain} PUBLIC Threads::Threads)
-target_link_libraries(${AppMain} PUBLIC ${ADVENT_OF_CODE_CONAN_LIBS})
+
+MESSAGE(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+
+foreach(liblib IN LISTS ADVENT_OF_CODE_CONAN_LIBS)
+    MESSAGE(STATUS ${liblib})
+	TARGET_LINK_LIBRARIES(${AppMain} PRIVATE ${liblib})
+endforeach()
 
 ADD_CUSTOM_COMMAND(TARGET ${AppMain} POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
