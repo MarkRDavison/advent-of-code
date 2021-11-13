@@ -1,6 +1,8 @@
 image: conanio/gcc11-ubuntu16.04
 
 before_script:
+    - cmake --version
+    - conan --version
     - conan remote add gitlab ${CI_API_V4_URL}/projects/10/packages/conan
     - conan user gitlab+deploy-token-2 --remote gitlab -p ${CI_JOB_TOKEN}
 

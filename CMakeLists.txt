@@ -1,8 +1,9 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
 
 CMAKE_POLICY(SET CMP0074 NEW)
-#CMAKE_POLICY(SET CMP0110 NEW)
-# Policy not known to ci cmake
+if (CMAKE_VERSION VERSION_GREATER_EQUAL 3.19)
+  CMAKE_POLICY(SET CMP0110 NEW)
+endif()
 
 PROJECT(AdventOfCode 
 	VERSION 1
@@ -11,11 +12,21 @@ PROJECT(AdventOfCode
 SET(CMAKE_CXX_STANDARD 17)
 SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 SET(PROJECT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-INCLUDE(${CMAKE_CURRENT_SOURCE_DIR}/build/conanbuildinfo.cmake)
-conan_basic_setup()
-
-MESSAGE(STATUS "CMAKE_BUILD_TYPE")
-MESSAGE(STATUS ${CMAKE_BUILD_TYPE})
+# https://github.com/conan-io/cmake-conan/issues/249
+IF (CONAN_EXPORTED)
+	INCLUDE(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+	conan_basic_setup(TARGETS)
+ELSE()
+    if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
+		message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
+	    file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/v0.16.1/conan.cmake"
+		              "${CMAKE_BINARY_DIR}/conan.cmake"
+					  EXPECTED_HASH SHA256=396e16d0f5eabdc6a14afddbcfff62a54a7ee75c6da23f32f7a31bc85db23484
+					  TLS_VERIFY ON)
+    endif()
+    include(${CMAKE_BINARY_DIR}/conan.cmake)
+	conan_cmake_run(CONANFILE conanfile.txt BASIC_SETUP CMAKE_TARGETS KEEP_RPATHS)
+ENDIF()
 
 IF (NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "Debug")
 	SET(ADVENT_OF_CODE_CONAN_LIBS ${CONAN_LIBS_DEBUG})
