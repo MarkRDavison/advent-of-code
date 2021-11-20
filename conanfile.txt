@@ -1,5 +1,9 @@
 [requires]
+glfw/3.3.5
 zeno-engine/0.14@mark.davison/stable
+
+[options]
+glfw:shared=False
 
 [generators]
 cmake
