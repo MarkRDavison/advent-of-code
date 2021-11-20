@@ -2,7 +2,6 @@ image: zeno15/zeno-engine-build-container
 
 before_script:
     - conan remote add gitlab ${CI_API_V4_URL}/projects/10/packages/conan
-    - conan user ZENO_ENGINE_DEPLOY_TOKEN --remote gitlab -p $ZENO_ENGINE_DEPLOY_TOKEN_PASSWORD
 
 stages:
   - configure
@@ -14,7 +13,7 @@ configurestuff:
   script:
    - mkdir build
    - cd build
-   - conan install .. --build=glfw --build=zeno-engine
+   - CONAN_LOGIN_USERNAME=gitlab+deploy-token-2 CONAN_PASSWORD=${CI_JOB_TOKEN} conan install .. --build=glfw --build=zeno-engine
    - cmake .. -DCMAKE_BUILD_TYPE=Release
   artifacts:
     paths:
@@ -24,7 +23,7 @@ buildstuff:
   stage: build
   script:
    - cd build
-   - conan install ..
+   - CONAN_LOGIN_USERNAME=gitlab+deploy-token-2 CONAN_PASSWORD=${CI_JOB_TOKEN} conan install .. --build=glfw --build=zeno-engine
    - cmake --build . -j 2
   artifacts:
     paths:
