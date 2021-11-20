@@ -1,4 +1,4 @@
-image: conanio/gcc11-ubuntu16.04
+image: zeno15/zeno-engine-build-container
 
 before_script:
     - cmake --version
