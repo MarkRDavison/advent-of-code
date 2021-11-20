@@ -14,8 +14,7 @@ configurestuff:
   script:
    - mkdir build
    - cd build
-   - conan install .. --build=glfw
-   - conan install ..
+   - conan install .. --build=glfw --build=zeno-engine
    - cmake .. -DCMAKE_BUILD_TYPE=Release
   artifacts:
     paths:
