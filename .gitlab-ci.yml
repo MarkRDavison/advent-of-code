@@ -1,8 +1,6 @@
 image: zeno15/zeno-engine-build-container
 
 before_script:
-    - conan profile new default --detect
-    - conan profile update settings.compiler.libcxx=libstdc++11 default
     - conan remote add gitlab ${CI_API_V4_URL}/projects/10/packages/conan
 
 stages:
