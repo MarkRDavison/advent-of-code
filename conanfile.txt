@@ -1,5 +1,5 @@
 [requires]
-zeno-engine/0.14
+zeno-engine/0.14@mark.davison/stable
 
 [generators]
 cmake
