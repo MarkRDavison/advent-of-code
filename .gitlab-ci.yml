@@ -13,7 +13,7 @@ configurestuff:
   script:
    - mkdir build
    - cd build
-   - CONAN_LOGIN_USERNAME=gitlab+deploy-token-2 CONAN_PASSWORD=${CI_JOB_TOKEN} conan install .. --build=glfw --build=zeno-engine
+   - CONAN_LOGIN_USERNAME=gitlab+deploy-token-2 CONAN_PASSWORD=${CI_JOB_TOKEN} conan install .. --build=glfw --build=zeno-engine -s build_type=Release
    - cmake .. -DCMAKE_BUILD_TYPE=Release
   artifacts:
     paths:
@@ -23,7 +23,7 @@ buildstuff:
   stage: build
   script:
    - cd build
-   - CONAN_LOGIN_USERNAME=gitlab+deploy-token-2 CONAN_PASSWORD=${CI_JOB_TOKEN} conan install .. --build=glfw --build=zeno-engine
+   - CONAN_LOGIN_USERNAME=gitlab+deploy-token-2 CONAN_PASSWORD=${CI_JOB_TOKEN} conan install .. --build=glfw --build=zeno-engine -s build_type=Release
    - cmake --build . -j 2
   artifacts:
     paths:
