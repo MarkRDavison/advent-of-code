@@ -4,7 +4,7 @@
 namespace TwentyTwentyOne {
 	
 	Day02Puzzle::Day02Puzzle() :
-		core::PuzzleBase("Untitled Puzzle", 2021, 2) {
+		core::PuzzleBase("Dive!", 2021, 2) {
 	}
 
 
@@ -17,6 +17,30 @@ namespace TwentyTwentyOne {
 	}
 
 	std::pair<std::string, std::string> Day02Puzzle::fastSolve() {
-		return { "Part 1", "Part 2" };
+
+		int horizontal = 0;
+		int depth = 0;
+
+		int aim = 0;
+		int depth2 = 0;
+
+		for (const auto& i : m_InputLines) {
+			const auto& s = ze::StringExtensions::splitStringByDelimeter(i, " ");
+
+			const auto v = std::stoi(s[1]);
+
+			if (s[0] == "forward") {
+				horizontal += v;
+				depth2 += aim * v;
+			} else if (s[0] == "down") {
+				depth += v;
+				aim += v;
+			} else if (s[0] == "up") {
+				depth -= v;
+				aim -= v;
+			}
+		}
+
+		return { std::to_string(horizontal * depth), std::to_string(horizontal * depth2) };
 	}
 }
