@@ -1,8 +1,5 @@
 image: zeno15/zeno-engine-build-container:latest
 
-before_script:
-    - conan remote add gitlab ${CI_API_V4_URL}/projects/10/packages/conan
-
 stages:
   - build
   - test
@@ -12,17 +9,18 @@ buildstuff:
   script:
    - mkdir build
    - cd build
+   - conan remote add gitlab ${CI_API_V4_URL}/projects/10/packages/conan
    - CONAN_LOGIN_USERNAME=gitlab+deploy-token-2 CONAN_PASSWORD=${CI_JOB_TOKEN} conan install .. --build=missing
    - cmake .. -DCMAKE_BUILD_TYPE=Release
    - cmake --build . -j 2
   artifacts:
+    expire_in: 30m
     paths:
      - build
 
 teststuff:
   stage: test
   script:
-   - cd build
-   - ctest . -C Release --label-exclude slow --no-label-summary
+   - ctest ./build -C Release --label-exclude slow --no-label-summary
   dependencies:
     - buildstuff
