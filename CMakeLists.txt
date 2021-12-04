@@ -4,7 +4,7 @@ CMAKE_POLICY(SET CMP0074 NEW)
 if (CMAKE_VERSION VERSION_GREATER_EQUAL 3.19)
   CMAKE_POLICY(SET CMP0110 NEW)
 endif()
-set(CMAKE_MSVC_RUNTIME_LIBRARY MultiThreaded)
+
 set(CMAKE_DEBUG_POSTFIX "-d")
 
 PROJECT(AdventOfCode 
@@ -29,7 +29,7 @@ ELSE()
 					  TLS_VERIFY ON)
     endif()
     include(${CMAKE_BINARY_DIR}/conan.cmake)
-	conan_cmake_run(CONANFILE conanfile.txt BASIC_SETUP CMAKE_TARGETS KEEP_RPATHS)
+	conan_cmake_run(CONANFILE conanfile.txt BASIC_SETUP CMAKE_TARGETS KEEP_RPATHS BUILD missing)
 ENDIF()
 
 

@@ -1,6 +1,6 @@
 [requires]
 glfw/3.3.5
-zeno-engine/0.15@mark.davison/stable
+zeno-engine/0.33@mark.davison/stable
 
 [options]
 glfw:shared=False
