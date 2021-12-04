@@ -30,7 +30,7 @@ namespace TwentyTwentyOne {
 	}
 
 	std::pair<std::string, std::string> Day04Puzzle::fastSolve() {
-		auto& [numbers, boards] = parseInput(m_InputLines);
+		auto [numbers, boards] = parseInput(m_InputLines);
 
 		std::string part1;
 		std::string part2;

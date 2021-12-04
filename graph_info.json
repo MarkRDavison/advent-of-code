@@ -1,0 +1,30 @@
+{
+ "options": [
+  [
+   "catch2:with_main",
+   "False"
+  ],
+  [
+   "catch2:with_prefix",
+   "False"
+  ],
+  [
+   "glfw:shared",
+   "False"
+  ],
+  [
+   "glfw:vulkan_static",
+   "False"
+  ],
+  [
+   "zeno-engine:shared",
+   "False"
+  ]
+ ],
+ "root": {
+  "name": null,
+  "version": null,
+  "user": null,
+  "channel": null
+ }
+}

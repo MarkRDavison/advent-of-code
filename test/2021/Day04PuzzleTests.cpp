@@ -14,7 +14,7 @@ namespace TwentyTwentyOne {
 " 2  0 12  3  7",
 		};
 
-		auto& [numbers, boards] = Day04Puzzle::parseInput(input);
+		auto [numbers, boards] = Day04Puzzle::parseInput(input);
 
 		auto& b = boards.front();
 
@@ -43,7 +43,7 @@ namespace TwentyTwentyOne {
 " 1 12 20 15 19",
 		};
 
-		auto& [numbers, boards] = Day04Puzzle::parseInput(input);
+		auto [numbers, boards] = Day04Puzzle::parseInput(input);
 
 		auto& b = boards.front();
 
@@ -70,7 +70,7 @@ namespace TwentyTwentyOne {
 " 1 12 20 15 19",
 		};
 
-		auto& [numbers, boards] = Day04Puzzle::parseInput(input);
+		auto [numbers, boards] = Day04Puzzle::parseInput(input);
 
 		auto& b = boards.front();
 

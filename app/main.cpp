@@ -39,5 +39,7 @@ int main(int _argc, char** _argv) {
     std::cout << "In " << clock.getElapsedTime() << "s." << std::endl;
     delete puzzle;
 
+    getchar();
+
     return EXIT_SUCCESS;
 }

@@ -1,0 +1,54 @@
+{
+ "graph_lock": {
+  "nodes": {
+   "0": {
+    "options": "catch2:with_main=False\ncatch2:with_prefix=False\nglfw:shared=False\nglfw:vulkan_static=False\nzeno-engine:shared=False",
+    "requires": [
+     "1",
+     "3"
+    ],
+    "path": "conanfile.txt",
+    "context": "host"
+   },
+   "1": {
+    "ref": "glfw/3.3.5",
+    "options": "shared=False\nvulkan_static=False",
+    "package_id": "72e84aac9213a09dfb0f59578ae9423a2eb326e7",
+    "prev": "0",
+    "requires": [
+     "2"
+    ],
+    "context": "host"
+   },
+   "2": {
+    "ref": "opengl/system",
+    "options": "",
+    "package_id": "5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9",
+    "prev": "0",
+    "context": "host"
+   },
+   "3": {
+    "ref": "zeno-engine/0.15@mark.davison/stable",
+    "options": "shared=False\ncatch2:with_main=False\ncatch2:with_prefix=False\nglfw:shared=False\nglfw:vulkan_static=False",
+    "package_id": "7ab81a98195a432d72e63daf80054b98156d3ede",
+    "prev": "0",
+    "modified": true,
+    "requires": [
+     "4",
+     "1"
+    ],
+    "context": "host"
+   },
+   "4": {
+    "ref": "catch2/2.13.6",
+    "options": "with_main=False\nwith_prefix=False",
+    "package_id": "5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9",
+    "prev": "0",
+    "context": "host"
+   }
+  },
+  "revisions_enabled": false
+ },
+ "version": "0.4",
+ "profile_host": "[settings]\narch=x86_64\narch_build=x86_64\nbuild_type=Debug\ncompiler=Visual Studio\ncompiler.runtime=MDd\ncompiler.version=16\nos=Windows\nos_build=Windows\n[options]\n[build_requires]\n[env]\n"
+}
