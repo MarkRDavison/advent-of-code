@@ -1,5 +1,10 @@
 image: zeno15/zeno-engine-build-container:latest
 
+variables:
+  BUILD_TYPE: 'Release'
+  BUILD_PARALLELISM: 2
+  CONAN_INSTALL_EXTRA_ARGS: '-s compiler=gcc -s compiler.version=11 -s compiler.libcxx=libstdc++11 -g=cmake'
+
 stages:
   - build
   - test
@@ -10,9 +15,9 @@ buildstuff:
    - mkdir build
    - cd build
    - conan remote add gitlab ${CI_API_V4_URL}/projects/10/packages/conan
-   - CONAN_LOGIN_USERNAME=gitlab+deploy-token-2 CONAN_PASSWORD=${CI_JOB_TOKEN} conan install .. --build=missing
-   - cmake .. -DCMAKE_BUILD_TYPE=Release
-   - cmake --build . -j 2
+   - CONAN_LOGIN_USERNAME=gitlab+deploy-token-2 CONAN_PASSWORD=${CI_JOB_TOKEN} conan install .. --build=missing -s build_type=${BUILD_TYPE} ${CONAN_INSTALL_EXTRA_ARGS}
+   - cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
+   - cmake --build . -j ${BUILD_PARALLELISM}
   artifacts:
     expire_in: 30m
     paths:
