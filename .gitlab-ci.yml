@@ -21,7 +21,7 @@ buildstuff:
   artifacts:
     expire_in: 30m
     paths:
-     - build
+     - build/**/*
 
 teststuff:
   stage: test
