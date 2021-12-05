@@ -26,6 +26,7 @@ buildstuff:
 teststuff:
   stage: test
   script:
-   - ctest ./build -C Release --label-exclude slow --no-label-summary
+   - cd build
+   - ctest . -C ${BUILD_TYPE} --label-exclude slow --no-label-summary
   dependencies:
     - buildstuff
