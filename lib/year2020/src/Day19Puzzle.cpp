@@ -9,26 +9,13 @@
 
 namespace TwentyTwenty {
 
-
-	// TODO: Move this to utility framework
-	std::vector<std::string> splitStringByLines5(const std::string& _parameter) {
-		std::vector<std::string> result;
-		std::stringstream stringStream(_parameter);
-		std::string line;
-		while (std::getline(stringStream, line)) {
-			result.push_back(line);
-		}
-
-		return result;
-	}
-	
 	Day19Puzzle::Day19Puzzle() :
 		core::PuzzleBase("Monster Messages", 2020, 19) {
 	}
 
 
 	void Day19Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(splitStringByLines5(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
+		setInputLines(ze::StringExtensions::splitStringByLines(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
 	}
 
 	void Day19Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {

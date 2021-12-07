@@ -11,23 +11,13 @@
 
 namespace TwentyTwenty {
 
-	std::vector<std::string> splitStringByLines3(const std::string& _parameter) {
-		std::vector<std::string> result;
-		std::stringstream stringStream(_parameter);
-		std::string line;
-		while (std::getline(stringStream, line)) {
-			result.push_back(line);
-		}
-
-		return result;
-	}
 	Day16Puzzle::Day16Puzzle() :
 		core::PuzzleBase("REPLACE NENENENE!?!?!?!?", 2020, 16) {
 	}
 
 
 	void Day16Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(splitStringByLines3(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
+		setInputLines(ze::StringExtensions::splitStringByLines(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
 	}
 
 	void Day16Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {

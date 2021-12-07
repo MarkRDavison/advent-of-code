@@ -11,25 +11,13 @@
 
 namespace TwentyTwenty {
 
-	// TODO: Move this to utility framework
-	std::vector<std::string> splitStringByLines6(const std::string& _parameter) {
-		std::vector<std::string> result;
-		std::stringstream stringStream(_parameter);
-		std::string line;
-		while (std::getline(stringStream, line)) {
-			result.push_back(line);
-		}
-
-		return result;
-	}
-
 	Day20Puzzle::Day20Puzzle() :
 		core::PuzzleBase("Jurassic Jigsaw", 2020, 20) {
 	}
 
 
 	void Day20Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(splitStringByLines6(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
+		setInputLines(ze::StringExtensions::splitStringByLines(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
 	}
 
 	void Day20Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
