@@ -2,9 +2,13 @@
 #define INCLUDED_ADVENT_OF_CODE_2021_DAY_09_PUZZLE_HPP_
 
 #include <Core/PuzzleBase.hpp>
+#include <Core/Region.hpp>
+#include <zeno-engine/Core/Vector2.hpp>
 
 namespace TwentyTwentyOne {
-	
+
+	using Number = int;
+		
 	class Day09Puzzle : public core::PuzzleBase {
 	public:
 		Day09Puzzle();
@@ -14,6 +18,9 @@ namespace TwentyTwentyOne {
 		void setInputLines(const std::vector<std::string>& _inputLines);
 		std::pair<std::string, std::string> fastSolve() override;
 
+		static core::Region<Number> createHeightMap(const std::vector<std::string>& _inputLines);
+		static std::vector<ze::Vector2<Number>> findLowPoints(const core::Region<Number>& _region);
+		static Number findBasinSize(const core::Region<Number>& _region, const ze::Vector2<Number>& _lowPoint);
 	private:
 		std::vector<std::string> m_InputLines;
 	};
