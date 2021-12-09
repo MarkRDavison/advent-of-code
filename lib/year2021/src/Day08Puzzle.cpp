@@ -233,7 +233,6 @@ namespace TwentyTwentyOne {
 				}
 
 				char a = getA(signals1, signals7);
-				assert(a != '?');
 
 				auto [signals3, signals3Index] = getSignals3(signals235[0], signals235[1], signals235[2], signals1);
 
@@ -274,8 +273,9 @@ namespace TwentyTwentyOne {
 					multiplier /= 10;
 				}
 
-				std::cout << total << std::endl;
-
+				if (getVerbose()) {
+					std::cout << total << std::endl;
+				}
 				part2 += total;
 			}
 		}
@@ -301,26 +301,10 @@ namespace TwentyTwentyOne {
 				current.output[j] = output[j];
 			}
 
-			bool found2 = false;
-			bool found3 = false;
-			bool found4 = false;
-
 
 			for (unsigned j = 0; j < 10; ++j) {
 				current.signals[j] = segments[j];
-
-				if (segments[j].size() == 2) {
-					found2 = true;
-				}
-				if (segments[j].size() == 3) {
-					found3 = true;
-				}
-				if (segments[j].size() == 4) {
-					found4 = true;
-				}
 			}
-
-			assert(found2 && found3 && found4);
 		}
 
 		return parsed;
