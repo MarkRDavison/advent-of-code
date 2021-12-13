@@ -81,6 +81,7 @@ namespace TwentyTwentyOne {
 		PathResult res{};
 
 		res.merge(recursiveVisit(_connections, p, EMPTY));
+
 		if (_part1) {
 			return res;
 		}
@@ -90,7 +91,6 @@ namespace TwentyTwentyOne {
 				res.merge(recursiveVisit(_connections, p, k));
 			}
 		}
-		res.merge(recursiveVisit(_connections, p, EMPTY));
 
 		return res;
 	}
