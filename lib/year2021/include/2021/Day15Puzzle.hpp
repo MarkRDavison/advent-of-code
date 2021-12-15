@@ -4,6 +4,16 @@
 #include <Core/PuzzleBase.hpp>
 
 namespace TwentyTwentyOne {
+	using CaveInteger = long long;
+	struct CaveCell {
+		CaveInteger risk;
+		bool valid() {
+			return true;
+		}
+		float costTo(const CaveCell& _target) const {
+			return static_cast<float>(_target.risk);
+		}
+	};
 	
 	class Day15Puzzle : public core::PuzzleBase {
 	public:
