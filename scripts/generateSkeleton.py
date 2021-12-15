@@ -210,7 +210,7 @@ class SkeletonGenerator:
 		f.write('TARGET_LINK_LIBRARIES(${EXE_NAME} PUBLIC ${ADVENT_OF_CODE_CONAN_LIBS})\n')
 		f.write('TARGET_LINK_LIBRARIES(${EXE_NAME} PUBLIC Threads::Threads)\n')
 		f.write('TARGET_INCLUDE_DIRECTORIES(${EXE_NAME} PUBLIC "${PROJECT_SOURCE_DIR}/thirdparty/catch/include")\n')
-		f.write('SET_PROPERTY(TARGET ${EXE_NAME} PROPERTY CXX_STANDARD 17)\n')
+		f.write('SET_PROPERTY(TARGET ${EXE_NAME} PROPERTY CXX_STANDARD ${AOC_CXX_STANDARD})\n')
 		f.write('SET_PROPERTY(TARGET ${EXE_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)\n')
 		f.write('\n')
 		f.write('ParseAndAddCatchTests(${EXE_NAME})\n')
