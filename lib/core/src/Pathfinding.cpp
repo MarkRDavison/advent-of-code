@@ -174,8 +174,8 @@ namespace core {
 	std::pair<std::vector<std::string>, float> EdgeNetwork::getLongestPathVisitingAll(const std::string& _start) {
 		return getLongestPathVisitingAll(_start, std::numeric_limits<float>::min());
 	}
-	std::pair<std::vector<std::string>, float> EdgeNetwork::getLongestPathVisitingAll(const std::string& _start, float _currentShortest) {
-		return doDepthFirstMaxCostRecursive(sg, {}, 0.0f, _start, {}, sg.nodes.size(), _currentShortest);
+	std::pair<std::vector<std::string>, float> EdgeNetwork::getLongestPathVisitingAll(const std::string& _start, float _currentLongest) {
+		return doDepthFirstMaxCostRecursive(sg, {}, 0.0f, _start, {}, sg.nodes.size(), _currentLongest);
 	}
 
 	std::pair<std::vector<std::string>, float> doDepthFirstMaxCostRecursiveReturningToStart(
