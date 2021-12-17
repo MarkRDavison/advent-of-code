@@ -2,7 +2,6 @@
 #include <zeno-engine/Utility/StringExtensions.hpp>
 #include <zeno-engine/Core/Vector2.hpp>
 #include <zeno-engine/Core/Rect.hpp>
-#include <Core/Region.hpp>
 #include <cassert>
 
 namespace TwentyTwentyOne {
