@@ -4,6 +4,8 @@
 #include <Core/PuzzleBase.hpp>
 
 namespace TwentyTwentyOne {
+
+	using IntegerType = long;
 	
 	class Day17Puzzle : public core::PuzzleBase {
 	public:
