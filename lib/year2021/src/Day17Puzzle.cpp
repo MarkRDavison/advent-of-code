@@ -23,7 +23,7 @@ namespace TwentyTwentyOne {
 
 		ze::Vector2<IntegerType> position;
 		ze::Vector2<IntegerType> velocity(_velocity);
-		auto target = _target;
+		auto target = _target; // TODO: When contains is a const method dont have this
 
 		IntegerType maxY = 0;
 
