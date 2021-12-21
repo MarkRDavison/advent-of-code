@@ -2,9 +2,18 @@
 #define INCLUDED_ADVENT_OF_CODE_2021_DAY_20_PUZZLE_HPP_
 
 #include <Core/PuzzleBase.hpp>
+#include <zeno-engine/Core/Vector2.hpp>
+#include <unordered_set>
 
-namespace TwentyTwentyOne {
-	
+namespace TwentyTwentyOne {	
+
+	template<typename T>
+	struct vector2_hash_fxn {
+		std::size_t operator()(const ze::Vector2<T>& _vec) const {
+			return  std::hash<T>()(_vec.x) ^ std::hash<T>()(_vec.y);
+		}
+	};
+
 	class Day20Puzzle : public core::PuzzleBase {
 	public:
 		Day20Puzzle();
@@ -13,6 +22,8 @@ namespace TwentyTwentyOne {
 		void initialise(const core::InitialisationInfo& _initialisationInfo) override;
 		void setInputLines(const std::vector<std::string>& _inputLines);
 		std::pair<std::string, std::string> fastSolve() override;
+
+		static std::pair<std::vector<int>, std::vector<std::vector<int>>> parse(const std::vector<std::string>& _inputLines);
 
 	private:
 		std::vector<std::string> m_InputLines;
