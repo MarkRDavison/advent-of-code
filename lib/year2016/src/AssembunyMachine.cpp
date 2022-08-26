@@ -6,7 +6,7 @@ namespace TwentySixteen {
 	static bool isRegister(const std::string& _str) {
 		return 'a' <= _str[0] && _str[0] <= 'd';
 	}
-	static long& getRegisterValue(Registers& _registers, const std::string& _register) {
+	static AssembunnyInteger& getRegisterValue(Registers& _registers, const std::string& _register) {
 		const auto reg = (unsigned)(_register[0] - 'a');
 		return _registers[reg];
 	}
@@ -30,7 +30,7 @@ namespace TwentySixteen {
 		auto& instruction = instructions[programCounter];
 
 		if (instruction.type == "cpy") {
-			long value;
+			AssembunnyInteger value;
 			if (isRegister(instruction.arg1)) {
 				value = getRegisterValue(registers, instruction.arg1);
 			}
@@ -49,7 +49,7 @@ namespace TwentySixteen {
 			regValue--;
 		}
 		else if (instruction.type == "jnz") {
-			long value1;
+			AssembunnyInteger value1;
 			if (isRegister(instruction.arg1)) {
 				value1 = getRegisterValue(registers, instruction.arg1);
 			}
@@ -57,7 +57,7 @@ namespace TwentySixteen {
 				value1 = std::stoi(instruction.arg1);
 			}
 			if (value1 != 0) {
-				long value2;
+				AssembunnyInteger value2;
 				if (isRegister(instruction.arg2)) {
 					value2 = getRegisterValue(registers, instruction.arg2);
 				}
@@ -68,8 +68,18 @@ namespace TwentySixteen {
 				return;
 			}
 		}
+		else if (instruction.type == "out") {
+			AssembunnyInteger value;
+			if (isRegister(instruction.arg1)) {
+				value = getRegisterValue(registers, instruction.arg1);
+			}
+			else {
+				value = std::stoi(instruction.arg1);
+			}
+			output.push(value);
+		}
 		else if (instruction.type == "tgl") {
-			long value;
+			AssembunnyInteger value;
 			if (isRegister(instruction.arg1)) {
 				value = getRegisterValue(registers, instruction.arg1);
 			}

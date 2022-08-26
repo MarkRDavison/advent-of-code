@@ -330,6 +330,10 @@ namespace core {
 		std::pair<std::vector<std::string>, float> getShortestPathVisitingAll(const std::string& _start);
 		std::pair<std::vector<std::string>, float> getShortestPathVisitingAll(const std::string& _start, float _currentShortest);
 
+		std::pair<std::vector<std::string>, float> getShortestPathVisitingAllReturningToStart();
+		std::pair<std::vector<std::string>, float> getShortestPathVisitingAllReturningToStart(const std::string& _start);
+		std::pair<std::vector<std::string>, float> getShortestPathVisitingAllReturningToStart(const std::string& _start, float _currentShortest);
+
 		std::pair<std::vector<std::string>, float> getLongestPathVisitingAll();
 		std::pair<std::vector<std::string>, float> getLongestPathVisitingAll(const std::string& _start);
 		std::pair<std::vector<std::string>, float> getLongestPathVisitingAll(const std::string& _start, float _currentShortest);

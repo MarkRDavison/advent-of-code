@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <queue>
 
 namespace TwentySixteen {
 
@@ -25,6 +26,7 @@ namespace TwentySixteen {
 		Registers registers{ 0 };
 		AssembunnyInteger programCounter;
 		std::vector<AssembunnyInstruction> instructions;
+		std::queue<AssembunnyInteger> output;
 	};
 
 }

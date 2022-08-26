@@ -5,6 +5,17 @@
 
 namespace TwentySixteen {
 	
+	struct DuctCell {
+		bool open{ false };
+
+		bool valid() {
+			return open;
+		}
+		float costTo(const DuctCell& _target) const {
+			return 1.0f;
+		}
+	};
+
 	class Day24Puzzle : public core::PuzzleBase {
 	public:
 		Day24Puzzle();
