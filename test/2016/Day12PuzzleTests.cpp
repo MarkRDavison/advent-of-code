@@ -1,5 +1,6 @@
 #include <catch/catch.hpp>
 #include <2016/Day12Puzzle.hpp>
+#include <2016/AssembunyMachine.hpp>
 
 namespace TwentySixteen {
 
@@ -13,14 +14,13 @@ namespace TwentySixteen {
 "dec a"
 		};
 
-		Registers registers = { 0 };
-		AssembunnyInteger programCounter = 0;
+		AssembunyMachine machine(input);
 
-		while (programCounter >= 0 && programCounter  < input.size()) {
-			Day12Puzzle::applyInstruction(programCounter, registers, input[programCounter]);
+		while (machine.programCounter >= 0 && machine.programCounter < input.size()) {
+			machine.applyInstructionAtPC();
 		}
 
-		REQUIRE(42 == registers[0]);
+		REQUIRE(42 == machine.registers[0]);
 	}
 
 }

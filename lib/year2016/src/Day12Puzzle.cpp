@@ -1,6 +1,7 @@
 #include <2016/Day12Puzzle.hpp>
 #include <zeno-engine/Utility/StringExtensions.hpp>
 #include <cassert>
+#include <2016/AssembunyMachine.hpp>
 
 namespace TwentySixteen {
 	
@@ -22,100 +23,54 @@ namespace TwentySixteen {
 	}
 
 	std::pair<std::string, std::string> Day12Puzzle::fastSolve() {
-
 		AssembunnyInteger part1;
 		AssembunnyInteger part2;
 
 		{
-			Registers registers = { 0 };
-			AssembunnyInteger programCounter = 0;
+			AssembunyMachine machine = AssembunyMachine(m_InputLines);
 
-			AssembunnyInteger prev = registers[3];
-			while (programCounter >= 0 && programCounter < (AssembunnyInteger)m_InputLines.size()) {
-				Day12Puzzle::applyInstruction(programCounter, registers, m_InputLines[programCounter]);
+			long prev = machine.registers[3];
+			while (machine.programCounter >= 0 && machine.programCounter < (long)m_InputLines.size()) {
+				machine.applyInstructionAtPC();
 
-				if (prev != registers[3]) {
-					prev = registers[3];
-					std::cout << "PC: " << programCounter
-						<< " - [" << registers[0]
-						<< ", " << registers[1]
-						<< ", " << registers[2]
-						<< ", " << registers[3]
+				if (prev != machine.registers[3]) {
+					prev = machine.registers[3];
+					std::cout << "PC: " << machine.programCounter
+						<< " - [" << machine.registers[0]
+						<< ", " << machine.registers[1]
+						<< ", " << machine.registers[2]
+						<< ", " << machine.registers[3]
 						<< "]" << std::endl;
 				}
 			}
 
-			part1 = registers[0];
+			part1 = machine.registers[0];
 		}
 		{
-			Registers registers = { 0 };
-			registers[2] = 1;
-			AssembunnyInteger programCounter = 0;
+			AssembunyMachine machine(m_InputLines);
+			machine.registers[2] = 1;
 
-			AssembunnyInteger prev = registers[3];
+			long prev = machine.registers[3];
 
-			while (programCounter >= 0 && programCounter < (AssembunnyInteger)m_InputLines.size()) {
-				Day12Puzzle::applyInstruction(programCounter, registers, m_InputLines[programCounter]);
+			while (machine.programCounter >= 0 && machine.programCounter < (long)m_InputLines.size()) {
+				machine.applyInstructionAtPC();
 
-				if (prev != registers[3]) {
-					prev = registers[3];
-					std::cout << "PC: " << programCounter
-						<< " - [" << registers[0]
-						<< ", " << registers[1]
-						<< ", " << registers[2]
-						<< ", " << registers[3]
+				if (prev != machine.registers[3]) {
+					prev = machine.registers[3];
+					std::cout << "PC: " << machine.programCounter
+						<< " - [" << machine.registers[0]
+						<< ", " << machine.registers[1]
+						<< ", " << machine.registers[2]
+						<< ", " << machine.registers[3]
 						<< "]" << std::endl;
 				}
 			}
 
-			part2 = registers[0];
+			part2 = machine.registers[0];
 		}
 
 
 		return { std::to_string(part1), std::to_string(part2) };
 	}
 
-	static bool isRegister(const std::string& _str) {
-		return 'a' <= _str[0] && _str[0] <= 'd';
-	}
-	static AssembunnyInteger& getRegisterValue(Registers& _registers, const std::string& _register) {
-		const auto reg = (unsigned)(_register[0] - 'a');
-		return _registers[reg];
-	}
-
-	void Day12Puzzle::applyInstruction(AssembunnyInteger& _programCounter, Registers& _registers, const std::string& _instruction) {
-
-		const auto& splits = ze::StringExtensions::splitStringByDelimeter(_instruction, " ");
-
-		if (splits[0] == "cpy") {
-			AssembunnyInteger value;
-			if (isRegister(splits[1])) {
-				value = getRegisterValue(_registers, splits[1]);
-			}
-			else {
-				value = std::stoi(splits[1]);
-			}
-			auto& regValue = getRegisterValue(_registers, splits[2]);
-			regValue = value;
-		} else if (splits[0] == "inc") {
-			auto& regValue = getRegisterValue(_registers, splits[1]);
-			regValue++;
-		} else if (splits[0] == "dec") {
-			auto& regValue = getRegisterValue(_registers, splits[1]);
-			regValue--;
-		} else if (splits[0] == "jnz") {
-			AssembunnyInteger value;
-			if (isRegister(splits[1])) {
-				value = getRegisterValue(_registers, splits[1]);
-			} else {
-				value = std::stoi(splits[1]);
-			}
-			if (value != 0) {
-				_programCounter += std::stoi(splits[2]);
-				return;
-			}
-		}
-
-		_programCounter++;
-	}
 }

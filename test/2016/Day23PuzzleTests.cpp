@@ -1,26 +1,29 @@
 #include <catch/catch.hpp>
 #include <2016/Day23Puzzle.hpp>
+#include <2016/AssembunyMachine.hpp>
 
 namespace TwentySixteen {
 
-	TEST_CASE("2016 Day 23 Part 1 Example work", "[2016][Day23]") {
-	    const std::vector<std::string> input = {};
+	TEST_CASE("2016 Day 23 toggle works", "[2016][Day23]") {
+	    const std::vector<std::string> input = {
+"cpy 2 a",
+"tgl a",
+"tgl a",
+"tgl a",
+"cpy 1 a",
+"dec a",
+"dec a"
+		};
 
-	    Day23Puzzle puzzle{};
-	    puzzle.setVerbose(true);
-	    puzzle.setInputLines(input);
+		AssembunyMachine machine(input);
 
-	    auto answers = puzzle.fastSolve();
-	}
+		
+		while (machine.programCounter >= 0 && machine.programCounter < input.size()) {
 
-	TEST_CASE("2016 Day 23 Part 2 Example work", "[2016][Day23]") {
-	    const std::vector<std::string> input = {};
+			machine.applyInstructionAtPC();
+		}
 
-	    Day23Puzzle puzzle{};
-	    puzzle.setVerbose(true);
-	    puzzle.setInputLines(input);
-
-	    auto answers = puzzle.fastSolve();
+		REQUIRE(3 == machine.registers[0]);
 	}
 
 }
