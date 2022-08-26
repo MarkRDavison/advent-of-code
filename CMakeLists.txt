@@ -24,9 +24,9 @@ IF (CONAN_EXPORTED)
 ELSE()
     if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
 		message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
-	    file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/v0.16.1/conan.cmake"
+	    file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/0.18.1/conan.cmake"
 		              "${CMAKE_BINARY_DIR}/conan.cmake"
-					  EXPECTED_HASH SHA256=396e16d0f5eabdc6a14afddbcfff62a54a7ee75c6da23f32f7a31bc85db23484
+					  EXPECTED_HASH SHA256=5cdb3042632da3efff558924eecefd580a0e786863a857ca097c3d1d43df5dcd
 					  TLS_VERIFY ON)
     endif()
     include(${CMAKE_BINARY_DIR}/conan.cmake)
@@ -42,8 +42,8 @@ IF (NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "Debug")
 	target_link_libraries("zeno-engine-interface" INTERFACE zeno-engine-utility-s-d)
 	target_link_libraries("zeno-engine-interface" INTERFACE zeno-engine-core-s-d)	
 ELSE(CMAKE_BUILD_TYPE STREQUAL "Release" ||
-		CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo" ||
-		CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
+	 CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo" ||
+	 CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
 	target_link_libraries("zeno-engine-interface" INTERFACE zeno-engine-utility-s)
 	target_link_libraries("zeno-engine-interface" INTERFACE zeno-engine-core-s)
 ENDIF()

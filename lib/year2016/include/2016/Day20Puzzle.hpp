@@ -4,7 +4,9 @@
 #include <Core/PuzzleBase.hpp>
 
 namespace TwentySixteen {
-	
+
+	using IpValue = unsigned int;
+
 	class Day20Puzzle : public core::PuzzleBase {
 	public:
 		Day20Puzzle();
@@ -12,6 +14,7 @@ namespace TwentySixteen {
 
 		void initialise(const core::InitialisationInfo& _initialisationInfo) override;
 		void setInputLines(const std::vector<std::string>& _inputLines);
+		std::pair<std::string, std::string> fastSolve(IpValue _max);
 		std::pair<std::string, std::string> fastSolve() override;
 
 	private:

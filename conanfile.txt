@@ -1,5 +1,5 @@
 [requires]
-zeno-engine/0.34@mark.davison/stable
+zeno-engine/0.39@mark.davison/stable
 
 [options]
 

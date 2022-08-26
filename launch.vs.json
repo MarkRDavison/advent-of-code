@@ -3,23 +3,14 @@
   "defaults": {},
   "configurations": [
     {
-      "type": "default",
-      "project": "CMakeLists.txt",
-      "projectTarget": "advent-of-code-test.exe (test\\advent-of-code-test.exe)",
-      "name": "advent-of-code-test.exe (test\\advent-of-code-test.exe)",
-      "args": [
-        "~[slow]"
-      ]
-    },
-    {
       "name": "advent-of-code.exe (bin\\advent-of-code.exe)",
       "project": "CMakeLists.txt",
       "projectTarget": "advent-of-code.exe (bin\\advent-of-code.exe)",
       "type": "default",
       "args": [
-        "2021 15 ./data/2021/Day15.txt"
+        "2016 20 ./data/2016/Day20.txt"
       ]
     }
   ]
 }
-// Test search example "year2020-test:Day 1 "
+// Test search example "2021-test:Day 20 "
