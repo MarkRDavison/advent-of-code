@@ -8,9 +8,9 @@
       "projectTarget": "advent-of-code.exe (bin\\advent-of-code.exe)",
       "type": "default",
       "args": [
-        "2021 25 ./data/2021/Day25.txt"
+        "2017 1 ./data/2017/Day01.txt"
       ]
     }
   ]
 }
-// Test search example "2021-test:Day 20 "
+// Test search example "2017-test:Day 20 "

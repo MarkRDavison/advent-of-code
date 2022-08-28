@@ -4,7 +4,7 @@
 namespace TwentySeventeen {
 	
 	Day01Puzzle::Day01Puzzle() :
-		core::PuzzleBase("Untitled Puzzle", 2017, 1) {
+		core::PuzzleBase("Inverse Captcha", 2017, 1) {
 
 	}
 	Day01Puzzle::~Day01Puzzle() {
@@ -21,6 +21,27 @@ namespace TwentySeventeen {
 	}
 
 	std::pair<std::string, std::string> Day01Puzzle::fastSolve() {
-		return { "Part 1", "Part 2" };
+
+		long part1 = 0;
+		long part2 = 0;
+
+		std::size_t length = m_InputLines[0].size();
+		std::size_t jump = length / 2;
+
+		for (std::size_t i = 0; i < length; i += 1) {
+			const auto val1 = m_InputLines[0][i];
+			const auto val2_1 = m_InputLines[0][(i + 1) % length];
+			const auto val2_2 = m_InputLines[0][(i + jump) % length];
+
+			if (val1 == val2_1) {
+				part1 += (long)(val1 - '0');
+			}
+			if (val1 == val2_2) {
+				part2 += (long)(val1 - '0');
+			}
+		}
+
+
+		return { std::to_string(part1), std::to_string(part2) };
 	}
 }
