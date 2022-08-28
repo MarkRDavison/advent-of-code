@@ -1,10 +1,13 @@
 #include <2017/Day04Puzzle.hpp>
 #include <zeno-engine/Utility/StringExtensions.hpp>
+#include <unordered_map>
+#include <algorithm>
+#include <ranges>
 
 namespace TwentySeventeen {
 	
 	Day04Puzzle::Day04Puzzle() :
-		core::PuzzleBase("Untitled Puzzle", 2017, 4) {
+		core::PuzzleBase("High-Entropy Passphrases", 2017, 4) {
 
 	}
 	Day04Puzzle::~Day04Puzzle() {
@@ -21,6 +24,31 @@ namespace TwentySeventeen {
 	}
 
 	std::pair<std::string, std::string> Day04Puzzle::fastSolve() {
-		return { "Part 1", "Part 2" };
+		int part1 = 0;
+		int part2 = 0;
+
+		for (const auto& i : m_InputLines) {
+			std::unordered_map<std::string, int> words;
+			std::unordered_map<std::string, int> anagrams;
+
+			for (auto& w : ze::StringExtensions::splitStringByDelimeter(i, " ")) {
+				words[w]++;
+
+				std::ranges::sort(w);
+				anagrams[w]++;
+			}
+
+			const auto duplicates = std::ranges::any_of(words, [&](auto const& e) { return e.second > 1; });
+			if (!duplicates) {
+				part1++;
+			}
+
+			const auto duplicateAnagrams = std::ranges::any_of(anagrams, [&](auto const& e) { return e.second > 1; });
+			if (!duplicateAnagrams) {
+				part2++;
+			}
+		}
+
+		return { std::to_string(part1), std::to_string(part2) };
 	}
 }
