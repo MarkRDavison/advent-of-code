@@ -4,7 +4,7 @@
 namespace TwentySeventeen {
 	
 	Day05Puzzle::Day05Puzzle() :
-		core::PuzzleBase("Untitled Puzzle", 2017, 5) {
+		core::PuzzleBase("A Maze of Twisty Trampolines, All Alike", 2017, 5) {
 
 	}
 	Day05Puzzle::~Day05Puzzle() {
@@ -21,6 +21,46 @@ namespace TwentySeventeen {
 	}
 
 	std::pair<std::string, std::string> Day05Puzzle::fastSolve() {
-		return { "Part 1", "Part 2" };
+		std::vector<int> values;
+		for (const auto& i : m_InputLines) {
+			const int val = std::stoi(i);
+			values.push_back(val);
+		}
+
+		int part1 = 0;
+		int pc = 0;
+
+		while (pc >= 0 && pc < values.size()) {
+			auto& val = values[pc];
+
+			pc += val;
+			val += 1;
+
+			part1++;
+		}
+
+		int part2 = 0;
+		pc = 0;
+		values.clear();
+		for (const auto& i : m_InputLines) {
+			const int val = std::stoi(i);
+			values.push_back(val);
+		}
+
+		while (pc >= 0 && pc < values.size()) {
+			auto& val = values[pc];
+
+			pc += val;
+			if (val >= 3) {
+				val -= 1;
+			}
+			else {
+				val += 1;
+			}
+
+			part2++;
+		}
+
+		return { std::to_string(part1), std::to_string(part2) };
 	}
 }
