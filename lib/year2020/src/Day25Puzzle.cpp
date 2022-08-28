@@ -35,6 +35,6 @@ namespace TwentyTwenty {
             }
         }
 
-		return { std::to_string(runningDoor), "There is no part 2!" };
+		return { std::to_string(runningDoor), "*** Free ***" };
 	}
 }

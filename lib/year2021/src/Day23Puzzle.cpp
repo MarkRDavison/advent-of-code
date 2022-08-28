@@ -2,46 +2,14 @@
 #include <zeno-engine/Utility/StringExtensions.hpp>
 #include <zeno-engine/Core/Vector2.hpp>
 #include <Core/Pathfinding.hpp>
+#include <cassert>
+#include <unordered_set>
+#include <unordered_map>
 
 namespace TwentyTwentyOne {
 
-	template<typename T>
-	struct vector2_hash_fxn {
-		std::size_t operator()(const ze::Vector2<T>& _vec) const {
-			return  std::hash<T>()(_vec.x) ^ std::hash<T>()(_vec.y);
-		}
-	};
-
-	static AmphipodType extract(char _c) {
-		if (_c == 'A') {
-			return AmphipodType::A;
-		}
-		if (_c == 'B') {
-			return AmphipodType::B;
-		}
-		if (_c == 'C') {
-			return AmphipodType::C;
-		}
-		if (_c == 'D') {
-			return AmphipodType::D;
-		}
-		throw std::runtime_error("Bad amphipod type.");
-	}
-
-	static char extract(AmphipodType _amph) {
-		if (_amph == AmphipodType::A) {
-			return 'A';
-		}
-		if (_amph == AmphipodType::B) {
-			return 'B';
-		}
-		if (_amph == AmphipodType::C) {
-			return 'C';
-		}
-		if (_amph == AmphipodType::D) {
-			return 'D';
-		}
-		throw std::runtime_error("Bad amphipod type.");
+	EnergyNumber getEnergyForAnphipod(char _c) {
+		return static_cast<EnergyNumber>(std::powl(10, ((int)_c - 'A')));
 	}
 
 	Day23Puzzle::Day23Puzzle() :
@@ -57,142 +25,260 @@ namespace TwentyTwentyOne {
 		m_InputLines = std::vector<std::string>(_inputLines);
 	}
 
-	std::pair<std::string, std::string> Day23Puzzle::fastSolve() {
-		auto startingState = parse(m_InputLines);
-		::internal::PriorityQueue<State, EnergyNumber> queue;
-		queue.put(startingState, 0);
+	Room::Room(char _amphipod, std::vector<char> _data) : owner(_amphipod), data(_data), size(_data.size()), fixed(0) {
+		size -= std::ranges::count(data, '.');
+		auto it = std::ranges::find_if_not(data, [_amphipod](char c) { return c == _amphipod; });
+		fixed = it - data.begin();
+	}
 
-		std::unordered_set<std::string> visited;
+	bool Room::isFinished() const {
+		return fixed == data.size();
+	}
 
-		while (!queue.empty()) {
-			auto current = queue.get();
-			if (current.isFinalised()) {
-				std::cout << "Found target" << std::endl;
-				break;
-			}
+	bool Room::canAccept() const {
+		return fixed == size && size != data.size();
+	}
 
-			auto hash = current.hash();
-			if (visited.contains(hash)) {
+	bool Room::hasVisitors() const {
+		return fixed != data.size() && fixed != size && size != 0;
+	}
+
+	char Room::top() const {
+		assert(size != 0 && "Room is empty.");
+		return data[size - 1];
+	}
+
+	EnergyNumber Room::pop() {
+		assert(size != 0 && "Room is empty.");
+		EnergyNumber cost = (data.size() - size + 1) * getEnergyForAnphipod(data[size - 1]);
+		data[size - 1] = '.';
+		size--;
+		return cost;
+	}
+
+	EnergyNumber Room::push(char _amphipod) {
+		assert(canAccept() && "Room cant take amphipod.");
+		assert(_amphipod == owner && "Room cant take this amphipod.");
+
+		EnergyNumber cost = (data.size() - size) * getEnergyForAnphipod(_amphipod);
+		data[size] = _amphipod;
+		size++;
+		fixed++;
+		return cost;
+	}
+
+	EnergyNumber distance(EnergyNumber _from, EnergyNumber _to) {
+		if (_to > _from) {
+			return _to - _from;
+		}
+
+		return _from - _to;
+	}
+
+	EnergyNumber Puzzle::optimalMoveToRoom() {
+		for (EnergyNumber i = 0; i < hallway.size(); i++) {
+			char amphipod = hallway[i];
+			if (amphipod == '.') {
 				continue;
 			}
 
-			visited.insert(hash);
-
-			//std::cout << "===================" << std::endl;
-			//std::cout << "=     Current     =" << std::endl;
-			std::cout << "Queue size: " << queue.elements.size() << " / visited size: " << visited.size() << std::endl;
-			//std::cout << "===================" << std::endl;
-			std::cout << hash << std::endl;
-
-			{
-				unsigned roomId = 0;
-				//std::cout << "===================" << std::endl;
-				//std::cout << "= Room -> Hallway =" << std::endl;
-				//std::cout << "===================" << std::endl;
-				for (auto& room : current.rooms) {
-					if (room.isFinalised()) {
-						continue;
-					}
-
-					auto door = (int)(extract(room.type) - 'A') * 2 + 2;
-
-					std::vector<AmphipodType> roomContent;
-					if (room.amphipods.size() > 1) {
-						for (int i = 0; i < (int)room.amphipods.size() - 1; ++i) {
-							roomContent.push_back(room.amphipods[i]);
-						}
-					}
-					auto newRoom = Room(room.type, 2, roomContent);
-
-					//std::cout << "=================" << std::endl;
-					for (const auto& [space, distance] : current.hallway.getValidMoves(door))
-					{
-						auto amphipod = room.type;
-						auto newState(current);
-						newState.hallway.spaces[space] = amphipod;
-						newState.rooms[roomId] = newRoom;
-						newState.energy = current.energy + (distance + 1 + room.gap()) * getEnergyForAnphipod(extract(amphipod));
-
-						auto hash = newState.hash();
-						if (visited.contains(hash)) {
-							continue;
-						}
-						//std::cout << hash << std::endl;
-						queue.put(newState, distance);
-					}
-
-					roomId++;
-				}
+			if (!rooms[amphipod - 'A'].canAccept()) {
+				continue;
 			}
 
-			{
-				int hallwayIndex = 0;
-				//std::cout << "===================" << std::endl;
-				//std::cout << "= Hallway -> Room =" << std::endl;
-				//std::cout << "===================" << std::endl;
-				for (auto amph : current.hallway.spaces) {
-					if (!amph.has_value()) {
-						continue;
-					}
-					auto amphipod = amph.value();
+			EnergyNumber target = 2 + 2 * (amphipod - 'A');
 
-					auto doorIndex = (int)(extract(amphipod) - 'A');
-					auto door = doorIndex * 2 + 2;
-					auto room = current.rooms[doorIndex];
+			if (occupiedSpacesBetween(i, target) > 1) {
+				continue;
+			}
 
-					if (current.hallway.isClear(hallwayIndex, door) &&
-						room.canEnter()) {
-						auto newRoom(room);
-						newRoom.amphipods.push_back(amphipod);
-						auto distance = std::abs(door - hallwayIndex);
+			EnergyNumber cost = rooms[amphipod - 'A'].push(amphipod);
 
-						auto newState(current);
-						newState.hallway.spaces[hallwayIndex].reset();
-						newState.rooms[doorIndex] = newRoom;
+			hallway[i] = '.';
 
-						auto hash = newState.hash();
-						if (visited.contains(hash)) {
-							continue;
-						}
-						//std::cout << hash << std::endl;
-						queue.put(newState, distance);
-					}
+			return cost + getEnergyForAnphipod(amphipod) * distance(i, target);
+		}
 
-					hallwayIndex++;
-				}
+		return 0;
+	}
+
+	EnergyNumber Puzzle::optimalRoomToRoom() {
+		for (EnergyNumber h = 0; h < rooms.size(); h++) {
+
+			if (!rooms[h].hasVisitors()) {
+				continue;
+			}
+
+			char amphipod = rooms[h].top();
+
+			if (!rooms[amphipod - 'A'].canAccept()) {
+				continue;
+			}
+
+			if (occupiedSpacesBetween(2 * h + 2, 2 * (amphipod - 'A') + 2) != 0) {
+				continue;
+			}
+
+			EnergyNumber cost = rooms[h].pop();
+
+			cost += rooms[amphipod - 'A'].push(amphipod);
+			cost += distance(h, amphipod - 'A') * 2 * getEnergyForAnphipod(amphipod);
+
+			return cost;
+		}
+
+		return 0;
+	}
+
+	EnergyNumber Puzzle::occupiedSpacesBetween(EnergyNumber _from, EnergyNumber _to) const {
+		auto b = hallway.begin() + std::min(_from, _to);
+		auto e = hallway.begin() + std::max(_from, _to) + 1;
+
+		return std::ranges::count_if(b, e, [](auto c) { return c != '.'; });
+	}
+
+	bool Puzzle::solved() const {
+		for (auto& room : rooms) {
+			if (!room.isFinished()) {
+				return false;
 			}
 		}
 
-		return { "Part 1", "Part 2" };
+		return true;
 	}
 
-	State Day23Puzzle::parse(const std::vector<std::string>& _inputLines) const {
-		State state{};
+	std::optional<EnergyNumber> Puzzle::hallwayMove(EnergyNumber _room, EnergyNumber _target) {
+		// check the room
+		if (!rooms[_room].hasVisitors()) {
+			return {};
+		}
 
-		state.rooms.emplace_back(Room(AmphipodType::A, 2, {
-				extract(_inputLines[2][3]),
-				extract(_inputLines[3][3])
-			}));
+		// don't land in front of rooms
+		if (_target % 2 == 0 && _target != 0 && _target != 10) {
+			return {};
+		}
 
-		state.rooms.emplace_back(Room(AmphipodType::B, 2, {
-				extract(_inputLines[2][5]),
-				extract(_inputLines[3][5])
-			}));
+		EnergyNumber source = _room * 2 + 2;
+		if (occupiedSpacesBetween(source, _target) != 0) {
+			return {};
+		}
 
-		state.rooms.emplace_back(Room(AmphipodType::C, 2, {
-				extract(_inputLines[2][7]),
-				extract(_inputLines[3][7])
-			}));
+		char amphipod = rooms[_room].top();
+		EnergyNumber cost = distance(source, _target) * getEnergyForAnphipod(amphipod);
+		cost += rooms[_room].pop();
+		hallway[_target] = amphipod;
 
-		state.rooms.emplace_back(Room(AmphipodType::D, 2, {
-				extract(_inputLines[2][9]),
-				extract(_inputLines[3][9])
-			}));
-
-		return state;
+		return cost;
 	}
 
-	EnergyNumber Day23Puzzle::getEnergyForAnphipod(char _c) {
-		return static_cast<EnergyNumber>(std::powl(10, ((int)_c - 'A')));
+	std::optional<EnergyNumber> findBestSolution(Puzzle& _puzzle) {
+		EnergyNumber cost = 0;
+		while (true) {
+			EnergyNumber optimal = _puzzle.optimalMoveToRoom();
+
+			optimal += _puzzle.optimalRoomToRoom();
+
+			if (optimal == 0) {
+				break;
+			}
+
+			cost += optimal;
+		}
+
+		if (_puzzle.solved()) {
+			return cost;
+		}
+
+		EnergyNumber best = std::numeric_limits<EnergyNumber>::max();
+
+		for (EnergyNumber h = 0; h < _puzzle.rooms.size(); h++) {
+			if (!_puzzle.rooms[h].hasVisitors()) {
+				continue;
+			}
+
+			for (EnergyNumber i = 0; i < _puzzle.hallway.size(); i++) {
+				if (i % 2 == 0 && i != 0 && i != 10) {
+					continue;
+				}
+
+				if (_puzzle.occupiedSpacesBetween(h * 2 + 2, i) != 0) {
+					continue;
+				}
+
+				Puzzle copy = _puzzle;
+				auto move_cost = copy.hallwayMove(h, i);
+
+				if (!move_cost.has_value()) {
+					continue;
+				}
+
+				auto recursion = findBestSolution(copy);
+
+				if (!recursion.has_value()) {
+					continue;
+				}
+
+				best = std::min(best, move_cost.value() + recursion.value());
+			}
+		}
+
+		if (best == std::numeric_limits<EnergyNumber>::max()) {
+			return {};
+		}
+
+		return best + cost;
 	}
+
+	std::pair<std::string, std::string> Day23Puzzle::fastSolve() {
+
+		std::vector<char> hallway;
+		for (unsigned i = 1; i <= 11; ++i) {
+			hallway.push_back(m_InputLines[1][i]);
+		}
+
+		std::array<std::vector<char>, 4> rooms;
+
+		for (std::size_t i = 3; i <= 9; i += 2) {
+			auto targetI = (i - 3) / 2;
+			for (std::size_t j = m_InputLines.size() - 2; j >= 2; --j) {
+				rooms[targetI].push_back(m_InputLines[j][i]);
+			}
+		}
+
+		Puzzle part1;
+		part1.hallway = hallway;
+		part1.rooms = {
+			{'A', rooms[0]},
+			{'B', rooms[1]},
+			{'C', rooms[2]},
+			{'D', rooms[3]}
+		};
+		
+		rooms[0].insert(rooms[0].begin() + 1, 'D');
+		rooms[0].insert(rooms[0].begin() + 1, 'D');
+
+		rooms[1].insert(rooms[1].begin() + 1, 'C');
+		rooms[1].insert(rooms[1].begin() + 1, 'B');
+
+		rooms[2].insert(rooms[2].begin() + 1, 'B');
+		rooms[2].insert(rooms[2].begin() + 1, 'A');
+
+		rooms[3].insert(rooms[3].begin() + 1, 'A');
+		rooms[3].insert(rooms[3].begin() + 1, 'C');
+
+		Puzzle part2;
+		part2.hallway = hallway;
+		part2.rooms = {
+			{'A', rooms[0]},
+			{'B', rooms[1]},
+			{'C', rooms[2]},
+			{'D', rooms[3]}
+		};
+
+		auto part1Solution = findBestSolution(part1).value();
+		auto part2Solution = findBestSolution(part2).value();
+
+		return { std::to_string(part1Solution), std::to_string(part2Solution) };
+	}
+
 }

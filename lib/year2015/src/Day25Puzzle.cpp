@@ -26,7 +26,7 @@ namespace TwentyFifteen {
 
 		return { 
 			std::to_string(getAnswer(stoi(s[s.size() - 1]), stoi(s[s.size() - 3]), start)), 
-			"Free Star ***" 
+			"*** Free ***" 
 		};
 	}
 	NumberType Day25Puzzle::getAnswer(int _column, int _row, NumberType _start) {

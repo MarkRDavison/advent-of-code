@@ -17,6 +17,9 @@ namespace TwentyTwentyOne {
 		puzzle.setInputLines(input);
 
 		auto answers = puzzle.fastSolve();
+
+		REQUIRE("12521" == answers.first);
+		REQUIRE("44169" == answers.second);
 	}
 
 

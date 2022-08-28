@@ -21,6 +21,6 @@ namespace TwentyNineteen {
 	}
 
 	std::pair<std::string, std::string> Day25Puzzle::fastSolve() {
-		return { "Part 1", "Part 2" };
+		return { "Part 1", "*** Free ***" };
 	}
 }
