@@ -2,6 +2,7 @@
 #define INCLUDED_ADVENT_OF_CODE_2017_DAY_06_PUZZLE_HPP_
 
 #include <Core/PuzzleBase.hpp>
+#include <algorithm>
 
 namespace TwentySeventeen {
 	
