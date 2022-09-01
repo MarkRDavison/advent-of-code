@@ -17,6 +17,8 @@ namespace TwentySeventeen {
 		std::pair<std::string, std::string> fastSolve() override;
 		std::string fastSolve(std::size_t _maxSize, bool _ascii, const std::vector<HashNumber>& _additional);
 
+		static std::string knotHash(const std::string& _input);
+
 	private:
 		std::vector<std::string> m_InputLines;
 	};

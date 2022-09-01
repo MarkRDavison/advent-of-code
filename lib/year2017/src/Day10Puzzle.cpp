@@ -108,4 +108,11 @@ namespace TwentySeventeen {
 			return std::to_string(data[0] * data[1]);
 		}
 	}
+
+	
+	std::string Day10Puzzle::knotHash(const std::string& _input) {
+		auto puzzle = Day10Puzzle();
+		puzzle.setInputLines({ _input });
+		return puzzle.fastSolve(256, true, { 17, 31, 73, 47, 23 });
+	}
 }
