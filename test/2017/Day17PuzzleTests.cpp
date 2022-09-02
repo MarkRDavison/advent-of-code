@@ -13,6 +13,7 @@ namespace TwentySeventeen {
 	    auto answers = puzzle.fastSolve();
 
 		REQUIRE("638" == answers.first);
+		REQUIRE("1222153" == answers.second);
 	}
 
 }
