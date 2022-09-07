@@ -2,6 +2,7 @@
 #define INCLUDED_ADVENT_OF_CODE_CORE_ORIENATION_HPP_
 
 #include <zeno-engine/Core/Vector2.hpp>
+#include <string>
 
 namespace core {
 
@@ -18,6 +19,21 @@ namespace core {
 		OrientationHelper() = delete;
 		~OrientationHelper() = delete;
 
+		static std::string toString(Orientation _orientation) {
+			switch (_orientation) {
+			case Orientation::Up:
+				return "Up";
+			case Orientation::Down:
+				return "Down";
+			case Orientation::Left:
+				return "Left";
+			case Orientation::Right:
+				return "Right";
+			default:
+				return "";
+			}
+		}
+
 		static ze::Vector2i toDirection(Orientation _orientation) {
 			switch (_orientation) {
 			case Orientation::Up:
@@ -30,6 +46,20 @@ namespace core {
 				return ze::Vector2i{ -1, 0 };
 			default:
 				return ze::Vector2i{ 0, 0 };
+			}
+		}
+		static Orientation reverse(Orientation _direction) {
+			switch (_direction) {
+			case Orientation::Up:
+				return Orientation::Down;
+			case Orientation::Down:
+				return Orientation::Up;
+			case Orientation::Left:
+				return Orientation::Right;
+			case Orientation::Right:
+				return Orientation::Left;
+			default:
+				return Orientation::None;
 			}
 		}
 
