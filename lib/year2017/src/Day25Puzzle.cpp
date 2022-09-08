@@ -39,9 +39,6 @@ namespace TwentySeventeen {
 
 		const auto checkSumStep = (ChecksumNumber)std::stoull(ze::StringExtensions::splitStringByDelimeter(m_InputLines[1], " .")[5]);
 
-		std::cout << "Starting at state: " << startState << std::endl;
-		std::cout << "Doing checksum after " << checkSumStep << " steps" << std::endl;
-
 		std::unordered_map<char, Process> processes;
 		std::unordered_map<ChecksumNumber, ChecksumNumber> tape;
 
