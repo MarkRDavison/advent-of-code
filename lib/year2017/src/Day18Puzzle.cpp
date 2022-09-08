@@ -3,6 +3,8 @@
 #include <map>
 #include <queue>
 
+#include <2017/Tablet.hpp>
+
 #define PC '#'
 #define SENT '%'
 
@@ -155,53 +157,6 @@ namespace TwentySeventeen {
 		m_InputLines = std::vector<std::string>(_inputLines);
 	}
 
-	static IntegerType getValue(Registers& _registers, const std::string& _registerOrValue) {
-		if ('a' <= _registerOrValue[0] && _registerOrValue[0] <= 'z') {
-			return _registers[_registerOrValue[0]];
-		}
-		return (IntegerType)std::stoull(_registerOrValue);
-	}
-
-	static bool run(const std::vector<Instruction>& _instructions, Registers& _registers, std::queue<IntegerType>& _queueIn, std::queue<IntegerType>& _queueOut) {
-
-		while (_registers[PC] >= 0 && _registers[PC] < _instructions.size()) {
-			const auto& instr = _instructions[_registers[PC]];
-
-			if (instr.type == "rcv") {
-				if (_queueIn.empty()) {
-					return true;
-				}
-				_registers[instr.arg1[0]] = _queueIn.front();
-				_queueIn.pop();
-			}
-			else if (instr.type == "jgz") {
-				if (getValue(_registers, instr.arg1) > 0) {
-					_registers[PC] += getValue(_registers, instr.arg2);
-					continue;
-				}
-			}
-			else if (instr.type == "snd") {
-				_queueOut.push(getValue(_registers, instr.arg1));
-				_registers[SENT]++;
-			}
-			else if (instr.type == "set") {
-				_registers[instr.arg1[0]] = getValue(_registers, instr.arg2);
-			}
-			else if (instr.type == "add") {
-				_registers[instr.arg1[0]] = getValue(_registers, instr.arg1) + getValue(_registers, instr.arg2);
-			}
-			else if (instr.type == "mul") {
-				_registers[instr.arg1[0]] = getValue(_registers, instr.arg1) * getValue(_registers, instr.arg2);
-			}
-			else if (instr.type == "mod") {
-				_registers[instr.arg1[0]] = getValue(_registers, instr.arg1) % getValue(_registers, instr.arg2);
-			}
-
-			_registers[PC]++;
-		}
-
-		return false;
-	}
 
 	std::pair<std::string, std::string> Day18Puzzle::fastSolve() {
 		IntegerType part1 = 0;
@@ -236,27 +191,31 @@ namespace TwentySeventeen {
 			}
 		}
 
+		Tablet tablet0(m_InputLines);
+		Tablet tablet1(m_InputLines);
+
 		std::queue<IntegerType> sounds0;
 		std::queue<IntegerType> sounds1;
-		std::map<char, IntegerType> registers0{
-			{'p', 0}, {PC, 0}
-		};
-		std::map<char, IntegerType> registers1{
-			{'p', 1}, {PC, 0}
-		};
+
+		tablet0.registers.emplace('p', 0);
+		tablet0.registers.emplace(PC, 0);
+
+		tablet1.registers.emplace('p', 1);
+		tablet1.registers.emplace(PC, 0);
 
 		while (true) {
-			if (!run(instructions, registers0, sounds0, sounds1)) {
+			if (!tablet0.run(sounds0, sounds1)) {
 				break;
 			}
-			if (!run(instructions, registers1, sounds1, sounds0)) {
+			if (!tablet1.run(sounds1, sounds0)) {
 				break;
 			}
+
 			if (sounds0.empty() && sounds1.empty()) {
 				break;
 			}
 		}
 
-		return { std::to_string(part1), std::to_string(registers1[SENT]) };
+		return { std::to_string(part1), std::to_string(tablet1.registers[SENT]) };
 	}
 }
