@@ -51,6 +51,8 @@ class SkeletonGenerator:
 			return 'TwentyTwentyFour'
 		if (self.year == 2025):
 			return 'TwentyTwentyFive'
+		if (self.year == 2026):
+			return 'TwentyTwentySix'
 		return 'UPDATE_THE_GEN_FILE_PLEASE_'
 
 	def createCoreFile(self):
@@ -227,17 +229,7 @@ class SkeletonGenerator:
 		f.write('\n')
 		f.write('namespace {ns} {{\n'.format(ns=self.createNamespace()))
 		f.write('\n')
-		f.write('	TEST_CASE("Day {d} Part 1 Example work", "[{year}][Day{day}]") {{\n'.format(year=self.year, day=dayStr, d=day))
-		f.write('	    const std::vector<std::string> input = {};\n')
-		f.write('\n')
-		f.write('	    Day{day}Puzzle puzzle{{}};\n'.format(day=dayStr))
-		f.write('	    puzzle.setVerbose(true);\n')
-		f.write('	    puzzle.setInputLines(input);\n')
-		f.write('\n')
-		f.write('	    auto answers = puzzle.fastSolve();\n')
-		f.write('	}\n')
-		f.write('\n')
-		f.write('	TEST_CASE("Day {d} Part 2 Example work", "[{year}][Day{day}]") {{\n'.format(year=self.year, day=dayStr, d=day))
+		f.write('	TEST_CASE("Day {d} Examples work", "[{year}][Day{day}]") {{\n'.format(year=self.year, day=dayStr, d=day))
 		f.write('	    const std::vector<std::string> input = {};\n')
 		f.write('\n')
 		f.write('	    Day{day}Puzzle puzzle{{}};\n'.format(day=dayStr))
