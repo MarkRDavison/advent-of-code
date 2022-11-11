@@ -8,7 +8,7 @@
       "projectTarget": "advent-of-code.exe (bin\\advent-of-code.exe)",
       "type": "default",
       "args": [
-        "2018 1 ./data/2018/Day01.txt"
+        "2018 2 ./data/2018/Day02.txt"
       ]
     }
   ]

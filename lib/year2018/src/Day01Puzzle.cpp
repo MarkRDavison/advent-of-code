@@ -5,7 +5,7 @@
 namespace TwentyEighteen {
 	
 	Day01Puzzle::Day01Puzzle() :
-		core::PuzzleBase("Untitled Puzzle", 2018, 1) {
+		core::PuzzleBase("Chronal Calibration", 2018, 1) {
 
 	}
 	Day01Puzzle::~Day01Puzzle() {
