@@ -11,6 +11,7 @@
 #include <Puzzles2019.hpp>
 #include <Puzzles2020.hpp>
 #include <Puzzles2021.hpp>
+#include <Puzzles2022.hpp>
 
 int main(int _argc, char** _argv) {
     REGISTER_YEAR(TwentyFifteen,    2015);
@@ -20,6 +21,7 @@ int main(int _argc, char** _argv) {
     REGISTER_YEAR(TwentyNineteen,   2019);
     REGISTER_YEAR(TwentyTwenty,     2020);
     REGISTER_YEAR(TwentyTwentyOne,  2021);
+    REGISTER_YEAR(TwentyTwentyTwo,  2022);
 
     std::cout << "2015 - Day 19 DOES NOT WORK" << std::endl;
 
