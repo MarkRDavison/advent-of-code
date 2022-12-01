@@ -1,15 +1,16 @@
 #include <2022/Day01Puzzle.hpp>
 #include <zeno-engine/Utility/StringExtensions.hpp>
+#include <algorithm>
 
 namespace TwentyTwentyTwo {
 	
 	Day01Puzzle::Day01Puzzle() :
-		core::PuzzleBase("Untitled Puzzle", 2022, 1) {
+		core::PuzzleBase("Calorie Counting", 2022, 1) {
 	}
 
 
 	void Day01Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(ze::StringExtensions::splitStringByLines(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
 	}
 
 	void Day01Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -17,6 +18,24 @@ namespace TwentyTwentyTwo {
 	}
 
 	std::pair<std::string, std::string> Day01Puzzle::fastSolve() {
-		return { "Part 1", "Part 2" };
+
+		std::vector<int> data{ 0 };
+
+		for (const auto& l : m_InputLines)
+		{
+			if (l.empty()) {
+				data.emplace_back(0);
+				continue;
+			}
+
+			data.back() += std::stoi(l);
+		}
+
+		std::sort(data.begin(), data.end());
+		const auto part1 = data[data.size() - 1];
+
+		const auto part2 = data[data.size() - 1] + data[data.size() - 2]+ data[data.size() - 3];
+
+		return { std::to_string(part1), std::to_string(part2) };
 	}
 }
