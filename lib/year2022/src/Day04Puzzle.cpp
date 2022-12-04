@@ -1,10 +1,11 @@
 #include <2022/Day04Puzzle.hpp>
 #include <zeno-engine/Utility/StringExtensions.hpp>
+#include <unordered_set>
 
 namespace TwentyTwentyTwo {
 	
 	Day04Puzzle::Day04Puzzle() :
-		core::PuzzleBase("Untitled Puzzle", 2022, 4) {
+		core::PuzzleBase("Camp Cleanup", 2022, 4) {
 	}
 
 
@@ -17,6 +18,38 @@ namespace TwentyTwentyTwo {
 	}
 
 	std::pair<std::string, std::string> Day04Puzzle::fastSolve() {
-		return { "Part 1", "Part 2" };
+		int part1 = 0;
+		int part2 = 0;
+		for (const auto& l : m_InputLines)
+		{
+			const auto& p = ze::StringExtensions::splitStringByDelimeter(l, "-,");
+			const int e1start = std::stoi(p[0]);
+			const int e1end = std::stoi(p[1]);
+			const int e2start = std::stoi(p[2]);
+			const int e2end = std::stoi(p[3]);
+
+			if ((e1start <= e2start && e2end <= e1end) ||
+				(e2start <= e1start && e1end <= e2end))
+			{
+				part1++;
+			}
+
+			std::unordered_set<int> overlap;
+
+			for (int i = e1start; i <= e1end; ++i)
+			{
+				overlap.insert(i);
+			}
+			for (int i = e2start; i <= e2end; ++i)
+			{
+				if (overlap.find(i) != overlap.end())
+				{
+					part2++;
+					break;
+				}
+			}
+		}
+
+		return { std::to_string(part1), std::to_string(part2) };
 	}
 }
