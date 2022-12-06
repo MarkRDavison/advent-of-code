@@ -56,8 +56,6 @@ namespace TwentyTwentyTwo {
 			const std::size_t fromIndex = from - 1;
 			const std::size_t toIndex = to - 1;
 
-			std::cout << "move " << amount << " from " << from << " to " << to << std::endl;
-
 			{	// Part 1
 				for (auto amountIter = 0; amountIter < amount; ++amountIter)
 				{
