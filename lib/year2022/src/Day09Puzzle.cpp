@@ -39,7 +39,7 @@ namespace TwentyTwentyTwo {
 			map.push_back(std::string(width, '.'));
 		}
 
-		map[0][0] = 's';
+		map[-_min.y][-_min.x] = 's';
 
 		const int numKnots = (int)_knots.size();
 		for (int i = numKnots - 1; i >= 0; --i)
@@ -47,10 +47,10 @@ namespace TwentyTwentyTwo {
 			const auto& knot = _knots[(std::size_t)i];
 			if (i == 0)
 			{
-				map[knot.y][knot.x] = 'H';
+				map[-_min.y + knot.y][-_min.x + knot.x] = 'H';
 			}
 			else {
-				map[knot.y][knot.x] = (char)(i + '0');
+				map[-_min.y + knot.y][-_min.x + knot.x] = (char)(i + '0');
 			}
 		}
 
@@ -63,10 +63,10 @@ namespace TwentyTwentyTwo {
 
 	}
 
-	std::size_t solve(const std::vector<std::string>& _input, int _length)
+	std::size_t solve(const std::vector<std::string>& _input, int _length, bool _verbose)
 	{
-		ze::Vector2i min{0, 0};
-		ze::Vector2i max{5, 5};
+		ze::Vector2i min{-10, -10};
+		ze::Vector2i max{+10, +10};
 
 		std::vector<ze::Vector2i> knotLocations(_length);
 
@@ -76,6 +76,12 @@ namespace TwentyTwentyTwo {
 
 		for (const auto& l : _input)
 		{
+			if (_verbose)
+			{
+				std::cout << "Before: " << l << std::endl;
+				print(knotLocations, min, max);
+			}
+
 			const auto& p = ze::StringExtensions::splitStringByDelimeter(l, " ");
 
 			const int amount = std::stoi(p[1]);
@@ -102,59 +108,100 @@ namespace TwentyTwentyTwo {
 			}
 
 			for (int i = 0; i < amount; ++i) {
+				const auto previousCurrentLocation = knotLocations.front();
 				auto& headLocation = knotLocations.front();
 				headLocation += core::OrientationHelper::toDirection(dir);
 
-				print(knotLocations, min, max);
-				for (std::size_t knotIndex = 1; knotIndex < knotLocations.size() - 1; ++knotIndex)
-				{
-					const auto previousCurrentLocation = knotLocations[knotIndex];
-					auto& currentLocation = knotLocations[knotIndex];
-					auto& followerLocation = knotLocations[knotIndex + 1];
+				min.x = std::min(min.x, headLocation.x);
+				min.y = std::min(min.y, headLocation.y);
+				max.x = std::max(max.x, headLocation.x);
+				max.y = std::max(max.y, headLocation.y);
 
-					currentLocation += core::OrientationHelper::toDirection(dir);
-					min.x = std::min(min.x, currentLocation.x);
-					max.x = std::max(max.x, currentLocation.x);
-					min.x = std::min(min.y, currentLocation.y);
-					max.x = std::max(max.y, currentLocation.y);
+				for (std::size_t knotIndex = 1; knotIndex < knotLocations.size(); ++knotIndex)
+				{
+					const auto aheadKnot = knotLocations[knotIndex - 1];
+					auto& currentKnot = knotLocations[knotIndex];
 
 					const auto difference = ze::Vector2i{
-						std::abs(currentLocation.x - followerLocation.x),
-						std::abs(currentLocation.y - followerLocation.y)
+						std::abs(aheadKnot.x - currentKnot.x),
+						std::abs(aheadKnot.y - currentKnot.y)
+					};
+					auto offset = ze::Vector2i{
+						aheadKnot.x - currentKnot.x,
+						aheadKnot.y - currentKnot.y
 					};
 
 					if (difference.x <= 1 && difference.y <= 1) { break; }
-					if (difference.x > 1 && currentLocation.x != followerLocation.x && currentLocation.y == followerLocation.y)
+
+					if (difference.x > 1 && aheadKnot.x != currentKnot.x && aheadKnot.y == currentKnot.y)
 					{
-						followerLocation += core::OrientationHelper::toDirection(dir);
+						if (difference.x == 2)
+						{
+							offset.x /= 2;
+						}
+						if (difference.y == 2)
+						{
+							offset.y /= 2;
+						}
+						currentKnot += offset;
 					}
-					else if (difference.y > 1 && currentLocation.y != followerLocation.y && currentLocation.x == followerLocation.x)
+					else if (difference.y > 1 && aheadKnot.y != currentKnot.y && aheadKnot.x == currentKnot.x)
 					{
-						followerLocation += core::OrientationHelper::toDirection(dir);
+						if (difference.x == 2)
+						{
+							offset.x /= 2;
+						}
+						if (difference.y == 2)
+						{
+							offset.y /= 2;
+						}
+						currentKnot += offset;
 					}
-					else
+					else 
 					{
-						followerLocation = previousCurrentLocation;
+						assert(difference.x == 1 || difference.x == 2);
+						assert(difference.y == 1 || difference.y == 2);	
+
+						if (difference.x == 2)
+						{
+							offset.x /= 2;
+						}
+						if (difference.y == 2)
+						{
+							offset.y /= 2;
+						}
+						currentKnot += offset;
 					}
 
-					if (knotIndex == knotLocations.size() - 2)
+					if (knotIndex == knotLocations.size() - 1)
 					{
-						tailVisits[followerLocation]++;
+						tailVisits[currentKnot]++;
 					}
+
+					min.x = std::min(min.x, currentKnot.x);
+					min.y = std::min(min.y, currentKnot.y);
+					max.x = std::max(max.x, currentKnot.x);
+					max.y = std::max(max.y, currentKnot.y);
+				}
+				if (_verbose)
+				{
+					print(knotLocations, min, max);
 				}
 			}
+		}
+		if (_verbose)
+		{
+			print(knotLocations, min, max);
 		}
 
 		return tailVisits.size();
 	}
 
 	std::pair<std::string, std::string> Day09Puzzle::fastSolve() {
-
 		
-
 		return {
-			"",//std::to_string(solve(m_InputLines, 2)),
-			std::to_string(solve(m_InputLines, 10))
+			std::to_string(solve(m_InputLines, 2, getVerbose())),
+			std::to_string(solve(m_InputLines, 10, getVerbose()))
 		};
 	}
 }
