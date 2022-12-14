@@ -285,7 +285,12 @@ namespace internal {
 			}
 
 			for (Node next : _graph.neighbours(current)) {
-				float newCost = _costSoFar[current] + _graph.cost(current, next);
+				auto nextCost = _graph.cost(current, next);
+				if (nextCost == std::numeric_limits<float>::max())
+				{
+					continue;
+				}
+				float newCost = _costSoFar[current] + nextCost;
 				if (_costSoFar.count(next) == 0 ||
 					newCost < _costSoFar[next]) {
 					_costSoFar[next] = newCost;
@@ -305,7 +310,12 @@ namespace internal {
 		Node current = _end;
 		while (current != _start) {
 			path.push_back(current);
+			auto prevCurr = current;
 			current = _cameFrom[current];
+			if (current == prevCurr)
+			{
+				return{};
+			}
 		}
 		path.push_back(_start);
 		std::reverse(path.begin(), path.end());

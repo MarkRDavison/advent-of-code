@@ -1,10 +1,20 @@
 #include <2022/Day12Puzzle.hpp>
 #include <zeno-engine/Utility/StringExtensions.hpp>
+#include <zeno-engine/Core/Vector2.hpp>
+#include <Core/Pathfinding.hpp>
+#include <cassert>
+#include <unordered_set>
 
 namespace TwentyTwentyTwo {
+	template<typename T>
+	struct vector2_hash_fxn_TODO_CORE_ME {
+		std::size_t operator()(const ze::Vector2<T>& _vec) const {
+			return  std::hash<T>()(_vec.x) ^ std::hash<T>()(_vec.y);
+		}
+	};
 	
 	Day12Puzzle::Day12Puzzle() :
-		core::PuzzleBase("Untitled Puzzle", 2022, 12) {
+		core::PuzzleBase("Hill Climbing Algorithm", 2022, 12) {
 	}
 
 
@@ -16,7 +26,82 @@ namespace TwentyTwentyTwo {
 		m_InputLines = std::vector<std::string>(_inputLines);
 	}
 
+	struct HillCell {
+		int height;
+		char c;
+
+		bool valid() {
+			return true;
+		}
+
+		float costTo(const HillCell& _target) const {
+			if (this->height + 1 < _target.height) {
+				return std::numeric_limits<float>::max();
+			}
+
+			return 1.0f;
+		}
+	};
+
 	std::pair<std::string, std::string> Day12Puzzle::fastSolve() {
-		return { "Part 1", "Part 2" };
+		core::CartesianNetwork<HillCell> network;
+
+		ze::Vector2i start;
+		ze::Vector2i target;
+
+		std::unordered_set<ze::Vector2i, vector2_hash_fxn_TODO_CORE_ME<int>> possibleStartingPoints;
+
+		network.cg.cells.resize(m_InputLines.size());
+
+		for (std::size_t y = 0; y < m_InputLines.size(); ++y) {
+			network.cg.cells[y].resize(m_InputLines[y].size());
+			for (std::size_t x = 0; x < m_InputLines[y].size(); ++x) {
+				char val = m_InputLines[y][x];
+
+				if (val == 'S')
+				{
+					start = { (int)x, (int)y };
+					val = 'a';
+				}
+				else if (val == 'E')
+				{
+					target = { (int)x, (int)y };
+					val = 'z';
+				}
+
+				if (val == 'a')
+				{
+					possibleStartingPoints.insert(ze::Vector2i(x, y));
+				}
+
+				auto& cell = network.cg.cells[y][x];
+
+				cell.height = (int)(val - 'a');
+				cell.c = val;
+			}
+		}
+
+		const auto& path = network.performAStarSearch(start, target);
+		std::vector<ze::Vector2i> pathPart2;
+		int minSize = path.size() - 1;
+
+		for (auto starting : possibleStartingPoints)
+		{
+			const auto& alternatePath = network.performAStarSearch(starting, target);
+
+			if (alternatePath.empty())
+			{
+				continue;
+			}
+			const auto newLength = alternatePath.size() - 1;
+
+			if (minSize > newLength)
+			{
+				minSize = newLength;
+				pathPart2 = alternatePath;
+			}
+		}
+
+		return { std::to_string(path.size() - 1), std::to_string(minSize) };
 	}
 }
