@@ -1,11 +1,22 @@
 #include <2022/Day17Puzzle.hpp>
 #include <zeno-engine/Utility/StringExtensions.hpp>
 #include <cassert>
+#include <unordered_set>
+#include <unordered_map>
+#include <sstream>
 #include <Core/Region.hpp>
 #include <zeno-engine/Core/Vector2.hpp>
 
+#define WIDTH 7
 
 namespace TwentyTwentyTwo {
+
+	template<typename T>
+	struct vector2_hash_fxn_TODO_CORE_ME3 {
+		std::size_t operator()(const ze::Vector2<T>& _vec) const {
+			return  std::hash<T>()(_vec.x) ^ std::hash<T>()(_vec.y);
+		}
+	};
 	
 	Day17Puzzle::Day17Puzzle() :
 		core::PuzzleBase("Pyroclastic Flow", 2022, 17) {
@@ -20,194 +31,201 @@ namespace TwentyTwentyTwo {
 		m_InputLines = std::vector<std::string>(_inputLines);
 	}
 
+	using BigNumber = long long;
+
 	struct Rock {
 		int width{ 0 };
 		int height{ 0 };
 
-		std::vector<std::string> shape;
+		std::vector<ze::Vector2<BigNumber>> shape;
 	};
 
 	struct ChamberCell {
 		char c{ '.' };
 	};
 
-	bool print(core::Region<ChamberCell>& _chamber, Rock *_activeRock, const ze::Vector2i& _rockBottomLeft)
-	{
-		std::vector<std::string> display;
-
-		for (int y = 0; y <= std::max(_chamber.maxY, _rockBottomLeft.y + 4); ++y)
-		{
-			std::string row = ".......";
-			for (int x = 0; x < 7; ++x)
-			{
-				const auto& cell = _chamber.getCell(x, y);
-				row[(unsigned)x] = cell.c;
-			}
-			display.push_back(row);
-		}
-
-		if (_activeRock != nullptr)
-		{
-
-			for (int y = 0; y < _activeRock->height; ++y)
-			{
-				for (int x = _rockBottomLeft.x; x < _rockBottomLeft.x + _activeRock->width; ++x)
-				{
-					auto rockCell = _activeRock->shape[y][x - _rockBottomLeft.x];
-					if (rockCell == '#')
-					{
-						rockCell = '@';
-					}
-					display[_rockBottomLeft.y + _activeRock->height - 1 - y][x] = rockCell;
-				}
-			}
-		}
-
-		for (std::size_t i = display.size(); i > 0; --i)
-		{
-			std::cout << "|" << display[i - 1] << "|" << std::endl;
-		}
-		std::cout << "+-------+" << std::endl << std::endl;
-
-		return false;
-	}
-
-	bool isValidAt(core::Region<ChamberCell>& _chamber, Rock* _activeRock, const ze::Vector2i& _rockBottomLeft)
-	{
-		if (_rockBottomLeft.y < 0)
-		{
-			return false;
-		}
-		for (int y = 0; y < _activeRock->height; ++y)
-		{
-			for (int x = _rockBottomLeft.x; x < _rockBottomLeft.x + _activeRock->width; ++x)
-			{
-				auto rockCell = _activeRock->shape[y][x - _rockBottomLeft.x];
-				if (rockCell == '#')
-				{
-					auto chamberCell = _chamber.getCell(x, _rockBottomLeft.y + _activeRock->height - 1 - y).c;
-
-					if (chamberCell == '#')
-					{
-						return false;
-					}
-				}
-			}
-		}
-
-		return true;
-	}
-
 	std::pair<std::string, std::string> Day17Puzzle::fastSolve() {
 		
 		std::vector<Rock> rocks {
 			Rock{.width = 4, .height = 1, .shape =
 			{
-				"####"
+				// "####"
+				{0,0},{1,0},{2,0},{3,0}
 			}},
 			Rock{.width = 3, .height = 3, .shape =
 			{
-				".#.", "###", ".#."
+				// ".#.", "###", ".#."
+				{1,0},{0,1},{1,1},{2,1},{1,2}
 			}},
 			Rock{.width = 3, .height = 3, .shape =
 			{
-				"..#", "..#", "###"
+				// "..#", "..#", "###"
+				{0,0},{1,0},{2,0},{2,1},{2,2}
 			}},
 			Rock{.width = 1, .height = 4, .shape =
 			{
-				"#", "#", "#", "#"
+				// "#", "#", "#", "#"
+				{0,0},{0,1},{0,2},{0,3}
 			}},
 			Rock{.width = 2, .height = 2, .shape =
 			{
-				"##", "##"
+				// "##", "##"
+				{0,0},{1,0},{0,1},{1,1}
 			}},
 		};
 
-		core::Region<ChamberCell> chamber;
-		for (int y = 0; y < 4; ++y)
+		using Grid = std::unordered_set<ze::Vector2<BigNumber>, vector2_hash_fxn_TODO_CORE_ME3<BigNumber>>;
+		Grid grid;
+
+		std::size_t ri = 0;
+		std::size_t ji = 0;
+		BigNumber highestRockPosition = -1;
+
+		BigNumber part1 = 0;
+		BigNumber rowMaximums[WIDTH];
+		for (BigNumber i = 0; i < WIDTH; ++i)
 		{
-			for (int x = 0; x < 7; ++x)
-			{
-				chamber.getCell(x, y).c = '.';
-			}
+			rowMaximums[i] = -1;
 		}
 
-		int highestSettledRock = -1;
-		
-		ze::Vector2i activeRockBottomLeft = { 2, highestSettledRock + 4 };
+		std::unordered_map<std::string, BigNumber> hashes;
 
-		std::size_t activeRockIndex = 0;
+		BigNumber prev = -1;
+		BigNumber prevHeight = -1;
+		BigNumber cycleStart = -1;
+		BigNumber fastModeTowerHeight = 0;
 
-		int rocksStopped = 0;
-		std::size_t i = 0;
-		while (true)
+		BigNumber rockMovementIndex = 0;
+
+		const BigNumber ROCKS = 1000000000000;
+
+		struct CycleState {
+			BigNumber rockNumber;
+			BigNumber highestRockPosition;
+			BigNumber rockMovementIndex;
+		};
+		std::unordered_map<std::string, CycleState> hashedCycleStateMap{};
+
+		for (BigNumber rockNumber = 0; rockNumber < ROCKS; ++rockNumber)
 		{
-			const auto jet = m_InputLines[0][i];
-
-			i = (i + 1) % m_InputLines[0].size();
-
-			Rock* activeRock = &rocks[activeRockIndex];
-
-			//print(chamber, activeRock, activeRockBottomLeft);
-
-			if (jet == '<')
+			if (rockNumber == 2022)
 			{
-				auto prevX = activeRockBottomLeft.x;
-				activeRockBottomLeft.x = std::max(0, activeRockBottomLeft.x - 1);
-				if (!isValidAt(chamber, activeRock, activeRockBottomLeft))
-				{
-					activeRockBottomLeft.x = prevX;
-				}
+				part1 = highestRockPosition + 1;
 			}
-			else if (jet == '>')
+			const auto& rock = rocks[ri];
+
+			ze::Vector2<BigNumber> rockPosition = { 2, 4 + highestRockPosition };
+
+			while (true)
 			{
-				auto prevX = activeRockBottomLeft.x;
-				activeRockBottomLeft.x = std::min(6 - activeRock->width + 1, activeRockBottomLeft.x + 1);
-				if (!isValidAt(chamber, activeRock, activeRockBottomLeft))
+				const auto jetOffset = m_InputLines[0][ji] == '<' ? -1 : +1;
+				ji = (ji + 1) % m_InputLines[0].size();
+
+				// Apply jet
+				bool valid = true;
+				for (const auto& rockCell : rock.shape)
 				{
-					activeRockBottomLeft.x = prevX;
-				}
-			}
-			else { assert(false); }
+					const auto globalRockCellPosition = rockCell + rockPosition + ze::Vector2<BigNumber>(jetOffset, 0);
 
-			//print(chamber, activeRock, activeRockBottomLeft);
-
-			activeRockBottomLeft.y -= 1;
-
-			bool valid = isValidAt(chamber, activeRock, activeRockBottomLeft);
-			if (!valid)
-			{
-				{
-					for (int y = 0; y < activeRock->height; ++y)
+					if (globalRockCellPosition.x < 0 || 
+						globalRockCellPosition.x >= WIDTH || 
+						grid.contains(globalRockCellPosition))
 					{
-						for (int x = 0; x < activeRock->width; ++x)
-						{
-							const auto chamberX = x + activeRockBottomLeft.x;
-							const auto chamberY = activeRock->height - y + activeRockBottomLeft.y;
-							highestSettledRock = std::max(highestSettledRock, chamberY);
-
-
-
-							auto& cell = chamber.getCell(chamberX, chamberY);
-							cell.c = activeRock->shape[y][x];
-						}
-					}
-
-					//print(chamber, nullptr, activeRockBottomLeft);
-
-					activeRockIndex = (activeRockIndex + 1) % rocks.size();
-
-					activeRockBottomLeft = { 2, highestSettledRock + 4 };
-					rocksStopped++;
-					std::cout << "Rocks stopped: " << rocksStopped << std::endl;
-					if (rocksStopped == 2022)
-					{
-						return { std::to_string(highestSettledRock + 1) , ""};
+						valid = false;
+						break;
 					}
 				}
+				if (valid)
+				{
+					rockPosition += ze::Vector2<BigNumber>(jetOffset, 0);
+				}
+				else
+				{
+					// NOOP
+				}
+
+				// Apply drop
+				valid = true;
+				Grid temp;
+				for (const auto& rockCell : rock.shape)
+				{
+					const auto globalRockCellPosition = rockCell + rockPosition + ze::Vector2<BigNumber>(0, -1);
+					temp.insert(globalRockCellPosition - ze::Vector2<BigNumber>(0, -1));
+					if (globalRockCellPosition.x < 0 ||
+						globalRockCellPosition.x >= WIDTH ||
+						globalRockCellPosition.y < 0 ||
+						grid.contains(globalRockCellPosition))
+					{
+						valid = false;
+					}
+				}
+				if (valid)
+				{
+					rockPosition += ze::Vector2<BigNumber>(0, -1);
+				}
+				else
+				{
+					for (const auto& c : temp)
+					{
+						grid.insert(c);
+						highestRockPosition = std::max(highestRockPosition, c.y);
+						rowMaximums[c.x] = std::max(rowMaximums[c.x], c.y);
+					}
+				}
+
+				rockMovementIndex++;
+
+				if ( part1 > 0 && rockMovementIndex % m_InputLines[0].size() == 0)
+				{
+					std::stringstream hash{};
+					hash << rockPosition.x << ':' << rockPosition.y - highestRockPosition
+						<< ':' << ri;
+
+					for (auto i = 0; i < WIDTH; ++i)
+					{
+						hash << ":" << highestRockPosition - rowMaximums[i];
+					}
+
+
+					if (!hashedCycleStateMap.contains(hash.str())) 
+					{
+						hashedCycleStateMap[hash.str()] = CycleState{ 
+							.rockNumber = rockNumber,
+							.highestRockPosition = highestRockPosition,
+							.rockMovementIndex = rockMovementIndex
+						};
+					}
+					else
+					{
+						const auto& prev = hashedCycleStateMap[hash.str()];
+
+						CycleState loopSize = { 
+							.rockNumber = rockNumber - prev.rockNumber,
+							.highestRockPosition = highestRockPosition - prev.highestRockPosition,
+							.rockMovementIndex  = rockMovementIndex - prev.rockMovementIndex
+						};
+
+						const auto cyclesThatFit = (ROCKS - rockNumber - 1) / loopSize.rockNumber;
+
+						rockNumber += loopSize.rockNumber * cyclesThatFit;
+						fastModeTowerHeight = loopSize.highestRockPosition * cyclesThatFit;
+						rockMovementIndex += loopSize.rockMovementIndex * cyclesThatFit;
+
+						hashedCycleStateMap = {};
+					}
+				}
+
+				if (!valid)
+				{
+					break;
+				}
 			}
+
+			ri = (ri + 1) % rocks.size();
 		}
 
-		return { "Part 1", "Part 2" };
+		const auto part2 = highestRockPosition + fastModeTowerHeight + 1;
+
+		return { std::to_string(part1), std::to_string(part2) };
 	}
 }

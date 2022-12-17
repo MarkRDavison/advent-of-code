@@ -15,6 +15,7 @@ namespace TwentyTwentyTwo {
 	    auto answers = puzzle.fastSolve();
 
 		REQUIRE("3068" == answers.first);
+		REQUIRE("1514285714288" == answers.second);
 	}
 
 }
