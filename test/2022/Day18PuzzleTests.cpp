@@ -27,6 +27,7 @@ namespace TwentyTwentyTwo {
 	    auto answers = puzzle.fastSolve();
 
 		REQUIRE("64" == answers.first);
+		REQUIRE("58" == answers.second);
 	}
 
 }
