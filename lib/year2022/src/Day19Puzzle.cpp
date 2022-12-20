@@ -3,9 +3,31 @@
 #include <cassert>
 #include <Core/States.hpp>
 #include <sstream>
-#include <queue>
+#include <deque>
 #include <unordered_map>
 #include <unordered_set>
+#include <array>
+
+namespace std
+{
+	template<typename T, size_t N>
+	struct hash<array<T, N> >
+	{
+		typedef array<T, N> argument_type;
+		typedef size_t result_type;
+
+		result_type operator()(const argument_type& a) const
+		{
+			hash<T> hasher;
+			result_type h = 0;
+			for (result_type i = 0; i < N; ++i)
+			{
+				h = h * 31 + hasher(a[i]);
+			}
+			return h;
+		}
+	};
+}
 
 namespace TwentyTwentyTwo {
 	
@@ -33,192 +55,83 @@ namespace TwentyTwentyTwo {
 		int GeodeRobotObsidianCost{ -1 };
 	};
 
-	struct PointlessStateInfo {
-		Blueprint blueprint;
-	};
-
-	struct ProcessState {
-
-		ProcessState() {}
-		ProcessState(const ProcessState& _other) 
+	void clampMaxResource(int& _resource, int _resourceRobot, int _maxResourceCost, int _t)
+	{
+		if (_resource >= _t * _maxResourceCost - _resourceRobot * (_t - 1))
 		{
-			minute = _other.minute;
-			OreRobot = _other.OreRobot;
-			ClayRobot = _other.ClayRobot;
-			ObsidianRobot = _other.ObsidianRobot;
-			GeodeRobot = _other.GeodeRobot;
-			Ore = _other.Ore;
-			Clay = _other.Clay;
-			Obsidian = _other.Obsidian;
-			Geode = _other.Geode;
+			_resource = _t * _maxResourceCost - _resourceRobot * (_t - 1);
 		}
+	}
 
-		int minute{ 0 };
+	int solve(const Blueprint& _blueprint, int _time)
+	{
 
-		int OreRobot{ 1 };
-		int ClayRobot{ 0 };
-		int ObsidianRobot{ 0 };
-		int GeodeRobot{ 0 };
+		using State = std::array<int, 9>;
 
-		int Ore{ 0 };
-		int Clay{ 0 };
-		int Obsidian{ 0 };
-		int Geode{ 0 };
+		std::unordered_set<State> seen;
+		std::deque<State> queue;
+		queue.push_back({ 0, 0, 0, 0, 1, 0, 0, 0, _time });
 
-		std::string str() const {
-			std::stringstream ss;
+		int best = 0;
 
-			ss << minute << "-";
-			ss << OreRobot << "-" << ClayRobot << "-" << ObsidianRobot << "-" << GeodeRobot << "-";
-			ss << Ore << "-" << Clay << "-" << Obsidian << "-" << Geode << "-";
-
-			return ss.str();
-		}
-
-		bool canAfford(bool _ore, bool _clay, bool _obsidian, bool _geode, const ProcessState& _state, const Blueprint& _blueprint) const
+		while (!queue.empty())
 		{
-			int oreCost = 0;
-			int clayCost = 0;
-			int obsidianCost = 0;
+			const auto curr = queue.front();
+			queue.pop_front();
 
-			if (_ore)
+			auto [ore, clay, obs, geo, oreRobot, clayRobot, obsRobot, geoRobot, t] = curr;
+
+			best = std::max(best, geo);
+			if (t == 0)
 			{
-				oreCost += _blueprint.OreRobotOreCost;
-			}
-			if (_clay)
-			{
-				oreCost += _blueprint.ClayRobotOreCost;
-			}
-			if (_obsidian)
-			{
-				oreCost += _blueprint.ObsidianRobotOreCost;
-				clayCost += _blueprint.ObsidianRobotClayCost;
-			}
-			if (_geode)
-			{
-				oreCost += _blueprint.GeodeRobotOreCost;
-				obsidianCost += _blueprint.GeodeRobotObsidianCost;
+				continue;
 			}
 
-			const auto maxOrePerMinute = _blueprint.OreRobotOreCost + _blueprint.ClayRobotOreCost + _blueprint.ObsidianRobotOreCost + _blueprint.GeodeRobotOreCost;
-			if (_state.OreRobot + 1 > maxOrePerMinute)
-			{
-				return false;
-			}
-			const auto maxClayPerMinute = _blueprint.ObsidianRobotClayCost;
-			if (_state.ClayRobot + 1 > maxClayPerMinute)
-			{
-				return false;
-			}
-			const auto maxObsPerMinute = _blueprint.GeodeRobotObsidianCost;
-			if (_state.ObsidianRobot +1 > maxClayPerMinute)
-			{
-				return false;
-			}
+			const auto maxOreCost = std::max(
+				std::max(_blueprint.OreRobotOreCost, _blueprint.ClayRobotOreCost), 
+				std::max(_blueprint.ObsidianRobotOreCost, _blueprint.GeodeRobotOreCost)
+			);
 
-			return
-				oreCost <= _state.Ore &&
-				clayCost <= _state.Clay &&
-				obsidianCost <= _state.Obsidian;
-		}
+			oreRobot = std::min(maxOreCost, oreRobot);
+			clayRobot = std::min(_blueprint.ObsidianRobotClayCost, clayRobot);
+			obsRobot = std::min(_blueprint.GeodeRobotObsidianCost, obsRobot);
+			clampMaxResource(ore, oreRobot, maxOreCost, t);
+			clampMaxResource(clay, clayRobot, _blueprint.ObsidianRobotClayCost, t);
+			clampMaxResource(obs, obsRobot, _blueprint.GeodeRobotObsidianCost, t);
 
-		ProcessState make(bool _ore, bool _clay, bool _obsidian, bool _geode, const ProcessState& _state, const Blueprint& _blueprint) const
-		{
-			int oreCost = 0;
-			int clayCost = 0;
-			int obsidianCost = 0;
+			State next{ ore, clay, obs, geo, oreRobot, clayRobot, obsRobot, geoRobot, t };
 
-			if (_ore)
+			if (!seen.contains(next))
 			{
-				oreCost += _blueprint.OreRobotOreCost;
-			}
-			if (_clay)
-			{
-				oreCost += _blueprint.ClayRobotOreCost;
-			}
-			if (_obsidian)
-			{
-				oreCost += _blueprint.ObsidianRobotOreCost;
-				clayCost += _blueprint.ObsidianRobotClayCost;
-			}
-			if (_geode)
-			{
-				oreCost += _blueprint.GeodeRobotOreCost;
-				obsidianCost += _blueprint.GeodeRobotObsidianCost;
-			}
+				seen.insert(next);
 
-			ProcessState next(_state);
-			next.minute++;
+				queue.push_back(State{ ore + oreRobot, clay + clayRobot, obs + obsRobot, geo + geoRobot, oreRobot, clayRobot, obsRobot, geoRobot, t - 1 });
 
-			next.Ore -= oreCost;
-			assert(next.Ore >= 0);
-
-			next.Clay -= clayCost;
-			assert(next.Clay >= 0);
-
-			next.Obsidian -= obsidianCost;
-			assert(next.Obsidian >= 0);
-
-			next.Ore += next.OreRobot;
-			next.Clay += next.ClayRobot;
-			next.Obsidian += next.ObsidianRobot;
-			next.Geode += next.GeodeRobot;
-
-			if (_ore)
-			{
-				next.OreRobot++;
-			}
-			if (_clay)
-			{
-				next.ClayRobot++;
-			}
-			if (_obsidian)
-			{
-				next.ObsidianRobot++;
-			}
-			if (_geode)
-			{
-				next.GeodeRobot++;
-			}
-			return next;
-		}
-
-		std::vector<ProcessState> enumerate(const PointlessStateInfo& _info) const {
-			std::vector<ProcessState> available;
-
-			ProcessState next(*this);
-
-			for (int ore = 0; ore <= 1; ++ore)
-			{
-				for (int clay = 0; clay <= 1; ++clay)
+				if (ore >= _blueprint.OreRobotOreCost)
 				{
-					for (int obs = 0; obs <= 1; ++obs)
-					{
-						for (int geo = 0; geo <= 1; ++geo)
-						{
-							if (canAfford(ore == 1, clay == 1, obs == 1, geo == 1, *this, _info.blueprint))
-							{
-								const auto nextPopulated = make(ore == 1, clay == 1, obs == 1, geo == 1, *this, _info.blueprint);
-								if (nextPopulated.minute >= 24)
-								{
-									continue;
-								}
-								available.push_back(nextPopulated);
-							}
-						}
-					}
+					queue.push_back(State{ ore - _blueprint.OreRobotOreCost + oreRobot, clay + clayRobot, obs + obsRobot, geo + geoRobot, oreRobot + 1, clayRobot, obsRobot, geoRobot, t - 1 });
+				}
+				if (ore >= _blueprint.ClayRobotOreCost)
+				{
+					queue.push_back(State{ ore - _blueprint.ClayRobotOreCost + oreRobot, clay + clayRobot, obs + obsRobot, geo + geoRobot, oreRobot, clayRobot + 1, obsRobot, geoRobot, t - 1 });
+				}
+				if (ore >= _blueprint.ObsidianRobotOreCost && clay >= _blueprint.ObsidianRobotClayCost)
+				{
+					queue.push_back(State{ ore - _blueprint.ObsidianRobotOreCost + oreRobot, clay - _blueprint.ObsidianRobotClayCost + clayRobot, obs + obsRobot, geo + geoRobot, oreRobot, clayRobot, obsRobot + 1, geoRobot, t - 1 });
+				}
+				if (ore >= _blueprint.GeodeRobotOreCost && obs >= _blueprint.GeodeRobotObsidianCost)
+				{
+					queue.push_back(State{ ore - _blueprint.GeodeRobotOreCost + oreRobot, clay + clayRobot, obs - _blueprint.GeodeRobotObsidianCost + obsRobot, geo + geoRobot, oreRobot, clayRobot, obsRobot, geoRobot + 1, t - 1 });
 				}
 			}
-
-			return available;
 		}
-	};
+
+		return best;
+	}
 
 	std::pair<std::string, std::string> Day19Puzzle::fastSolve() {
 
 		std::vector<Blueprint> blueprints;
-
-		std::cout << m_InputLines[0] << std::endl;
 
 		for (const auto& l : m_InputLines)
 		{
@@ -251,77 +164,21 @@ namespace TwentyTwentyTwo {
 			}
 		}
 
-		const int minutes = 24;
-
+		int part1 = 0;
 
 		for (const auto& b : blueprints)
 		{
-			PointlessStateInfo info;
-			info.blueprint = b;
-
-			std::queue<ProcessState> queue;
-			queue.push(ProcessState());
-			std::unordered_set<std::string> seen;
-
-			int maxGeodes = 0;
-
-			int maxOreRobot = 0;
-			int maxClayRobot = 0;
-			int maxObsRobot = 0;
-			int maxGeoRobot = 0;
-
-			while (!queue.empty())
-			{
-				const auto curr = queue.front();
-				queue.pop();
-
-				bool maxMade = false;
-				if (maxOreRobot < curr.OreRobot)
-				{
-					maxMade = true;
-					maxOreRobot = curr.OreRobot;
-				}
-				if (maxClayRobot < curr.ClayRobot)
-				{
-					maxMade = true;
-					maxClayRobot = curr.ClayRobot;
-				}
-				if (maxObsRobot < curr.ObsidianRobot)
-				{
-					maxMade = true;
-					maxObsRobot = curr.ObsidianRobot;
-				}
-				if (maxGeoRobot < curr.GeodeRobot)
-				{
-					maxMade = true;
-					maxGeoRobot = curr.GeodeRobot;
-				}
-
-				if (maxMade)
-				{
-					std::cout << "New max robot: " << maxOreRobot << "-" << maxClayRobot << "-" << maxObsRobot << "-" << maxGeoRobot << ", queue: " << queue.size() << ", seen: " << seen.size() << std::endl;
-				}
-
-				if (curr.Geode > maxGeodes)
-				{
-					maxGeodes = curr.Geode;
-					std::cout << "New max geodes: " << maxGeodes << std::endl;
-				}
-
-				for (const auto& n : curr.enumerate(info))
-				{
-					const auto hash = n.str();
-					if (!seen.contains(hash))
-					{
-						seen.insert(hash);
-						queue.push(n);
-					}
-				}
-			}
-			break;
+			const int qualityLevel = solve(b, 24);
+			part1 += qualityLevel * b.id;
 		}
 
+		int part2 = 1;
+		for (std::size_t i = 0; i < std::min((std::size_t)3, blueprints.size()); ++i)
+		{
+			const int geodes = solve(blueprints[i], 32);
+			part2 *= geodes;
+		}
 
-		return { "Part 1", "Part 2" };
+		return { std::to_string(part1), std::to_string(part2) };
 	}
 }
