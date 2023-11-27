@@ -15,6 +15,7 @@ TARGET_LINK_LIBRARIES(${AppMain} PRIVATE advent-of-code-year2019)
 TARGET_LINK_LIBRARIES(${AppMain} PRIVATE advent-of-code-year2020)
 TARGET_LINK_LIBRARIES(${AppMain} PRIVATE advent-of-code-year2021)
 TARGET_LINK_LIBRARIES(${AppMain} PRIVATE advent-of-code-year2022)
+TARGET_LINK_LIBRARIES(${AppMain} PRIVATE advent-of-code-year2023)
 target_link_libraries(${AppMain} PUBLIC Threads::Threads)
 
 MESSAGE(STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")

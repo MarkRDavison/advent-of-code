@@ -12,16 +12,18 @@
 #include <Puzzles2020.hpp>
 #include <Puzzles2021.hpp>
 #include <Puzzles2022.hpp>
+#include <Puzzles2023.hpp>
 
 int main(int _argc, char** _argv) {
-    REGISTER_YEAR(TwentyFifteen,    2015);
-    REGISTER_YEAR(TwentySixteen,    2016);
-    REGISTER_YEAR(TwentySeventeen,  2017);
-    REGISTER_YEAR(TwentyEighteen,   2018);
-    REGISTER_YEAR(TwentyNineteen,   2019);
-    REGISTER_YEAR(TwentyTwenty,     2020);
-    REGISTER_YEAR(TwentyTwentyOne,  2021);
-    REGISTER_YEAR(TwentyTwentyTwo,  2022);
+    REGISTER_YEAR(TwentyFifteen,     2015);
+    REGISTER_YEAR(TwentySixteen,     2016);
+    REGISTER_YEAR(TwentySeventeen,   2017);
+    REGISTER_YEAR(TwentyEighteen,    2018);
+    REGISTER_YEAR(TwentyNineteen,    2019);
+    REGISTER_YEAR(TwentyTwenty,      2020);
+    REGISTER_YEAR(TwentyTwentyOne,   2021);
+    REGISTER_YEAR(TwentyTwentyTwo,   2022);
+    REGISTER_YEAR(TwentyTwentyThree, 2023);
 
     std::cout << "2015 - Day 19 DOES NOT WORK" << std::endl;
 
