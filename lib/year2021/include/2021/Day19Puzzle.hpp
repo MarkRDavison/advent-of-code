@@ -2,7 +2,7 @@
 #define INCLUDED_ADVENT_OF_CODE_2021_DAY_19_PUZZLE_HPP_
 
 #include <Core/PuzzleBase.hpp>
-#include <zeno-engine/Core/Vector3.hpp>
+#include <Core/Vector3.hpp>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -11,20 +11,20 @@ namespace TwentyTwentyOne {
 
 	template<typename T>
 	struct vector3_hash_fxn {
-		std::size_t operator()(const ze::Vector3<T>& _vec) const {
+		std::size_t operator()(const Vector3<T>& _vec) const {
 			return  std::hash<T>()(_vec.x) ^ std::hash<T>()(_vec.y) ^ std::hash<T>()(_vec.z);
 		}
 	};
 
 	struct ParsedBeaconData {
 		BeaconDecimal scannerNumber{ 0 };
-		std::vector<ze::Vector3<BeaconDecimal>> beacons;
+		std::vector<Vector3<BeaconDecimal>> beacons;
 	};
 
 	struct FixedBeaconData {
-		std::unordered_set<ze::Vector3<BeaconDecimal>, vector3_hash_fxn<BeaconDecimal>> beacons;
-		std::unordered_map<BeaconDecimal, std::vector<ze::Vector3<BeaconDecimal>>> beaconsFixedPerScanner;
-		std::unordered_map<BeaconDecimal, ze::Vector3<BeaconDecimal>> scanners;
+		std::unordered_set<Vector3<BeaconDecimal>, vector3_hash_fxn<BeaconDecimal>> beacons;
+		std::unordered_map<BeaconDecimal, std::vector<Vector3<BeaconDecimal>>> beaconsFixedPerScanner;
+		std::unordered_map<BeaconDecimal, Vector3<BeaconDecimal>> scanners;
 	};
 
 	class Day19Puzzle : public core::PuzzleBase {
@@ -38,7 +38,7 @@ namespace TwentyTwentyOne {
 
 		static std::vector<ParsedBeaconData> parse(const std::vector<std::string>& _inputLines);
 
-		static bool areRelativelySame(BeaconDecimal _scannerNumber, BeaconDecimal _threshold, FixedBeaconData& _data, const std::vector<ze::Vector3<BeaconDecimal>>& _lhs, const std::vector<ze::Vector3<BeaconDecimal>>& _tester);
+		static bool areRelativelySame(BeaconDecimal _scannerNumber, BeaconDecimal _threshold, FixedBeaconData& _data, const std::vector<Vector3<BeaconDecimal>>& _lhs, const std::vector<Vector3<BeaconDecimal>>& _tester);
 
 
 	private:

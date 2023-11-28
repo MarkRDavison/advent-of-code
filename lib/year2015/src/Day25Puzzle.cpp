@@ -1,5 +1,5 @@
 #include <2015/Day25Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <cmath>
 
 namespace TwentyFifteen {
@@ -14,7 +14,7 @@ namespace TwentyFifteen {
 
 
 	void Day25Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day25Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -22,7 +22,7 @@ namespace TwentyFifteen {
 	}
 
 	std::pair<std::string, std::string> Day25Puzzle::fastSolve() {
-		const auto& s = ze::StringExtensions::splitStringByDelimeter(m_InputLines[0], " ,.");
+		const auto& s = StringExtensions::splitStringByDelimeter(m_InputLines[0], " ,.");
 
 		return { 
 			std::to_string(getAnswer(stoi(s[s.size() - 1]), stoi(s[s.size() - 3]), start)), 

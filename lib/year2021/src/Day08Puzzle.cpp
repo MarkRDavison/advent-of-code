@@ -1,5 +1,5 @@
 #include <2021/Day08Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <cassert>
 #include <set>
 #include <algorithm>
@@ -32,7 +32,7 @@ namespace TwentyTwentyOne {
 
 
 	void Day08Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day08Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -289,9 +289,9 @@ namespace TwentyTwentyOne {
 		std::vector<SegmentInput> parsed;
 
 		for (const auto& i : _inputLines) {
-			const auto& parts = ze::StringExtensions::splitStringByDelimeter(i, "|");
-			const auto& segments = ze::StringExtensions::splitStringByDelimeter(parts[0], " ");
-			const auto& output = ze::StringExtensions::splitStringByDelimeter(parts[1], " ");
+			const auto& parts = StringExtensions::splitStringByDelimeter(i, "|");
+			const auto& segments = StringExtensions::splitStringByDelimeter(parts[0], " ");
+			const auto& output = StringExtensions::splitStringByDelimeter(parts[1], " ");
 
 			assert(segments.size() == 10);
 			assert(output.size() == 4);

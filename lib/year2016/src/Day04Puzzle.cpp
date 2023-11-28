@@ -1,5 +1,5 @@
 #include <2016/Day04Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <algorithm>
 #include <map>
 
@@ -15,7 +15,7 @@ namespace TwentySixteen {
 
 
 	void Day04Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day04Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -31,7 +31,7 @@ namespace TwentySixteen {
 	bool Day04Puzzle::validateRoom(const std::string& _roomInfo, int& _sectorId) {
 		std::map<char, int> charMap;
 
-		const auto& split = ze::StringExtensions::splitStringByDelimeter(_roomInfo, "-[]");
+		const auto& split = StringExtensions::splitStringByDelimeter(_roomInfo, "-[]");
 		for (unsigned i = 0; i < split.size() - 2; ++i) {
 			for (const auto c : split[i]) {
 				charMap[c]++;
@@ -62,7 +62,7 @@ namespace TwentySixteen {
 		return true;
 	}
 	bool Day04Puzzle::isNorthPoleRoom(const std::string& _roomInfo, int& _sectorId, const std::string& _key) {
-		auto split = ze::StringExtensions::splitStringByDelimeter(_roomInfo, "-[]");
+		auto split = StringExtensions::splitStringByDelimeter(_roomInfo, "-[]");
 		_sectorId = std::stoi(split[split.size() - 2]);
 
 		for (unsigned i = 0; i < split.size() - 2; ++i) {

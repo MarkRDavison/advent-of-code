@@ -1,7 +1,0 @@
-[requires]
-zeno-engine/0.39@mark.davison/stable
-
-[options]
-
-[generators]
-cmake

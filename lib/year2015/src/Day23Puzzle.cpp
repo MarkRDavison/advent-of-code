@@ -1,5 +1,5 @@
 #include <2015/Day23Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <unordered_map>
 #include <functional>
 #include <cassert>
@@ -15,7 +15,7 @@ namespace TwentyFifteen {
 
 
 	void Day23Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day23Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -51,7 +51,7 @@ namespace TwentyFifteen {
 		map[Instruction::Type::JIO] = [](const Instruction& _instr, RegisterValue *_register, RegisterValue& _pc) -> void { _pc += (_register[_instr.reg] == 1 ? _instr.offset : 1); };
 		std::vector<Instruction> instructions;
 		for (const auto& i : m_InputLines) {
-			const auto& s = ze::StringExtensions::splitStringByDelimeter(i, " ,");
+			const auto& s = StringExtensions::splitStringByDelimeter(i, " ,");
 			Instruction& instr = instructions.emplace_back();
 
 			if (s[0] == "hlf") {

@@ -1,5 +1,5 @@
 #include <2020/Day09Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <algorithm>
 #include <limits>
 #include <cmath>
@@ -12,7 +12,7 @@ namespace TwentyTwenty {
 
 
 	void Day09Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day09Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {

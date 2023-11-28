@@ -2,14 +2,14 @@
 #define INCLUDED_ADVENT_OF_CODE_2021_DAY_20_PUZZLE_HPP_
 
 #include <Core/PuzzleBase.hpp>
-#include <zeno-engine/Core/Vector2.hpp>
+#include <Core/Vector2.hpp>
 #include <unordered_set>
 
 namespace TwentyTwentyOne {	
 
 	template<typename T>
 	struct vector2_hash_fxn {
-		std::size_t operator()(const ze::Vector2<T>& _vec) const {
+		std::size_t operator()(const Vector2<T>& _vec) const {
 			return  std::hash<T>()(_vec.x) ^ std::hash<T>()(_vec.y);
 		}
 	};

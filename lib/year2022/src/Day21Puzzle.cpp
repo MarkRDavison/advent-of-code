@@ -1,5 +1,5 @@
 #include <2022/Day21Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <cassert>
 #include <map>
 #include <queue>
@@ -18,7 +18,7 @@ namespace TwentyTwentyTwo {
 
 
 	void Day21Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day21Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -40,7 +40,7 @@ namespace TwentyTwentyTwo {
 		for (const auto& l : _input)
 		{
 			auto& j = jobs.emplace_back();
-			const auto& p = ze::StringExtensions::splitStringByDelimeter(l, " :");
+			const auto& p = StringExtensions::splitStringByDelimeter(l, " :");
 			if (p.size() == 2)
 			{
 				j.name = p[0];

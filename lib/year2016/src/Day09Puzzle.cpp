@@ -1,5 +1,5 @@
 #include <2016/Day09Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <functional>
 
 namespace TwentySixteen {
@@ -14,7 +14,7 @@ namespace TwentySixteen {
 
 
 	void Day09Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day09Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -42,7 +42,7 @@ namespace TwentySixteen {
 			count += startLoc - loc;
 			const auto endLoc = _input.find(')', startLoc);
 
-			const auto& split = ze::StringExtensions::splitStringByDelimeter(_input.substr(startLoc + 1, endLoc - startLoc - 1), "x");
+			const auto& split = StringExtensions::splitStringByDelimeter(_input.substr(startLoc + 1, endLoc - startLoc - 1), "x");
 
 			const int a = std::stoi(split[0]);
 			const int b = std::stoi(split[1]);
@@ -69,7 +69,7 @@ namespace TwentySixteen {
 				}
 				const auto endLoc = _input.find(')', loc);
 
-				const auto& split = ze::StringExtensions::splitStringByDelimeter(_input.substr(loc + 1, endLoc - loc - 1), "x");
+				const auto& split = StringExtensions::splitStringByDelimeter(_input.substr(loc + 1, endLoc - loc - 1), "x");
 
 				const unsigned a = (unsigned)std::stoi(split[0]);
 				const unsigned b = (unsigned)std::stoi(split[1]);

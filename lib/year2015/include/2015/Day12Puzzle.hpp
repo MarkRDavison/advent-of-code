@@ -3,9 +3,7 @@
 
 #include <Core/PuzzleBase.hpp>
 
-namespace ze {
-	class JsonNode;
-}
+class JsonNode;
 
 namespace TwentyFifteen {
 	
@@ -19,7 +17,7 @@ namespace TwentyFifteen {
 		std::pair<std::string, std::string> fastSolve() override;
 
 		static std::pair<int, int> solve(const std::string& _input);
-		static int recurser(const ze::JsonNode& _node, bool _validate);
+		static int recurser(const JsonNode& _node, bool _validate);
 
 	private:
 		std::vector<std::string> m_InputLines;

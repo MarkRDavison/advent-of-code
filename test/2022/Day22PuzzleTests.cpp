@@ -3,7 +3,7 @@
 
 namespace TwentyTwentyTwo {
 
-	void validate(const Adjacency& _adjacency, const ze::Vector2i& _c, const ze::Vector2i& _left, const ze::Vector2i& _right, const ze::Vector2i& _up, const ze::Vector2i& _down)
+	void validate(const Adjacency& _adjacency, const Vector2i& _c, const Vector2i& _left, const Vector2i& _right, const Vector2i& _up, const Vector2i& _down)
 	{
 		REQUIRE(_left == _adjacency.at(_c).at(core::Orientation::Left));
 		REQUIRE(_right == _adjacency.at(_c).at(core::Orientation::Right));

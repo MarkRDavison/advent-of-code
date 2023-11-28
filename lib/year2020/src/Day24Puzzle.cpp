@@ -1,6 +1,6 @@
 #include <2020/Day24Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
-#include <zeno-engine/Core/Vector3.hpp>
+#include <Core/StringExtensions.hpp>
+#include <Core/Vector3.hpp>
 #include <unordered_map>
 #include <cassert>
 
@@ -8,7 +8,7 @@ namespace TwentyTwenty {
 
 	template<typename T>
 	struct vector3_hash_fxn {
-		std::size_t operator()(const ze::Vector3<T>& _vec) const {
+		std::size_t operator()(const Vector3<T>& _vec) const {
 			return  std::hash<T>()(_vec.x) ^ std::hash<T>()(_vec.y) ^ std::hash<T>()(_vec.z);
 		}
 	};
@@ -19,7 +19,7 @@ namespace TwentyTwenty {
 
 
 	void Day24Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day24Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -27,16 +27,16 @@ namespace TwentyTwenty {
 	}
 
 	std::pair<std::string, std::string> Day24Puzzle::fastSolve() {
-		using HexGrid = std::unordered_map<ze::Vector3i, bool, vector3_hash_fxn<int>>;
+		using HexGrid = std::unordered_map<Vector3i, bool, vector3_hash_fxn<int>>;
 		int maxDistance = 0;
 		HexGrid tiles;
-		const std::unordered_map<std::string, ze::Vector3i> instructionsToDirections = {
-			{ "e",  ze::Vector3i(+1, -1, +0) },
-			{ "w",  ze::Vector3i(-1, +1, +0) },
-			{ "se", ze::Vector3i(+0, -1, +1) },
-			{ "ne", ze::Vector3i(+1, +0, -1) },
-			{ "sw", ze::Vector3i(-1, +0, +1) },
-			{ "nw", ze::Vector3i(+0, +1, -1) },
+		const std::unordered_map<std::string, Vector3i> instructionsToDirections = {
+			{ "e",  Vector3i(+1, -1, +0) },
+			{ "w",  Vector3i(-1, +1, +0) },
+			{ "se", Vector3i(+0, -1, +1) },
+			{ "ne", Vector3i(+1, +0, -1) },
+			{ "sw", Vector3i(-1, +0, +1) },
+			{ "nw", Vector3i(+0, +1, -1) },
 		};
 
 		const auto circularInstructionOrderings = {
@@ -60,7 +60,7 @@ namespace TwentyTwenty {
 		}
 
 		for (const auto& i : instructions) {
-			ze::Vector3i coords;
+			Vector3i coords;
 			for (const auto& instr : i) {
 				coords += instructionsToDirections.at(instr);
 			}
@@ -81,7 +81,7 @@ namespace TwentyTwenty {
 
 		const int part1 = countBlackTiles(tiles);
 
-		const auto& countNeighbours = [&instructionsToDirections](const ze::Vector3i& _coords, const HexGrid& _tiles) -> int {
+		const auto& countNeighbours = [&instructionsToDirections](const Vector3i& _coords, const HexGrid& _tiles) -> int {
 			int blackNeighbours = 0;
 
 			for (const auto& [instr, offset] : instructionsToDirections) {
@@ -96,7 +96,7 @@ namespace TwentyTwenty {
 			return blackNeighbours;
 		};
 
-		const auto& getNextTileState = [&countNeighbours](const ze::Vector3i& _coords, const HexGrid& _tiles) -> bool {
+		const auto& getNextTileState = [&countNeighbours](const Vector3i& _coords, const HexGrid& _tiles) -> bool {
 			bool tileExists = _tiles.find(_coords) != _tiles.end();
 			bool currentTile = tileExists ? _tiles.at(_coords) : false;
 			bool nextTile = currentTile;
@@ -117,7 +117,7 @@ namespace TwentyTwenty {
 			[&instructionsToDirections, &circularInstructionOrderings, &countNeighbours, &getNextTileState]
 			(const HexGrid& _current, HexGrid& _next, int& _maxDistance) -> void {
 				const int previousMaxDistance = _maxDistance;
-				ze::Vector3i coordinates;
+				Vector3i coordinates;
 
 				_next[coordinates] = getNextTileState(coordinates, _current);
 

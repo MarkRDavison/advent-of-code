@@ -1,7 +1,7 @@
 #include <2020/Day12Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
-#include <zeno-engine/Core/Vector2.hpp>
-#include <zeno-engine/Core/Mat4x4.hpp>
+#include <Core/StringExtensions.hpp>
+#include <Core/Vector2.hpp>
+#include <Core/Mat4x4.hpp>
 #include <unordered_map>
 #include <algorithm>
 #include <cmath>
@@ -14,7 +14,7 @@ namespace TwentyTwenty {
 
 
 	void Day12Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day12Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -70,13 +70,13 @@ namespace TwentyTwenty {
 
 		Day12Struct::Direction dir{ Day12Struct::Direction::EAST };
 
-		std::unordered_map<Day12Struct::Direction, ze::Vector2<long>> directionsToVector;
+		std::unordered_map<Day12Struct::Direction, Vector2<long>> directionsToVector;
 		directionsToVector[Day12Struct::Direction::EAST] = { +1, 0 };
 		directionsToVector[Day12Struct::Direction::WEST] = { -1, 0 };
 		directionsToVector[Day12Struct::Direction::SOUTH] = {0, -1 };
 		directionsToVector[Day12Struct::Direction::NORTH] = { 0,+1 };
 
-		ze::Vector2<long> coords;
+		Vector2<long> coords;
 
 		for (const auto& s : _parsed) {
 			switch (s.direction) {
@@ -132,14 +132,14 @@ namespace TwentyTwenty {
 	}
 	std::string Day12Puzzle::doPart2(const std::vector<Day12Struct>& _parsed) {
 
-		std::unordered_map<Day12Struct::Direction, ze::Vector2<long>> directionsToVector;
+		std::unordered_map<Day12Struct::Direction, Vector2<long>> directionsToVector;
 		directionsToVector[Day12Struct::Direction::EAST] = { +1, 0 };
 		directionsToVector[Day12Struct::Direction::WEST] = { -1, 0 };
 		directionsToVector[Day12Struct::Direction::SOUTH] = { 0, -1 };
 		directionsToVector[Day12Struct::Direction::NORTH] = { 0,+1 };
 
-		ze::Vector2<long> coords;
-		ze::Vector2<long> waypoint{ 10,1 };
+		Vector2<long> coords;
+		Vector2<long> waypoint{ 10,1 };
 
 		for (const auto& s : _parsed) {
 			switch (s.direction) {
@@ -159,10 +159,10 @@ namespace TwentyTwenty {
 				if (s.direction == Day12Struct::Direction::LEFT) {
 					angle *= -1.0f;
 				}
-				auto rotated = ze::Mat4x4::createRotationZ(
+				auto rotated = Mat4x4::createRotationZ(
 					angle
-				) * ze::Vector2f(waypoint);
-				waypoint = ze::Vector2<long>(std::round(rotated.x), std::round(rotated.y));
+				) * Vector2f(waypoint);
+				waypoint = Vector2<long>(std::round(rotated.x), std::round(rotated.y));
 
 			}
 			break;

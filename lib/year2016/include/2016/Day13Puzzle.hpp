@@ -28,9 +28,9 @@ namespace TwentySixteen {
 		void setInputLines(const std::vector<std::string>& _inputLines);
 		std::pair<std::string, std::string> fastSolve() override;
 		
-		static bool getTraversable(const ze::Vector2<OfficeInteger>& _location, OfficeInteger _number);
-		static void searchSpace(core::CartesianNetwork<OfficeCell>& _network, OfficeInteger _number, const ze::Vector2<OfficeInteger>& _maxSize);
-		static int pathLength(core::CartesianNetwork<OfficeCell>& _network, const ze::Vector2<OfficeInteger>& _start, const ze::Vector2<OfficeInteger>& _end);
+		static bool getTraversable(const Vector2<OfficeInteger>& _location, OfficeInteger _number);
+		static void searchSpace(core::CartesianNetwork<OfficeCell>& _network, OfficeInteger _number, const Vector2<OfficeInteger>& _maxSize);
+		static int pathLength(core::CartesianNetwork<OfficeCell>& _network, const Vector2<OfficeInteger>& _start, const Vector2<OfficeInteger>& _end);
 
 	private:
 		std::vector<std::string> m_InputLines;

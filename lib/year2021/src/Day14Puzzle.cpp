@@ -1,5 +1,5 @@
 #include <2021/Day14Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <algorithm>
 #include <cassert>
 
@@ -11,7 +11,7 @@ namespace TwentyTwentyOne {
 
 
 	void Day14Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByLines(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
+		setInputLines(StringExtensions::splitStringByLines(StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
 	}
 
 	void Day14Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -69,7 +69,7 @@ namespace TwentyTwentyOne {
 		PolymerTemplates templates;
 
 		for (unsigned i = 2; i < _inputLines.size(); ++i) {
-			const auto& p = ze::StringExtensions::splitStringByDelimeter(_inputLines[i], " ->");
+			const auto& p = StringExtensions::splitStringByDelimeter(_inputLines[i], " ->");
 			assert(2 == p.size());
 
 			templates[p[0]] = p[1];

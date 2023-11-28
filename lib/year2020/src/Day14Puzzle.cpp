@@ -1,5 +1,5 @@
 #include <2020/Day14Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <algorithm>
 #include <bitset>
 #include <cassert>
@@ -14,7 +14,7 @@ namespace TwentyTwenty {
 
 
 	void Day14Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day14Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -34,7 +34,7 @@ namespace TwentyTwenty {
 		std::vector<Day14Struct> parsed;
 
 		for (unsigned i = 0; i < _inputLines.size(); ++i) {
-			const auto& s = ze::StringExtensions::splitStringByDelimeter(_inputLines[i], " []");
+			const auto& s = StringExtensions::splitStringByDelimeter(_inputLines[i], " []");
 			if (s[0] == "mask") {
 				auto& current = parsed.emplace_back();
 				current.mask = s[2];

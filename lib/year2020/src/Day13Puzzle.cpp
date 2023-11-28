@@ -1,5 +1,5 @@
 #include <2020/Day13Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <unordered_map>
 #include <algorithm>
 #include <cassert>
@@ -12,7 +12,7 @@ namespace TwentyTwenty {
 
 
 	void Day13Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day13Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -31,7 +31,7 @@ namespace TwentyTwenty {
 	Day13Struct Day13Puzzle::parseInput(const std::vector<std::string>& _inputLines) {
 		Day13Struct parsed;
 		parsed.earliest = std::stoll(_inputLines[0]);
-		for (const auto& s : ze::StringExtensions::splitStringByDelimeter(_inputLines[1], ",")) {
+		for (const auto& s : StringExtensions::splitStringByDelimeter(_inputLines[1], ",")) {
 			if (s != "x") {
 				parsed.busIds.insert(std::stoll(s));
 				parsed.busIdsWithSpacing.push_back(std::stoll(s));

@@ -1,5 +1,5 @@
 #include <2020/Day16Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <unordered_set>
 #include <algorithm>
 #include <cassert>
@@ -17,7 +17,7 @@ namespace TwentyTwenty {
 
 
 	void Day16Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByLines(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
+		setInputLines(StringExtensions::splitStringByLines(StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
 	}
 
 	void Day16Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -45,7 +45,7 @@ namespace TwentyTwenty {
 		while (!_inputLines[index].empty()) {
 			const auto colonLocation = _inputLines[index].find(':');
 			assert(colonLocation != std::string::npos);
-			const auto& parts = ze::StringExtensions::splitStringByDelimeter(_inputLines[index].substr(colonLocation), ":- or");
+			const auto& parts = StringExtensions::splitStringByDelimeter(_inputLines[index].substr(colonLocation), ":- or");
 			auto& range = s.ticketInfo[_inputLines[index].substr(0, colonLocation)];
 			for (unsigned i = 0; i < parts.size(); i += 2) {
 				range.emplace_back(std::stoi(parts[i]), std::stoi(parts[i + 1]));
@@ -57,7 +57,7 @@ namespace TwentyTwenty {
 		index++;
 
 		while (!_inputLines[index].empty()) {
-			const auto& parts = ze::StringExtensions::splitStringByDelimeter(_inputLines[index], ",");
+			const auto& parts = StringExtensions::splitStringByDelimeter(_inputLines[index], ",");
 			std::transform(parts.begin(), parts.end(), std::back_inserter(s.myTicket), 
 				[](const std::string& _str) -> Day16Number {
 					return std::stoi(_str);
@@ -68,7 +68,7 @@ namespace TwentyTwenty {
 		index++;
 
 		while (index < _inputLines.size() && !_inputLines[index].empty()) {
-			const auto& parts = ze::StringExtensions::splitStringByDelimeter(_inputLines[index], ",");
+			const auto& parts = StringExtensions::splitStringByDelimeter(_inputLines[index], ",");
 			auto& nextTicket = s.nearbyTickets.emplace_back();
 			std::transform(parts.begin(), parts.end(), std::back_inserter(nextTicket),
 				[](const std::string& _str) -> Day16Number {

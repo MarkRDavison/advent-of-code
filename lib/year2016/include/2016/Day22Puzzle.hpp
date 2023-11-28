@@ -3,7 +3,7 @@
 
 #include <Core/PuzzleBase.hpp>
 #include <Core/Region.hpp>
-#include <zeno-engine/Core/Vector2.hpp>
+#include <Core/Vector2.hpp>
 #include <unordered_set>
 
 namespace TwentySixteen {
@@ -30,7 +30,7 @@ namespace TwentySixteen {
 
 	template<typename T>
 	struct vector2_hash_fxn {
-		std::size_t operator()(const ze::Vector2<T>& _vec) const {
+		std::size_t operator()(const Vector2<T>& _vec) const {
 			return  std::hash<T>()(_vec.x) ^ std::hash<T>()(_vec.y);
 		}
 	};
@@ -46,7 +46,7 @@ namespace TwentySixteen {
 
 		static std::pair<
 			core::Region<Node>, 
-			std::unordered_set<ze::Vector2i, vector2_hash_fxn<int>>
+			std::unordered_set<Vector2i, vector2_hash_fxn<int>>
 		> parse(const std::vector<std::string>& _inputLines);
 
 		static bool viablePair(const Node& _lhs, const Node& _rhs);

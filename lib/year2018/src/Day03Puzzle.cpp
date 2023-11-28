@@ -1,5 +1,5 @@
 #include <2018/Day03Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <Core/Region.hpp>
 #include <unordered_set>
 #include <algorithm>
@@ -17,7 +17,7 @@ namespace TwentyEighteen {
 	}
 
 	void Day03Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day03Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -35,7 +35,7 @@ namespace TwentyEighteen {
 
 		for (const auto& i : m_InputLines)
 		{
-			const auto& parts = ze::StringExtensions::splitStringByDelimeter(i, "# @,:x");
+			const auto& parts = StringExtensions::splitStringByDelimeter(i, "# @,:x");
 			assert(5 == parts.size());
 
 			const int id = std::stoi(parts[0]);

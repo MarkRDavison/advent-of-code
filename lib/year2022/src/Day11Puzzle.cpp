@@ -1,5 +1,5 @@
 #include <2022/Day11Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <functional>
 #include <cassert>
 #include <algorithm>
@@ -12,7 +12,7 @@ namespace TwentyTwentyTwo {
 
 
 	void Day11Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByLines(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
+		setInputLines(StringExtensions::splitStringByLines(StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
 	}
 
 	void Day11Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -40,7 +40,7 @@ namespace TwentyTwentyTwo {
 
 		for (const auto& l : _inputLines)
 		{
-			const auto& p = ze::StringExtensions::splitStringByDelimeter(l, " :,");
+			const auto& p = StringExtensions::splitStringByDelimeter(l, " :,");
 			if (p.size() == 0)
 			{
 				// END OF MONKEY

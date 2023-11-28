@@ -1,5 +1,5 @@
 #include <2018/Day08Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <algorithm>
 #include <numeric>
 #include <cassert>
@@ -17,7 +17,7 @@ namespace TwentyEighteen {
 
 
 	void Day08Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day08Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -75,7 +75,7 @@ namespace TwentyEighteen {
 
 	std::pair<std::string, std::string> Day08Puzzle::fastSolve() {
 		std::vector<int> parsed;
-		for (const auto& p : ze::StringExtensions::splitStringByDelimeter(m_InputLines[0], " "))
+		for (const auto& p : StringExtensions::splitStringByDelimeter(m_InputLines[0], " "))
 		{
 			parsed.push_back(std::stoi(p));
 		}

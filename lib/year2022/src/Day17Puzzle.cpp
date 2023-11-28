@@ -1,11 +1,11 @@
 #include <2022/Day17Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <cassert>
 #include <unordered_set>
 #include <unordered_map>
 #include <sstream>
 #include <Core/Region.hpp>
-#include <zeno-engine/Core/Vector2.hpp>
+#include <Core/Vector2.hpp>
 
 #define WIDTH 7
 
@@ -13,7 +13,7 @@ namespace TwentyTwentyTwo {
 
 	template<typename T>
 	struct vector2_hash_fxn_TODO_CORE_ME3 {
-		std::size_t operator()(const ze::Vector2<T>& _vec) const {
+		std::size_t operator()(const Vector2<T>& _vec) const {
 			return  std::hash<T>()(_vec.x) ^ std::hash<T>()(_vec.y);
 		}
 	};
@@ -24,7 +24,7 @@ namespace TwentyTwentyTwo {
 
 
 	void Day17Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day17Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -37,7 +37,7 @@ namespace TwentyTwentyTwo {
 		int width{ 0 };
 		int height{ 0 };
 
-		std::vector<ze::Vector2<BigNumber>> shape;
+		std::vector<Vector2<BigNumber>> shape;
 	};
 
 	struct ChamberCell {
@@ -74,7 +74,7 @@ namespace TwentyTwentyTwo {
 			}},
 		};
 
-		using Grid = std::unordered_set<ze::Vector2<BigNumber>, vector2_hash_fxn_TODO_CORE_ME3<BigNumber>>;
+		using Grid = std::unordered_set<Vector2<BigNumber>, vector2_hash_fxn_TODO_CORE_ME3<BigNumber>>;
 		Grid grid;
 
 		std::size_t ri = 0;
@@ -114,7 +114,7 @@ namespace TwentyTwentyTwo {
 			}
 			const auto& rock = rocks[ri];
 
-			ze::Vector2<BigNumber> rockPosition = { 2, 4 + highestRockPosition };
+			Vector2<BigNumber> rockPosition = { 2, 4 + highestRockPosition };
 
 			while (true)
 			{
@@ -125,7 +125,7 @@ namespace TwentyTwentyTwo {
 				bool valid = true;
 				for (const auto& rockCell : rock.shape)
 				{
-					const auto globalRockCellPosition = rockCell + rockPosition + ze::Vector2<BigNumber>(jetOffset, 0);
+					const auto globalRockCellPosition = rockCell + rockPosition + Vector2<BigNumber>(jetOffset, 0);
 
 					if (globalRockCellPosition.x < 0 || 
 						globalRockCellPosition.x >= WIDTH || 
@@ -137,7 +137,7 @@ namespace TwentyTwentyTwo {
 				}
 				if (valid)
 				{
-					rockPosition += ze::Vector2<BigNumber>(jetOffset, 0);
+					rockPosition += Vector2<BigNumber>(jetOffset, 0);
 				}
 				else
 				{
@@ -149,8 +149,8 @@ namespace TwentyTwentyTwo {
 				Grid temp;
 				for (const auto& rockCell : rock.shape)
 				{
-					const auto globalRockCellPosition = rockCell + rockPosition + ze::Vector2<BigNumber>(0, -1);
-					temp.insert(globalRockCellPosition - ze::Vector2<BigNumber>(0, -1));
+					const auto globalRockCellPosition = rockCell + rockPosition + Vector2<BigNumber>(0, -1);
+					temp.insert(globalRockCellPosition - Vector2<BigNumber>(0, -1));
 					if (globalRockCellPosition.x < 0 ||
 						globalRockCellPosition.x >= WIDTH ||
 						globalRockCellPosition.y < 0 ||
@@ -161,7 +161,7 @@ namespace TwentyTwentyTwo {
 				}
 				if (valid)
 				{
-					rockPosition += ze::Vector2<BigNumber>(0, -1);
+					rockPosition += Vector2<BigNumber>(0, -1);
 				}
 				else
 				{

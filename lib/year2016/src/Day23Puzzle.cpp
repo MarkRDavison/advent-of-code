@@ -1,5 +1,5 @@
 #include <2016/Day23Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <2016/AssembunyMachine.hpp>
 
 namespace TwentySixteen {
@@ -14,7 +14,7 @@ namespace TwentySixteen {
 
 
 	void Day23Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day23Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {

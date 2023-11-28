@@ -1,5 +1,5 @@
 #include <2022/Day19Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <cassert>
 #include <Core/States.hpp>
 #include <sstream>
@@ -37,7 +37,7 @@ namespace TwentyTwentyTwo {
 
 
 	void Day19Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day19Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -137,28 +137,28 @@ namespace TwentyTwentyTwo {
 		{
 			auto& blueprint = blueprints.emplace_back();
 
-			const auto& p = ze::StringExtensions::splitStringByDelimeter(l, ":.");
+			const auto& p = StringExtensions::splitStringByDelimeter(l, ":.");
 
-			const auto id = std::stoi(ze::StringExtensions::splitStringByDelimeter(p[0], " ")[1]);
+			const auto id = std::stoi(StringExtensions::splitStringByDelimeter(p[0], " ")[1]);
 			assert(id > 0);
 
 			blueprint.id = id;
 
 			{
-				const auto& oreRobotCost = ze::StringExtensions::splitStringByDelimeter(p[1], " ");
+				const auto& oreRobotCost = StringExtensions::splitStringByDelimeter(p[1], " ");
 				blueprint.OreRobotOreCost = std::stoi(oreRobotCost[4]);
 			}
 			{
-				const auto& clayRobotCost = ze::StringExtensions::splitStringByDelimeter(p[2], " ");
+				const auto& clayRobotCost = StringExtensions::splitStringByDelimeter(p[2], " ");
 				blueprint.ClayRobotOreCost = std::stoi(clayRobotCost[4]);
 			}
 			{
-				const auto& obsidianRobotCost = ze::StringExtensions::splitStringByDelimeter(p[3], " ");
+				const auto& obsidianRobotCost = StringExtensions::splitStringByDelimeter(p[3], " ");
 				blueprint.ObsidianRobotOreCost = std::stoi(obsidianRobotCost[4]);
 				blueprint.ObsidianRobotClayCost = std::stoi(obsidianRobotCost[7]);
 			}
 			{
-				const auto& geodeRobotCost = ze::StringExtensions::splitStringByDelimeter(p[4], " ");
+				const auto& geodeRobotCost = StringExtensions::splitStringByDelimeter(p[4], " ");
 				blueprint.GeodeRobotOreCost = std::stoi(geodeRobotCost[4]);
 				blueprint.GeodeRobotObsidianCost = std::stoi(geodeRobotCost[7]);
 			}

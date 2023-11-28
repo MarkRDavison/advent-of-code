@@ -1,5 +1,5 @@
 #include <2016/Day08Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <numeric>
 #include <cassert>
 #include <queue>
@@ -16,7 +16,7 @@ namespace TwentySixteen {
 
 
 	void Day08Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day08Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -41,7 +41,7 @@ namespace TwentySixteen {
 	}
 
 	void Day08Puzzle::applyInstruction(const std::string& _instruction, unsigned _width, unsigned _height, char* _screen) {
-		const auto& s = ze::StringExtensions::splitStringByDelimeter(_instruction, " xy=");
+		const auto& s = StringExtensions::splitStringByDelimeter(_instruction, " xy=");
 		if (s[0] == "rect") {
 			applyRectInstruction(_width, _height, _screen, (unsigned)std::stoi(s[1]), (unsigned)std::stoi(s[2]));
 		} else if (s[1] == "row") {

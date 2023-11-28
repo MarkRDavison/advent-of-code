@@ -1,5 +1,5 @@
 #include <2020/HandheldConsole.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <stdexcept>
 #include <cassert>
 
@@ -61,7 +61,7 @@ namespace TwentyTwenty {
 		return operations;
 	}
 	ConsoleOperation HandheldConsole::parse(const std::string& _line) {
-		const auto& parts = ze::StringExtensions::splitStringByDelimeter(_line, " ");
+		const auto& parts = StringExtensions::splitStringByDelimeter(_line, " ");
 		ConsoleOperation operation(ConsoleOperation::translate(parts[0]));
 
 		switch (operation.type) {

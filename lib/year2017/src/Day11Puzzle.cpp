@@ -1,5 +1,5 @@
 #include <2017/Day11Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 
 namespace TwentySeventeen {
 
@@ -30,7 +30,7 @@ namespace TwentySeventeen {
 
 
 	void Day11Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day11Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -50,7 +50,7 @@ namespace TwentySeventeen {
 		Hex loc(0, 0);
 		int max = 0;
 
-		for (const auto& dir : ze::StringExtensions::splitStringByDelimeter(_input, ",")) {
+		for (const auto& dir : StringExtensions::splitStringByDelimeter(_input, ",")) {
 			if (dir == "n") {
 				loc += Hex(+0, -1);
 			}

@@ -1,13 +1,13 @@
 #include <2016/Day02Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
-#include <zeno-engine/Core/Vector2.hpp>
+#include <Core/StringExtensions.hpp>
+#include <Core/Vector2.hpp>
 #include <unordered_map>
 #include <algorithm>
 
 namespace std {
 	template<>
-	struct hash<ze::Vector2i> {
-		size_t operator()(const ze::Vector2i& obj) const {
+	struct hash<Vector2i> {
+		size_t operator()(const Vector2i& obj) const {
 			return std::hash<int>()(obj.x) ^ std::hash<int>()(obj.y);
 		}
 	};
@@ -25,7 +25,7 @@ namespace TwentySixteen {
 
 
 	void Day02Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day02Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -38,7 +38,7 @@ namespace TwentySixteen {
 
 	std::string Day02Puzzle::doPart1(const std::vector<std::string>& _inputLines) {
 		std::string result;
-		ze::Vector2i location{ 1,1 };
+		Vector2i location{ 1,1 };
 		for (const auto& row : _inputLines) {
 			for (char c : row) {
 				switch (c) {
@@ -67,7 +67,7 @@ namespace TwentySixteen {
 		return result;
 	}
 	std::string Day02Puzzle::doPart2(const std::vector<std::string>& _inputLines) {
-		std::unordered_map<ze::Vector2i, char> values;
+		std::unordered_map<Vector2i, char> values;
 		values[{+0, -2}] = '1';
 
 		values[{-1, -1}] = '2';
@@ -86,7 +86,7 @@ namespace TwentySixteen {
 
 		values[{+0, +2}] = 'D';
 		std::string result;
-		ze::Vector2i location{ -2,0 };
+		Vector2i location{ -2,0 };
 		for (const auto& row : _inputLines) {
 			for (char c : row) {
 				switch (c) {

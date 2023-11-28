@@ -1,5 +1,5 @@
 #include <2017/Day24Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <algorithm>
 #include <ranges>
 #include <cassert>
@@ -21,7 +21,7 @@ namespace TwentySeventeen {
 
 
 	void Day24Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day24Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -73,7 +73,7 @@ namespace TwentySeventeen {
 		std::ranges::for_each(
 			m_InputLines | 
 			std::views::transform([](const std::string& _line) -> std::vector<std::string> {
-				return ze::StringExtensions::splitStringByDelimeter(_line, "/");
+				return StringExtensions::splitStringByDelimeter(_line, "/");
 			}),
 			[&bridgeComponents](const std::vector<std::string>& _sections) -> void {
 				auto& comp = bridgeComponents.emplace_back();

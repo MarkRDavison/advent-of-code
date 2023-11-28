@@ -1,5 +1,5 @@
 #include <2016/Day07Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <unordered_set>
 
 namespace TwentySixteen {
@@ -14,7 +14,7 @@ namespace TwentySixteen {
 
 
 	void Day07Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day07Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -32,7 +32,7 @@ namespace TwentySixteen {
 		std::unordered_set<std::string> babs;
 		bool withinHypernet = false;
 
-		for (const auto& seq : ze::StringExtensions::splitStringByDelimeter(_ip, "[]")) {
+		for (const auto& seq : StringExtensions::splitStringByDelimeter(_ip, "[]")) {
 
 			for (unsigned i = 0; i <= seq.size() - 3; ++i) {
 				if (seq[i + 0] == seq[i + 1] ||
@@ -63,7 +63,7 @@ namespace TwentySixteen {
 	bool Day07Puzzle::supportsTLS(const std::string& _ip) {
 		bool withinHypernet = false;
 		bool abbaOutsideHypernet = false;
-		for (const auto& seq : ze::StringExtensions::splitStringByDelimeter(_ip, "[]")) {
+		for (const auto& seq : StringExtensions::splitStringByDelimeter(_ip, "[]")) {
 			const bool supportsABBA = hasABBA(seq);
 			if (supportsABBA) {
 				if (withinHypernet) {

@@ -11,6 +11,8 @@ namespace TwentyTwentyThree {
 	    puzzle.setInputLines(input);
 
 	    auto answers = puzzle.fastSolve();
+
+		REQUIRE("part1" == answers.first);
 	}
 
 }

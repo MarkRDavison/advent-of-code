@@ -1,5 +1,5 @@
 #include <2015/Day24Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <unordered_set>
 #include <functional>
 #include <algorithm>
@@ -21,7 +21,7 @@ namespace TwentyFifteen {
 
 
 	void Day24Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day24Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {

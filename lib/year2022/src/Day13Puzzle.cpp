@@ -1,5 +1,5 @@
 #include <2022/Day13Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <unordered_set>
 #include <algorithm>
 #include <sstream>
@@ -13,7 +13,7 @@ namespace TwentyTwentyTwo {
 
 
 	void Day13Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByLines(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
+		setInputLines(StringExtensions::splitStringByLines(StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
 	}
 
 	void Day13Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {

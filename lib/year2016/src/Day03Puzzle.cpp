@@ -1,5 +1,5 @@
 #include <2016/Day03Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <algorithm>
 
 namespace TwentySixteen {
@@ -14,7 +14,7 @@ namespace TwentySixteen {
 
 
 	void Day03Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day03Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -36,7 +36,7 @@ namespace TwentySixteen {
 		int validTriangles = 0;
 
 		for (const auto& i : _input) {
-			const auto& sides = ze::StringExtensions::splitStringByDelimeter(i, " ");
+			const auto& sides = StringExtensions::splitStringByDelimeter(i, " ");
 			if (isValidTriangle(std::stoi(sides[0]), std::stoi(sides[1]), std::stoi(sides[2]))) {
 				validTriangles++;
 			}
@@ -48,9 +48,9 @@ namespace TwentySixteen {
 		int validTriangles = 0;
 
 		for (unsigned i = 0; i < _input.size(); i += 3) {
-			const auto& sides_0 = ze::StringExtensions::splitStringByDelimeter(_input[i + 0], " ");
-			const auto& sides_1 = ze::StringExtensions::splitStringByDelimeter(_input[i + 1], " ");
-			const auto& sides_2 = ze::StringExtensions::splitStringByDelimeter(_input[i + 2], " ");
+			const auto& sides_0 = StringExtensions::splitStringByDelimeter(_input[i + 0], " ");
+			const auto& sides_1 = StringExtensions::splitStringByDelimeter(_input[i + 1], " ");
+			const auto& sides_2 = StringExtensions::splitStringByDelimeter(_input[i + 2], " ");
 
 			if (isValidTriangle(std::stoi(sides_0[0]), std::stoi(sides_1[0]), std::stoi(sides_2[0]))) {
 				validTriangles++;

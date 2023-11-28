@@ -2,7 +2,7 @@
 #define INCLUDED_ADVENT_OF_CODE_2015_DAY_06_PUZZLE_HPP_
 
 #include <Core/PuzzleBase.hpp>
-#include <zeno-engine/Core/Rect.hpp>
+#include <Core/Rect.hpp>
 
 // TODO: This is very slow to compile
 
@@ -15,13 +15,13 @@ namespace TwentyFifteen {
 			Toggle	= 2
 		};
 
-		Day06InputLine(ze::IntRect _bounds, Action _action) :
+		Day06InputLine(IntRect _bounds, Action _action) :
 			bounds(_bounds),
 			action(_action) {
 
 		}
 
-		ze::IntRect bounds;
+		IntRect bounds;
 		Action action;
 	};
 

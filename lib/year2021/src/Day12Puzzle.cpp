@@ -1,5 +1,5 @@
 #include <2021/Day12Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <cassert>
 
 namespace TwentyTwentyOne {
@@ -10,7 +10,7 @@ namespace TwentyTwentyOne {
 
 
 	void Day12Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day12Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -107,7 +107,7 @@ namespace TwentyTwentyOne {
 	CaveConnections Day12Puzzle::parse(const std::vector<std::string>& _inputLines) {
 		CaveConnections connectionInfo;
 		for (const auto& s : _inputLines) {
-			const auto& p = ze::StringExtensions::splitStringByDelimeter(s, "-");
+			const auto& p = StringExtensions::splitStringByDelimeter(s, "-");
 			assert(p.size() == 2);
 
 			connectionInfo[p[0]].insert(p[1]);

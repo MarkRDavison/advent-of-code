@@ -1,5 +1,5 @@
 #include <2016/Day14Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <Core/MD5.hpp>
 #include <algorithm>
 #include <thread>
@@ -18,7 +18,7 @@ namespace TwentySixteen {
 
 
 	void Day14Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day14Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {

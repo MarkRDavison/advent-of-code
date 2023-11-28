@@ -1,6 +1,6 @@
 #include <2017/Day21Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
-#include <zeno-engine/Core/Vector2.hpp>
+#include <Core/StringExtensions.hpp>
+#include <Core/Vector2.hpp>
 #include <algorithm>
 #include <cassert>
 
@@ -16,7 +16,7 @@ namespace TwentySeventeen {
 
 
 	void Day21Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day21Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -24,7 +24,7 @@ namespace TwentySeventeen {
 	}
 
 
-	static ze::Vector2i getSize(const Art& _art) {
+	static Vector2i getSize(const Art& _art) {
 		return { _art.maxX - _art.minX + 1 , _art.maxY - _art.minY + 1 };
 	}
 
@@ -130,7 +130,7 @@ namespace TwentySeventeen {
 				const auto& recRes = (*rec).second;
 
 				int rY = 0;
-				for (const auto& recResRow : ze::StringExtensions::splitStringByDelimeter(recRes, "/")) {
+				for (const auto& recResRow : StringExtensions::splitStringByDelimeter(recRes, "/")) {
 
 					for (int rX = 0; rX < (int)recResRow.size(); ++rX) {
 						_artDest.getCell((x / _srcSize) * _destSize + rX, (y / _srcSize) * _destSize + rY) = recResRow[rX];
@@ -160,11 +160,11 @@ namespace TwentySeventeen {
 		std::vector<Recipe> recipies;
 		RecipeBook book;
 		for (const auto& l : m_InputLines) {
-			const auto& p = ze::StringExtensions::splitStringByDelimeter(l, " ");
+			const auto& p = StringExtensions::splitStringByDelimeter(l, " ");
 
 			auto& rcp = recipies.emplace_back();
-			rcp.src = (Grid)ze::StringExtensions::splitStringByDelimeter(p[0], "/");
-			rcp.dst = (Grid)ze::StringExtensions::splitStringByDelimeter(p[2], "/");
+			rcp.src = (Grid)StringExtensions::splitStringByDelimeter(p[0], "/");
+			rcp.dst = (Grid)StringExtensions::splitStringByDelimeter(p[2], "/");
 
 			Grid flipped = rcp.src;
 			Grid mirrored = mirror(rcp.src);

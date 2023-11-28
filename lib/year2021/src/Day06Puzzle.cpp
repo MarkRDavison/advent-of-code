@@ -1,5 +1,5 @@
 #include <2021/Day06Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 
 namespace TwentyTwentyOne {
 	
@@ -9,7 +9,7 @@ namespace TwentyTwentyOne {
 
 
 	void Day06Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day06Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -34,7 +34,7 @@ namespace TwentyTwentyOne {
 
 	std::pair<std::string, std::string> Day06Puzzle::fastSolve() {
 		std::unordered_map<LanternFishNumber, LanternFishNumber> lanternFish;
-		for (const auto& s : ze::StringExtensions::splitStringByDelimeter(m_InputLines[0], ",")) {
+		for (const auto& s : StringExtensions::splitStringByDelimeter(m_InputLines[0], ",")) {
 			lanternFish[std::stoi(s)] += 1;
 		}
 

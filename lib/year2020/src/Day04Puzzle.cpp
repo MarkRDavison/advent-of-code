@@ -1,5 +1,5 @@
 #include <2020/Day04Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <sstream>
 #include <fstream>
 #include <iostream>
@@ -14,7 +14,7 @@ namespace TwentyTwenty {
 
 
 	void Day04Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByLines(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
+		setInputLines(StringExtensions::splitStringByLines(StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
 	}
 
 	void Day04Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -45,8 +45,8 @@ namespace TwentyTwenty {
 
 			Passport& current = passports.back();
 
-			for (const auto& fields : ze::StringExtensions::splitStringByDelimeter(i, " ")) {
-				const auto& parts = ze::StringExtensions::splitStringByDelimeter(fields, ":");
+			for (const auto& fields : StringExtensions::splitStringByDelimeter(i, " ")) {
+				const auto& parts = StringExtensions::splitStringByDelimeter(fields, ":");
 
 				const auto& fieldName = parts[0];
 				const auto& fieldValue = parts[1];

@@ -1,7 +1,7 @@
 #include <2022/Day14Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <Core/Region.hpp>
-#include <zeno-engine/Core/Vector2.hpp>
+#include <Core/Vector2.hpp>
 #include <algorithm>
 #include <cassert>
 
@@ -13,7 +13,7 @@ namespace TwentyTwentyTwo {
 
 
 	void Day14Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day14Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -37,7 +37,7 @@ namespace TwentyTwentyTwo {
 
 	}
 
-	bool isOpen(core::Region<RegolithCell>& _region, ze::Vector2i _coord)
+	bool isOpen(core::Region<RegolithCell>& _region, Vector2i _coord)
 	{
 		const auto& cell = _region.getCell(_coord.x, _coord.y);
 
@@ -59,7 +59,7 @@ namespace TwentyTwentyTwo {
 		while (landed)
 		{
 			i++;
-			ze::Vector2i target = { 500, 0 };
+			Vector2i target = { 500, 0 };
 
 			while (true)
 			{
@@ -69,16 +69,16 @@ namespace TwentyTwentyTwo {
 					break;
 				}
 				// BELOW
-				else if (isOpen(_region, target + ze::Vector2i(0, 1)))
+				else if (isOpen(_region, target + Vector2i(0, 1)))
 				{
 					target.y++;
 				}
-				else if (isOpen(_region, target + ze::Vector2i(-1, 1)))
+				else if (isOpen(_region, target + Vector2i(-1, 1)))
 				{
 					target.x--;
 					target.y++;
 				}
-				else if (isOpen(_region, target + ze::Vector2i(+1, 1)))
+				else if (isOpen(_region, target + Vector2i(+1, 1)))
 				{
 					target.x++;
 					target.y++;
@@ -111,14 +111,14 @@ namespace TwentyTwentyTwo {
 
 		for (const auto& l : m_InputLines)
 		{
-			std::vector<ze::Vector2i> coords;
+			std::vector<Vector2i> coords;
 
-			for (const auto& c : ze::StringExtensions::splitStringByDelimeter(l, " ->"))
+			for (const auto& c : StringExtensions::splitStringByDelimeter(l, " ->"))
 			{
-				const auto& coordPart = ze::StringExtensions::splitStringByDelimeter(c, ",");
+				const auto& coordPart = StringExtensions::splitStringByDelimeter(c, ",");
 				assert(coordPart.size() == 2);
 
-				auto val = coords.emplace_back(ze::Vector2i{ std::stoi(coordPart[0]), std::stoi(coordPart[1])});
+				auto val = coords.emplace_back(Vector2i{ std::stoi(coordPart[0]), std::stoi(coordPart[1])});
 
 				minX = std::min(minX, val.x);
 				maxX = std::max(maxX, val.x);
@@ -173,7 +173,7 @@ namespace TwentyTwentyTwo {
 		while (landed)
 		{
 			i++;
-			ze::Vector2i target = { 500, 0 };
+			Vector2i target = { 500, 0 };
 
 
 			while (true)
@@ -182,23 +182,23 @@ namespace TwentyTwentyTwo {
 				maxX = std::max(maxX, target.x);
 				const auto targetIsInfiniteFloor = target.y + 1 == infiniteFloorY;
 				// BELOW
-				if (!targetIsInfiniteFloor && isOpen(region, target + ze::Vector2i(0, 1)))
+				if (!targetIsInfiniteFloor && isOpen(region, target + Vector2i(0, 1)))
 				{
 					target.y++;
 				}
-				else if (!targetIsInfiniteFloor && isOpen(region, target + ze::Vector2i(-1, 1)))
+				else if (!targetIsInfiniteFloor && isOpen(region, target + Vector2i(-1, 1)))
 				{
 					target.x--;
 					target.y++;
 				}
-				else if (!targetIsInfiniteFloor && isOpen(region, target + ze::Vector2i(+1, 1)))
+				else if (!targetIsInfiniteFloor && isOpen(region, target + Vector2i(+1, 1)))
 				{
 					target.x++;
 					target.y++;
 				}
 				else
 				{
-					if (target == ze::Vector2i(500, 0))
+					if (target == Vector2i(500, 0))
 					{
 						dump(region, minX, maxX);
 						return { std::to_string(part1), std::to_string(i) };

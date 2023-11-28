@@ -1,5 +1,5 @@
 #include <2021/Day24Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <stack>
 #include <array>
 #include <cassert>
@@ -39,7 +39,7 @@ namespace TwentyTwentyOne {
 	ArithmeticLogicUnit::ArithmeticLogicUnit(const std::vector<std::string>& _input) : ArithmeticLogicUnit(_input, {}) {}
 	ArithmeticLogicUnit::ArithmeticLogicUnit(const std::vector<std::string>& _input, const std::vector<AluNumber>& _inputValues) : m_InputValues(_inputValues) {
 		for (const auto& i : _input) {
-			const auto& parts = ze::StringExtensions::splitStringByDelimeter(i, " ");
+			const auto& parts = StringExtensions::splitStringByDelimeter(i, " ");
 
 			auto& instr = m_Instructions.emplace_back();
 
@@ -162,7 +162,7 @@ namespace TwentyTwentyOne {
 
 
 	void Day24Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day24Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -181,10 +181,10 @@ namespace TwentyTwentyOne {
 				secIndex = 0;
 			}
 			if (secIndex == 5) {
-				checkOffsets[sec-1].first = (AluNumber)std::stol(ze::StringExtensions::splitStringByDelimeter(m_InputLines[i], " ").back());
+				checkOffsets[sec-1].first = (AluNumber)std::stol(StringExtensions::splitStringByDelimeter(m_InputLines[i], " ").back());
 			}
 			if (secIndex == 15) {
-				checkOffsets[sec-1].second = (AluNumber)std::stol(ze::StringExtensions::splitStringByDelimeter(m_InputLines[i], " ").back());
+				checkOffsets[sec-1].second = (AluNumber)std::stol(StringExtensions::splitStringByDelimeter(m_InputLines[i], " ").back());
 			}
 			sectionCount[secIndex++].insert(m_InputLines[i]);
 

@@ -1,5 +1,5 @@
 #include <2021/Day13Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <cassert>
 
 namespace TwentyTwentyOne {
@@ -20,7 +20,7 @@ namespace TwentyTwentyOne {
 	}
 
 	void Day13Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByLines(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
+		setInputLines(StringExtensions::splitStringByLines(StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
 	}
 
 	void Day13Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {		
@@ -102,14 +102,14 @@ namespace TwentyTwentyOne {
 				i++;
 				break;
 			}
-			const auto& coords = ze::StringExtensions::splitStringByDelimeter(str, ",");
+			const auto& coords = StringExtensions::splitStringByDelimeter(str, ",");
 			assert(coords.size() == 2);
 
 			auto& cell = region.getCell(std::stoi(coords[0]), std::stoi(coords[1]));
 			cell = true;
 		}
 		for (; i < _inputLines.size(); ++i) {
-			const auto& foldparts = ze::StringExtensions::splitStringByDelimeter(_inputLines[i], " =");
+			const auto& foldparts = StringExtensions::splitStringByDelimeter(_inputLines[i], " =");
 			assert(foldparts.size() == 4);
 
 			auto& instr = instructions.emplace_back();

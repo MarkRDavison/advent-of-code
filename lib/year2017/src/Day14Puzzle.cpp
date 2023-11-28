@@ -1,6 +1,6 @@
 #include <2017/Day14Puzzle.hpp>
 #include <2017/Day10Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <Core/Region.hpp>
 #include <unordered_set>
 
@@ -16,7 +16,7 @@ namespace TwentySeventeen {
 
 
 	void Day14Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day14Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {

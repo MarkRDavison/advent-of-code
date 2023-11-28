@@ -2,11 +2,11 @@
 #define INCLUDED_ADVENT_OF_CODE_2021_DAY_05_PUZZLE_HPP_
 
 #include <Core/PuzzleBase.hpp>
-#include <zeno-engine/Core/Vector2.hpp>
+#include <Core/Vector2.hpp>
 
 namespace TwentyTwentyOne {
 
-	using VecPoints = std::vector<std::pair<ze::Vector2i, ze::Vector2i>>;
+	using VecPoints = std::vector<std::pair<Vector2i, Vector2i>>;
 	
 	class Day05Puzzle : public core::PuzzleBase {
 	public:

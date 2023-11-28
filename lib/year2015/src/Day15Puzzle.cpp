@@ -1,5 +1,5 @@
 #include <2015/Day15Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <unordered_map>
 #include <functional>
 #include <algorithm>
@@ -16,7 +16,7 @@ namespace TwentyFifteen {
 
 
 	void Day15Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day15Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -144,7 +144,7 @@ namespace TwentyFifteen {
 		std::vector<Ingredient> result;
 
 		for (const auto& i : _inputLines) {
-			const auto& s = ze::StringExtensions::splitStringByDelimeter(i, ":, ");
+			const auto& s = StringExtensions::splitStringByDelimeter(i, ":, ");
 
 			Ingredient& ing = result.emplace_back();
 			ing.name = s[0];

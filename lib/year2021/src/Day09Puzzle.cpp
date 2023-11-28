@@ -1,5 +1,5 @@
 #include <2021/Day09Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <limits>
 #include <unordered_set>
 #include <algorithm>
@@ -13,7 +13,7 @@ namespace TwentyTwentyOne {
 
 
 	void Day09Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day09Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -56,8 +56,8 @@ namespace TwentyTwentyOne {
 		return region;
 	}
 
-	std::vector<ze::Vector2<Number>> Day09Puzzle::findLowPoints(const core::Region<Number>& _region) {
-		std::vector<ze::Vector2<Number>> lowPoints;
+	std::vector<Vector2<Number>> Day09Puzzle::findLowPoints(const core::Region<Number>& _region) {
+		std::vector<Vector2<Number>> lowPoints;
 
 		for (int y = _region.minY; y <= _region.maxY; ++y) {
 			for (int x = _region.minX; x <= _region.maxX; ++x) {
@@ -103,15 +103,15 @@ namespace TwentyTwentyOne {
 
 	template<typename T>
 	struct vector2_hash_fxn {
-		std::size_t operator()(const ze::Vector2<T>& _vec) const {
+		std::size_t operator()(const Vector2<T>& _vec) const {
 			return  std::hash<T>()(_vec.x) ^ std::hash<T>()(_vec.y);
 		}
 	};
 
-	Number Day09Puzzle::findBasinSize(const core::Region<Number>& _region, const ze::Vector2<Number>& _lowPoint) {
+	Number Day09Puzzle::findBasinSize(const core::Region<Number>& _region, const Vector2<Number>& _lowPoint) {
 
-		std::unordered_set<ze::Vector2<Number>, vector2_hash_fxn<Number>> visited;
-		std::queue<ze::Vector2<Number>> queue;
+		std::unordered_set<Vector2<Number>, vector2_hash_fxn<Number>> visited;
+		std::queue<Vector2<Number>> queue;
 		queue.push(_lowPoint);
 
 		Number basinSize = 0;

@@ -1,5 +1,5 @@
 #include <2015/Day03Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 
 namespace TwentyFifteen {
 
@@ -19,7 +19,7 @@ namespace TwentyFifteen {
 
 
 	void Day03Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day03Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -49,9 +49,9 @@ namespace TwentyFifteen {
 	}
 	Day03Puzzle::VisitMap Day03Puzzle::visitLocations(const std::string& _directions, unsigned _santas) {
 		VisitMap visitMap;
-		std::vector<ze::Vector2i> locs(_santas, ze::Vector2i());
+		std::vector<Vector2i> locs(_santas, Vector2i());
 		unsigned santaIndex = 0;
-		visitMap[ze::Vector2i()]++;
+		visitMap[Vector2i()]++;
 
 		for (char c : _directions) {
 			core::Orientation o = getOrientation(c);

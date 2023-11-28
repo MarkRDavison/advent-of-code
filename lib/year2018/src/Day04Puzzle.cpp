@@ -1,5 +1,5 @@
 #include <2018/Day04Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <unordered_map>
 #include <algorithm>
 
@@ -31,7 +31,7 @@ namespace TwentyEighteen {
 
 
 	void Day04Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day04Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -62,7 +62,7 @@ namespace TwentyEighteen {
 		std::sort(m_InputLines.begin(), m_InputLines.end());
 		for (const auto& i : m_InputLines)
 		{
-			const auto& parts = ze::StringExtensions::splitStringByDelimeter(i, "[-: #");
+			const auto& parts = StringExtensions::splitStringByDelimeter(i, "[-: #");
 			auto hour = std::stoi(parts[3]);
 			auto min = std::stoi(parts[4]);
 			auto day = std::stoi(parts[2]);

@@ -1,5 +1,5 @@
 #include <2017/Day12Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <unordered_map>
 #include <unordered_set>
 #include <queue>
@@ -16,7 +16,7 @@ namespace TwentySeventeen {
 
 
 	void Day12Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day12Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -27,7 +27,7 @@ namespace TwentySeventeen {
 		std::unordered_map<std::string, std::unordered_set<std::string>> data;
 
 		for (const auto& l : m_InputLines) {
-			const auto& parts = ze::StringExtensions::splitStringByDelimeter(l, " ,<->");
+			const auto& parts = StringExtensions::splitStringByDelimeter(l, " ,<->");
 
 			for (std::size_t i = 1; i < parts.size(); ++i) {
 				data[parts[0]].insert(parts[i]);

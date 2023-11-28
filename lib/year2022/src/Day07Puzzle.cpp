@@ -1,5 +1,5 @@
 #include <2022/Day07Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <cassert>
 #include <unordered_map>
 
@@ -11,7 +11,7 @@ namespace TwentyTwentyTwo {
 
 
 	void Day07Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day07Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -118,11 +118,11 @@ namespace TwentyTwentyTwo {
 				continue;
 			}
 
-			if (ze::StringExtensions::startsWith(l, "$"))
+			if (StringExtensions::startsWith(l, "$"))
 			{
-				if (ze::StringExtensions::startsWith(l, "$ cd ")) 
+				if (StringExtensions::startsWith(l, "$ cd ")) 
 				{
-					const auto& p = ze::StringExtensions::splitStringByDelimeter(l, " ");
+					const auto& p = StringExtensions::splitStringByDelimeter(l, " ");
 					const auto newDirectory = p[2];
 
 					if (newDirectory == "..")
@@ -140,14 +140,14 @@ namespace TwentyTwentyTwo {
 					}
 				}
 			}
-			else if (ze::StringExtensions::startsWith(l, "dir "))
+			else if (StringExtensions::startsWith(l, "dir "))
 			{
 				// Directory				
 			}
 			else
 			{
 				// File
-				const auto& p = ze::StringExtensions::splitStringByDelimeter(l, " ");
+				const auto& p = StringExtensions::splitStringByDelimeter(l, " ");
 				const auto size = std::stol(p[0]);
 				const auto filename = p[1];
 

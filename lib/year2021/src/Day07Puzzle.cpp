@@ -1,5 +1,5 @@
 #include <2021/Day07Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <algorithm>
 #include <limits>
 #include <cmath>
@@ -12,7 +12,7 @@ namespace TwentyTwentyOne {
 
 
 	void Day07Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByLines(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
+		setInputLines(StringExtensions::splitStringByLines(StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
 	}
 
 	void Day07Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -21,7 +21,7 @@ namespace TwentyTwentyOne {
 
 	std::pair<std::string, std::string> Day07Puzzle::fastSolve() {
 		std::map<long, int> crabLocations;
-		for (const auto& s : ze::StringExtensions::splitStringByDelimeter(m_InputLines[0], ",")) {
+		for (const auto& s : StringExtensions::splitStringByDelimeter(m_InputLines[0], ",")) {
 			crabLocations[std::stoi(s)] += 1;
 		}
 		const long min = (*std::min_element(crabLocations.begin(), crabLocations.end(), [](const auto& _lhs, const auto& _rhs) -> bool {

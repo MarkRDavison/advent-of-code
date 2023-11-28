@@ -1,5 +1,5 @@
 #include <2015/Day13Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <Core/Pathfinding.hpp>
 #include <unordered_map>
 #include <unordered_set>
@@ -16,7 +16,7 @@ namespace TwentyFifteen {
 
 
 	void Day13Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day13Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -36,7 +36,7 @@ namespace TwentyFifteen {
 
 
 		for (const auto& i : _input) {
-			const auto& s = ze::StringExtensions::splitStringByDelimeter(i, " .");
+			const auto& s = StringExtensions::splitStringByDelimeter(i, " .");
 			const std::string n1 = s[0];
 			const std::string n2 = s[10];
 			const bool gain = s[2] == "gain";

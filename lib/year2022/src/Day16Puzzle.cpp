@@ -1,5 +1,5 @@
 #include <2022/Day16Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <unordered_map>
 #include <unordered_set>
 #include <functional>
@@ -15,7 +15,7 @@ namespace TwentyTwentyTwo {
 
 
 	void Day16Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day16Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -36,7 +36,7 @@ namespace TwentyTwentyTwo {
 		int i = 0;
 		for (const auto& l : m_InputLines)
 		{
-			const auto& p = ze::StringExtensions::splitStringByDelimeter(l, " =;,");
+			const auto& p = StringExtensions::splitStringByDelimeter(l, " =;,");
 
 			const auto valve = p[1];
 			const auto flow = std::stoi(p[5]);

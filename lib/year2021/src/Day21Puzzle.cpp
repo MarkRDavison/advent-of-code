@@ -1,5 +1,5 @@
 #include <2021/Day21Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <unordered_map>
 
 namespace TwentyTwentyOne {
@@ -10,7 +10,7 @@ namespace TwentyTwentyOne {
 
 
 	void Day21Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day21Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -107,8 +107,8 @@ namespace TwentyTwentyOne {
 	}
 
 	std::pair<std::string, std::string> Day21Puzzle::fastSolve() {
-		const int player1 = std::stoi(ze::StringExtensions::splitStringByDelimeter(m_InputLines[0], " :").back());
-		const int player2 = std::stoi(ze::StringExtensions::splitStringByDelimeter(m_InputLines[1], " :").back());
+		const int player1 = std::stoi(StringExtensions::splitStringByDelimeter(m_InputLines[0], " :").back());
+		const int player2 = std::stoi(StringExtensions::splitStringByDelimeter(m_InputLines[1], " :").back());
 
 		const auto part1 = solvePart1(player1, player2);
 		const auto part2 = solvePart2(player1, player2);

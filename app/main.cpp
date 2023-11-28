@@ -1,7 +1,6 @@
 #include <iostream>
-#include <zeno-engine/Core/Clock.hpp>
-#include <zeno-engine/Core/Logger.hpp>
-#include <zeno-engine/Core/Vector2.hpp>
+#include <Core/Clock.hpp>
+#include <Core/Vector2.hpp>
 #include <Core/InitialisationInfo.hpp>
 #include <Core/PuzzleConstructor.hpp>
 #include <Puzzles2015.hpp>
@@ -33,7 +32,7 @@ int main(int _argc, char** _argv) {
         return EXIT_FAILURE;
     }
 
-    ze::Clock clock;
+    Clock clock;
     std::cout << "Puzzle " << puzzle->getPuzzleYear() << " - Day " << puzzle->getPuzzleDay() << " - " << puzzle->getPuzzleName() << std::endl;
 
     const std::pair<std::string, std::string>& solution = puzzle->fastSolve();

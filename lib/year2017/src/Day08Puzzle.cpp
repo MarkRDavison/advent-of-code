@@ -1,5 +1,5 @@
 #include <2017/Day08Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <unordered_map>
 
 namespace TwentySeventeen {
@@ -17,7 +17,7 @@ namespace TwentySeventeen {
 
 
 	void Day08Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day08Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -31,7 +31,7 @@ namespace TwentySeventeen {
 		RegisterValue part2 = 0;
 
 		for (const auto& l : m_InputLines) {
-			const auto& parts = ze::StringExtensions::splitStringByDelimeter(l, " ");
+			const auto& parts = StringExtensions::splitStringByDelimeter(l, " ");
 			const auto destRegisterName = parts[0];
 			const auto change = ((RegisterValue)std::stol(parts[2])) * (parts[1] == "inc" ? +1 : -1);
 

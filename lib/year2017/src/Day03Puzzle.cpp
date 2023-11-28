@@ -1,7 +1,7 @@
 #include <2017/Day03Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <Core/Region.hpp>
-#include <zeno-engine/Core/Vector2.hpp>
+#include <Core/Vector2.hpp>
 
 namespace TwentySeventeen {
 	
@@ -15,14 +15,14 @@ namespace TwentySeventeen {
 
 
 	void Day03Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day03Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
 		m_InputLines = std::vector<std::string>(_inputLines);
 	}
 
-	int sumExistingNeighbours(core::Region<int>& _region, const ze::Vector2i& _loc) {
+	int sumExistingNeighbours(core::Region<int>& _region, const Vector2i& _loc) {
 		int sum = 0;
 
 		sum += _region.getCell(_loc.x - 1, _loc.y - 1);
@@ -52,7 +52,7 @@ namespace TwentySeventeen {
 				const auto known = (i - 2) * (i - 2);
 				auto current = known;
 
-				ze::Vector2i loc{ (i - 2) / 2, (i - 2) / 2 };
+				Vector2i loc{ (i - 2) / 2, (i - 2) / 2 };
 
 				current += 1;
 				loc.x += 1;
@@ -116,7 +116,7 @@ namespace TwentySeventeen {
 		board.getCell(0, 0) = 1;
 
 		int ringSize = 1;
-		ze::Vector2i loc{ 1,-1 };
+		Vector2i loc{ 1,-1 };
 		while (true) {
 			// Moving UP
 			for (int i = 0; i <= ringSize; ++i) {

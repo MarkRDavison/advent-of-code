@@ -1,5 +1,5 @@
 #include <2021/Day19Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <unordered_map>
 #include <unordered_set>
 #include <functional>
@@ -15,7 +15,7 @@ namespace TwentyTwentyOne {
 
 
 	void Day19Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByLines(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
+		setInputLines(StringExtensions::splitStringByLines(StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
 	}
 
 	void Day19Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -86,14 +86,14 @@ namespace TwentyTwentyOne {
 			}
 			auto& current = parsed.back();
 			if (first) {
-				const auto& scannerParts = ze::StringExtensions::splitStringByDelimeter(i, "- ");
+				const auto& scannerParts = StringExtensions::splitStringByDelimeter(i, "- ");
 				assert(scannerParts.size() == 2 && scannerParts[0] == "scanner");
 				current.scannerNumber = std::stol(scannerParts[1]);
 				first = false;
 				continue;
 			}
 
-			const auto& coordParts = ze::StringExtensions::splitStringByDelimeter(i, ",");
+			const auto& coordParts = StringExtensions::splitStringByDelimeter(i, ",");
 			assert(coordParts.size() == 3);
 			current.beacons.emplace_back(
 				std::stol(coordParts[0]),
@@ -106,53 +106,53 @@ namespace TwentyTwentyOne {
 		return parsed;
 	}
 
-	bool Day19Puzzle::areRelativelySame(BeaconDecimal _scannerNumber, BeaconDecimal _threshold, FixedBeaconData& _data, const std::vector<ze::Vector3<BeaconDecimal>>& _lhs, const std::vector<ze::Vector3<BeaconDecimal>>& _tester) {
+	bool Day19Puzzle::areRelativelySame(BeaconDecimal _scannerNumber, BeaconDecimal _threshold, FixedBeaconData& _data, const std::vector<Vector3<BeaconDecimal>>& _lhs, const std::vector<Vector3<BeaconDecimal>>& _tester) {
 
-		std::vector<std::vector<ze::Vector3<BeaconDecimal>>> rotated;
+		std::vector<std::vector<Vector3<BeaconDecimal>>> rotated;
 		rotated.resize(24);
 
 		// _lhs = scanner, _rhs = point
-		std::vector<std::function<ze::Vector3<BeaconDecimal>(ze::Vector3<BeaconDecimal>, ze::Vector3<BeaconDecimal>)>> translatePoints;
+		std::vector<std::function<Vector3<BeaconDecimal>(Vector3<BeaconDecimal>, Vector3<BeaconDecimal>)>> translatePoints;
 
 		for (const auto& c : _lhs) {
 			// +ve x
-			rotated[0].emplace_back(+c.x, +c.y, +c.z); translatePoints.emplace_back([](auto _scanner, auto _point) -> ze::Vector3<BeaconDecimal> { return { _scanner.x + _point.x, _scanner.y + _point.y, _scanner.z + _point.z }; });
-			rotated[1].emplace_back(+c.x, -c.z, +c.y); translatePoints.emplace_back([](auto _scanner, auto _point) -> ze::Vector3<BeaconDecimal> { return { _scanner.x + _point.x, _scanner.y - _point.z, _scanner.z + _point.y }; });
-			rotated[2].emplace_back(+c.x, -c.y, -c.z); translatePoints.emplace_back([](auto _scanner, auto _point) -> ze::Vector3<BeaconDecimal> { return { _scanner.x + _point.x, _scanner.y - _point.y, _scanner.z - _point.z }; });
-			rotated[3].emplace_back(+c.x, +c.z, -c.y); translatePoints.emplace_back([](auto _scanner, auto _point) -> ze::Vector3<BeaconDecimal> { return { _scanner.x + _point.x, _scanner.y + _point.z, _scanner.z - _point.y }; });
+			rotated[0].emplace_back(+c.x, +c.y, +c.z); translatePoints.emplace_back([](auto _scanner, auto _point) -> Vector3<BeaconDecimal> { return { _scanner.x + _point.x, _scanner.y + _point.y, _scanner.z + _point.z }; });
+			rotated[1].emplace_back(+c.x, -c.z, +c.y); translatePoints.emplace_back([](auto _scanner, auto _point) -> Vector3<BeaconDecimal> { return { _scanner.x + _point.x, _scanner.y - _point.z, _scanner.z + _point.y }; });
+			rotated[2].emplace_back(+c.x, -c.y, -c.z); translatePoints.emplace_back([](auto _scanner, auto _point) -> Vector3<BeaconDecimal> { return { _scanner.x + _point.x, _scanner.y - _point.y, _scanner.z - _point.z }; });
+			rotated[3].emplace_back(+c.x, +c.z, -c.y); translatePoints.emplace_back([](auto _scanner, auto _point) -> Vector3<BeaconDecimal> { return { _scanner.x + _point.x, _scanner.y + _point.z, _scanner.z - _point.y }; });
 			// -ve x
-			rotated[4].emplace_back(-c.x, -c.y, +c.z); translatePoints.emplace_back([](auto _scanner, auto _point) -> ze::Vector3<BeaconDecimal> { return { _scanner.x - _point.x, _scanner.y - _point.y, _scanner.z + _point.z }; });
-			rotated[5].emplace_back(-c.x, +c.z, +c.y); translatePoints.emplace_back([](auto _scanner, auto _point) -> ze::Vector3<BeaconDecimal> { return { _scanner.x - _point.x, _scanner.y + _point.z, _scanner.z + _point.y }; });
-			rotated[6].emplace_back(-c.x, +c.y, -c.z); translatePoints.emplace_back([](auto _scanner, auto _point) -> ze::Vector3<BeaconDecimal> { return { _scanner.x - _point.x, _scanner.y + _point.y, _scanner.z - _point.z }; });
-			rotated[7].emplace_back(-c.x, -c.z, -c.y); translatePoints.emplace_back([](auto _scanner, auto _point) -> ze::Vector3<BeaconDecimal> { return { _scanner.x - _point.x, _scanner.y - _point.z, _scanner.z - _point.y }; });
+			rotated[4].emplace_back(-c.x, -c.y, +c.z); translatePoints.emplace_back([](auto _scanner, auto _point) -> Vector3<BeaconDecimal> { return { _scanner.x - _point.x, _scanner.y - _point.y, _scanner.z + _point.z }; });
+			rotated[5].emplace_back(-c.x, +c.z, +c.y); translatePoints.emplace_back([](auto _scanner, auto _point) -> Vector3<BeaconDecimal> { return { _scanner.x - _point.x, _scanner.y + _point.z, _scanner.z + _point.y }; });
+			rotated[6].emplace_back(-c.x, +c.y, -c.z); translatePoints.emplace_back([](auto _scanner, auto _point) -> Vector3<BeaconDecimal> { return { _scanner.x - _point.x, _scanner.y + _point.y, _scanner.z - _point.z }; });
+			rotated[7].emplace_back(-c.x, -c.z, -c.y); translatePoints.emplace_back([](auto _scanner, auto _point) -> Vector3<BeaconDecimal> { return { _scanner.x - _point.x, _scanner.y - _point.z, _scanner.z - _point.y }; });
 			// +ve y
-			rotated[8].emplace_back(+c.y, +c.z, +c.x); translatePoints.emplace_back([](auto _scanner, auto _point) -> ze::Vector3<BeaconDecimal> { return { _scanner.x + _point.y, _scanner.y + _point.z, _scanner.z + _point.x }; });
-			rotated[9].emplace_back(+c.y, -c.x, +c.z); translatePoints.emplace_back([](auto _scanner, auto _point) -> ze::Vector3<BeaconDecimal> { return { _scanner.x + _point.y, _scanner.y - _point.x, _scanner.z + _point.z }; });
-			rotated[10].emplace_back(+c.y, -c.z, -c.x); translatePoints.emplace_back([](auto _scanner, auto _point) -> ze::Vector3<BeaconDecimal> { return { _scanner.x + _point.y, _scanner.y - _point.z, _scanner.z - _point.x }; });
-			rotated[11].emplace_back(+c.y, +c.x, -c.z); translatePoints.emplace_back([](auto _scanner, auto _point) -> ze::Vector3<BeaconDecimal> { return { _scanner.x + _point.y, _scanner.y + _point.x, _scanner.z - _point.z }; });
+			rotated[8].emplace_back(+c.y, +c.z, +c.x); translatePoints.emplace_back([](auto _scanner, auto _point) -> Vector3<BeaconDecimal> { return { _scanner.x + _point.y, _scanner.y + _point.z, _scanner.z + _point.x }; });
+			rotated[9].emplace_back(+c.y, -c.x, +c.z); translatePoints.emplace_back([](auto _scanner, auto _point) -> Vector3<BeaconDecimal> { return { _scanner.x + _point.y, _scanner.y - _point.x, _scanner.z + _point.z }; });
+			rotated[10].emplace_back(+c.y, -c.z, -c.x); translatePoints.emplace_back([](auto _scanner, auto _point) -> Vector3<BeaconDecimal> { return { _scanner.x + _point.y, _scanner.y - _point.z, _scanner.z - _point.x }; });
+			rotated[11].emplace_back(+c.y, +c.x, -c.z); translatePoints.emplace_back([](auto _scanner, auto _point) -> Vector3<BeaconDecimal> { return { _scanner.x + _point.y, _scanner.y + _point.x, _scanner.z - _point.z }; });
 			// -ve y
-			rotated[12].emplace_back(-c.y, -c.z, +c.x); translatePoints.emplace_back([](auto _scanner, auto _point) -> ze::Vector3<BeaconDecimal> { return { _scanner.x - _point.y, _scanner.y - _point.z, _scanner.z + _point.x }; });
-			rotated[13].emplace_back(-c.y, +c.x, +c.z); translatePoints.emplace_back([](auto _scanner, auto _point) -> ze::Vector3<BeaconDecimal> { return { _scanner.x - _point.y, _scanner.y + _point.x, _scanner.z + _point.z }; });
-			rotated[14].emplace_back(-c.y, +c.z, -c.x); translatePoints.emplace_back([](auto _scanner, auto _point) -> ze::Vector3<BeaconDecimal> { return { _scanner.x - _point.y, _scanner.y + _point.z, _scanner.z - _point.x }; });
-			rotated[15].emplace_back(-c.y, -c.x, -c.z); translatePoints.emplace_back([](auto _scanner, auto _point) -> ze::Vector3<BeaconDecimal> { return { _scanner.x - _point.y, _scanner.y - _point.x, _scanner.z - _point.z }; });
+			rotated[12].emplace_back(-c.y, -c.z, +c.x); translatePoints.emplace_back([](auto _scanner, auto _point) -> Vector3<BeaconDecimal> { return { _scanner.x - _point.y, _scanner.y - _point.z, _scanner.z + _point.x }; });
+			rotated[13].emplace_back(-c.y, +c.x, +c.z); translatePoints.emplace_back([](auto _scanner, auto _point) -> Vector3<BeaconDecimal> { return { _scanner.x - _point.y, _scanner.y + _point.x, _scanner.z + _point.z }; });
+			rotated[14].emplace_back(-c.y, +c.z, -c.x); translatePoints.emplace_back([](auto _scanner, auto _point) -> Vector3<BeaconDecimal> { return { _scanner.x - _point.y, _scanner.y + _point.z, _scanner.z - _point.x }; });
+			rotated[15].emplace_back(-c.y, -c.x, -c.z); translatePoints.emplace_back([](auto _scanner, auto _point) -> Vector3<BeaconDecimal> { return { _scanner.x - _point.y, _scanner.y - _point.x, _scanner.z - _point.z }; });
 			// +ve z								    
-			rotated[16].emplace_back(+c.z, +c.x, +c.y); translatePoints.emplace_back([](auto _scanner, auto _point) -> ze::Vector3<BeaconDecimal> { return { _scanner.x + _point.z, _scanner.y + _point.x, _scanner.z + _point.y }; });
-			rotated[17].emplace_back(+c.z, -c.y, +c.x); translatePoints.emplace_back([](auto _scanner, auto _point) -> ze::Vector3<BeaconDecimal> { return { _scanner.x + _point.z, _scanner.y - _point.y, _scanner.z + _point.x }; });
-			rotated[18].emplace_back(+c.z, -c.x, -c.y); translatePoints.emplace_back([](auto _scanner, auto _point) -> ze::Vector3<BeaconDecimal> { return { _scanner.x + _point.z, _scanner.y - _point.x, _scanner.z - _point.y }; });
-			rotated[19].emplace_back(+c.z, +c.y, -c.x); translatePoints.emplace_back([](auto _scanner, auto _point) -> ze::Vector3<BeaconDecimal> { return { _scanner.x + _point.z, _scanner.y + _point.y, _scanner.z - _point.x }; });
+			rotated[16].emplace_back(+c.z, +c.x, +c.y); translatePoints.emplace_back([](auto _scanner, auto _point) -> Vector3<BeaconDecimal> { return { _scanner.x + _point.z, _scanner.y + _point.x, _scanner.z + _point.y }; });
+			rotated[17].emplace_back(+c.z, -c.y, +c.x); translatePoints.emplace_back([](auto _scanner, auto _point) -> Vector3<BeaconDecimal> { return { _scanner.x + _point.z, _scanner.y - _point.y, _scanner.z + _point.x }; });
+			rotated[18].emplace_back(+c.z, -c.x, -c.y); translatePoints.emplace_back([](auto _scanner, auto _point) -> Vector3<BeaconDecimal> { return { _scanner.x + _point.z, _scanner.y - _point.x, _scanner.z - _point.y }; });
+			rotated[19].emplace_back(+c.z, +c.y, -c.x); translatePoints.emplace_back([](auto _scanner, auto _point) -> Vector3<BeaconDecimal> { return { _scanner.x + _point.z, _scanner.y + _point.y, _scanner.z - _point.x }; });
 			// -ve z								    
-			rotated[20].emplace_back(-c.z, -c.x, +c.y); translatePoints.emplace_back([](auto _scanner, auto _point) -> ze::Vector3<BeaconDecimal> { return { _scanner.x - _point.z, _scanner.y - _point.x, _scanner.z + _point.y }; });
-			rotated[21].emplace_back(-c.z, +c.y, +c.x); translatePoints.emplace_back([](auto _scanner, auto _point) -> ze::Vector3<BeaconDecimal> { return { _scanner.x - _point.z, _scanner.y + _point.y, _scanner.z + _point.x }; });
-			rotated[22].emplace_back(-c.z, +c.x, -c.y); translatePoints.emplace_back([](auto _scanner, auto _point) -> ze::Vector3<BeaconDecimal> { return { _scanner.x - _point.z, _scanner.y + _point.x, _scanner.z - _point.y }; });
-			rotated[23].emplace_back(-c.z, -c.y, -c.x); translatePoints.emplace_back([](auto _scanner, auto _point) -> ze::Vector3<BeaconDecimal> { return { _scanner.x - _point.z, _scanner.y - _point.y, _scanner.z - _point.x }; });
+			rotated[20].emplace_back(-c.z, -c.x, +c.y); translatePoints.emplace_back([](auto _scanner, auto _point) -> Vector3<BeaconDecimal> { return { _scanner.x - _point.z, _scanner.y - _point.x, _scanner.z + _point.y }; });
+			rotated[21].emplace_back(-c.z, +c.y, +c.x); translatePoints.emplace_back([](auto _scanner, auto _point) -> Vector3<BeaconDecimal> { return { _scanner.x - _point.z, _scanner.y + _point.y, _scanner.z + _point.x }; });
+			rotated[22].emplace_back(-c.z, +c.x, -c.y); translatePoints.emplace_back([](auto _scanner, auto _point) -> Vector3<BeaconDecimal> { return { _scanner.x - _point.z, _scanner.y + _point.x, _scanner.z - _point.y }; });
+			rotated[23].emplace_back(-c.z, -c.y, -c.x); translatePoints.emplace_back([](auto _scanner, auto _point) -> Vector3<BeaconDecimal> { return { _scanner.x - _point.z, _scanner.y - _point.y, _scanner.z - _point.x }; });
 		}
 		std::cout << "======================================" << std::endl;
 		int rIndex = 0;
 		for (const auto& r : rotated) {
 			int actualMatch = 0;
 			std::size_t index = 0;
-			std::unordered_set<ze::Vector3<BeaconDecimal>, vector3_hash_fxn<BeaconDecimal>> scannerPositions;
-			std::unordered_set<ze::Vector3<BeaconDecimal>, vector3_hash_fxn<BeaconDecimal>> beaconPositions;
+			std::unordered_set<Vector3<BeaconDecimal>, vector3_hash_fxn<BeaconDecimal>> scannerPositions;
+			std::unordered_set<Vector3<BeaconDecimal>, vector3_hash_fxn<BeaconDecimal>> beaconPositions;
 
 			for (const auto& beacon : r) {
 				for (const auto& beacon0 : _tester) {

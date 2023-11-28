@@ -1,6 +1,6 @@
 #include <2018/Day06Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
-#include <zeno-engine/Core/Vector2.hpp>
+#include <Core/StringExtensions.hpp>
+#include <Core/Vector2.hpp>
 #include <Core/Region.hpp>
 #include <unordered_set>
 #include <unordered_map>
@@ -17,14 +17,14 @@ namespace TwentyEighteen {
 
 
 	void Day06Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day06Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
 		m_InputLines = std::vector<std::string>(_inputLines);
 	}
 
-	void updateCell(core::Region<int>& _map, const std::vector<ze::Vector2i>& _coords, int _x, int _y)
+	void updateCell(core::Region<int>& _map, const std::vector<Vector2i>& _coords, int _x, int _y)
 	{
 		auto& cell = _map.getCell(_x, _y);
 		if (cell == 0)
@@ -57,7 +57,7 @@ namespace TwentyEighteen {
 		}
 	}
 
-	std::size_t iterateMap(core::Region<int>& _map, const std::vector<ze::Vector2i>& _coords)
+	std::size_t iterateMap(core::Region<int>& _map, const std::vector<Vector2i>& _coords)
 	{
 		std::size_t edgeDotCount = 0;
 		int newMinY = _map.minY - 1;
@@ -113,7 +113,7 @@ namespace TwentyEighteen {
 		return maxNonInfinite;
 	}
 
-	std::size_t calculateWithinThresholdRegionSize(core::Region<int>& _map, const std::vector<ze::Vector2i>& _coords, int _part2Threshold)
+	std::size_t calculateWithinThresholdRegionSize(core::Region<int>& _map, const std::vector<Vector2i>& _coords, int _part2Threshold)
 	{
 		std::size_t answer = 0;
 
@@ -144,16 +144,16 @@ namespace TwentyEighteen {
 	
 	std::pair<std::string, std::string> Day06Puzzle::fastSolve(int _part2Threshold)
 	{
-		std::vector<ze::Vector2i> coords;
+		std::vector<Vector2i> coords;
 
 		core::Region<int> map;
 		int offset = 1;
 
 		for (const auto& i : m_InputLines)
 		{
-			const auto& p = ze::StringExtensions::splitStringByDelimeter(i, " ,");
+			const auto& p = StringExtensions::splitStringByDelimeter(i, " ,");
 
-			auto& c = coords.emplace_back(ze::Vector2i(std::stoi(p[0]), std::stoi(p[1])));
+			auto& c = coords.emplace_back(Vector2i(std::stoi(p[0]), std::stoi(p[1])));
 			map.getCell(c.x, c.y) = offset;
 			offset++;
 		}

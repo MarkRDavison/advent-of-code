@@ -1,7 +1,7 @@
 #include <2017/Day22Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <Core/Region.hpp>
-#include <zeno-engine/Core/Vector2.hpp>
+#include <Core/Vector2.hpp>
 #include <Core/Orientation.hpp>
 
 namespace TwentySeventeen {
@@ -16,14 +16,14 @@ namespace TwentySeventeen {
 
 
 	void Day22Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day22Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
 		m_InputLines = std::vector<std::string>(_inputLines);
 	}
 
-	void printMap(core::Region<char>& _map, const ze::Vector2i& _pos, core::Orientation _dir, std::size_t _iter) {
+	void printMap(core::Region<char>& _map, const Vector2i& _pos, core::Orientation _dir, std::size_t _iter) {
 		std::cout << "========== iter " << _iter << " ==========" << std::endl;
 		std::cout << "At " << _pos << " facing " << core::OrientationHelper::toString(_dir) << std::endl;
 
@@ -73,7 +73,7 @@ namespace TwentySeventeen {
 		 {
 			core::Region<char> map;
 
-			ze::Vector2i pos{ 0, 0 };
+			Vector2i pos{ 0, 0 };
 			core::Orientation dir = core::Orientation::Up;
 			{
 				std::size_t yy = 0;
@@ -120,7 +120,7 @@ namespace TwentySeventeen {
 		{
 			core::Region<char> map;
 
-			ze::Vector2i pos{ 0, 0 };
+			Vector2i pos{ 0, 0 };
 			core::Orientation dir = core::Orientation::Up;
 			{
 				std::size_t yy = 0;

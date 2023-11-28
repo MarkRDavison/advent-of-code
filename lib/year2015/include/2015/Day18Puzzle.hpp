@@ -3,7 +3,7 @@
 
 #include <Core/PuzzleBase.hpp>
 #include <Core/Region.hpp>
-#include <zeno-engine/Core/Vector2.hpp>
+#include <Core/Vector2.hpp>
 
 namespace TwentyFifteen {
 
@@ -23,7 +23,7 @@ namespace TwentyFifteen {
 
 		static void parseInput(core::Region<LightCell>& _region, const std::vector<std::string>& _inputLines);
 		static int iterate(core::Region<LightCell>& _region, unsigned _iterations, bool _part2);
-		static int neighboursOn(const core::Region<LightCell>& _region, const ze::Vector2i& _coord);
+		static int neighboursOn(const core::Region<LightCell>& _region, const Vector2i& _coord);
 
 		static void dumpRegion(const core::Region<LightCell>& _region);
 

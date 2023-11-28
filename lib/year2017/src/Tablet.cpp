@@ -1,5 +1,5 @@
 #include <2017/Tablet.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 
 #define PC '#'
 #define SENT '%'
@@ -16,7 +16,7 @@ namespace TwentySeventeen {
 
 	Tablet::Tablet(const std::vector<std::string>& _input) {
 		for (const auto& instr : _input) {
-			const auto& splits = ze::StringExtensions::splitStringByDelimeter(instr, " ");
+			const auto& splits = StringExtensions::splitStringByDelimeter(instr, " ");
 
 			auto& instruction = instructions.emplace_back();
 			instruction.type = splits[0];

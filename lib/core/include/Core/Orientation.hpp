@@ -1,7 +1,7 @@
 #ifndef INCLUDED_ADVENT_OF_CODE_CORE_ORIENATION_HPP_
 #define INCLUDED_ADVENT_OF_CODE_CORE_ORIENATION_HPP_
 
-#include <zeno-engine/Core/Vector2.hpp>
+#include <Core/Vector2.hpp>
 #include <string>
 
 namespace core {
@@ -34,18 +34,18 @@ namespace core {
 			}
 		}
 
-		static ze::Vector2i toDirection(Orientation _orientation) {
+		static Vector2i toDirection(Orientation _orientation) {
 			switch (_orientation) {
 			case Orientation::Up:
-				return ze::Vector2i{ 0, +1 };
+				return Vector2i{ 0, +1 };
 			case Orientation::Down:
-				return ze::Vector2i{ 0, -1 };
+				return Vector2i{ 0, -1 };
 			case Orientation::Right:
-				return ze::Vector2i{ +1, 0 };
+				return Vector2i{ +1, 0 };
 			case Orientation::Left:
-				return ze::Vector2i{ -1, 0 };
+				return Vector2i{ -1, 0 };
 			default:
-				return ze::Vector2i{ 0, 0 };
+				return Vector2i{ 0, 0 };
 			}
 		}
 		static Orientation reverse(Orientation _direction) {

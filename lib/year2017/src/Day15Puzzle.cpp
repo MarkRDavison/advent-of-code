@@ -1,5 +1,5 @@
 #include <2017/Day15Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <bitset>
 namespace TwentySeventeen {
 	
@@ -13,7 +13,7 @@ namespace TwentySeventeen {
 
 
 	void Day15Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day15Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -23,8 +23,8 @@ namespace TwentySeventeen {
 
 	std::pair<std::string, std::string> Day15Puzzle::fastSolve() {
 
-		const auto& aParts = ze::StringExtensions::splitStringByDelimeter(m_InputLines[0], " "); 
-		const auto& bParts = ze::StringExtensions::splitStringByDelimeter(m_InputLines[1], " ");
+		const auto& aParts = StringExtensions::splitStringByDelimeter(m_InputLines[0], " "); 
+		const auto& bParts = StringExtensions::splitStringByDelimeter(m_InputLines[1], " ");
 
 		const auto aStart = std::stoull(aParts.back());
 		const auto bStart = std::stoull(bParts.back());

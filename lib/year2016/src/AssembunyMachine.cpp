@@ -1,5 +1,5 @@
 #include <2016/AssembunyMachine.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 
 namespace TwentySixteen {
 
@@ -15,7 +15,7 @@ namespace TwentySixteen {
 		programCounter(0) {
 
 		for (const auto& instr : _instructions) {
-			const auto& splits = ze::StringExtensions::splitStringByDelimeter(instr, " ");
+			const auto& splits = StringExtensions::splitStringByDelimeter(instr, " ");
 
 			auto& instruction = instructions.emplace_back();
 			instruction.type = splits[0];

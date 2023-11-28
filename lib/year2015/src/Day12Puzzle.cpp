@@ -1,6 +1,6 @@
 #include <2015/Day12Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
-#include <zeno-engine/Utility/Json.hpp>
+#include <Core/StringExtensions.hpp>
+#include <Core/Json.hpp>
 #include <unordered_set>
 #include <unordered_map>
 #include <stack>
@@ -26,7 +26,7 @@ namespace TwentyFifteen {
 
 
 	void Day12Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day12Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -38,18 +38,19 @@ namespace TwentyFifteen {
 		return { std::to_string(result.first), std::to_string(result.second) };
 	}
 	std::pair<int, int> Day12Puzzle::solve(const std::string& _input) {
-		ze::JsonDocument doc = ze::Json::parseFromText(_input);
+		JsonDocument doc = Json::parseFromText(_input);
 
 		const int part1 = recurser(*doc.m_Root, false);
 		const int part2 = recurser(*doc.m_Root, true);
 		return std::make_pair(part1, part2);
 	}
-	int Day12Puzzle::recurser(const ze::JsonNode& _node, bool _validate) {
+
+	int Day12Puzzle::recurser(const JsonNode& _node, bool _validate) {
 		int total = 0;
 
 		bool valid = true;
 		if (_validate) {
-			if (_node.type == ze::JsonNode::Type::Object) {
+			if (_node.type == JsonNode::Type::Object) {
 				for (const auto& c : _node.children) {
 					if (c->content == "red") {
 						valid = false;

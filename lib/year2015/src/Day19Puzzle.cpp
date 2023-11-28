@@ -1,5 +1,5 @@
 #include <2015/Day19Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <unordered_set>
 #include <unordered_map>
 #include <algorithm>
@@ -16,7 +16,7 @@ namespace TwentyFifteen {
 
 
 	void Day19Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day19Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -33,7 +33,7 @@ namespace TwentyFifteen {
 	std::pair<Replacements, std::string> Day19Puzzle::parseInput(const std::vector<std::string>& _inputLines) {
 		Replacements replacements;
 		for (const auto& i : _inputLines) {
-			const auto& s = ze::StringExtensions::splitStringByDelimeter(i, "=> ");
+			const auto& s = StringExtensions::splitStringByDelimeter(i, "=> ");
 			if (s.size() == 1) {
 				// molecule
 				return { replacements, s[0] };

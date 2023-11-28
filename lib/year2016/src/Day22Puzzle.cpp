@@ -1,5 +1,5 @@
 #include <2016/Day22Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 
 namespace TwentySixteen {
 	
@@ -13,7 +13,7 @@ namespace TwentySixteen {
 
 
 	void Day22Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day22Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -22,14 +22,14 @@ namespace TwentySixteen {
 
 	std::pair<std::string, std::string> Day22Puzzle::fastSolve() {
 		auto [region, nodeLocs] = parse(m_InputLines);
-		std::vector<ze::Vector2i> locs;
+		std::vector<Vector2i> locs;
 
 		for (const auto& v : nodeLocs) {
 			locs.push_back(v);
 		}
 
 		int part1 = 0;
-		ze::Vector2i hole = { -1,-1 };
+		Vector2i hole = { -1,-1 };
 		int lowestWall = region.maxX;
 
 		for (unsigned i = 0; i < locs.size(); ++i) {
@@ -48,7 +48,7 @@ namespace TwentySixteen {
 		}
 
 
-		if (hole == ze::Vector2i{-1, -1}) {
+		if (hole == Vector2i{-1, -1}) {
 			throw std::runtime_error("Could not find the expected empty node");
 		}
 
@@ -73,14 +73,14 @@ namespace TwentySixteen {
 	
 	std::pair<
 		core::Region<Node>,
-		std::unordered_set<ze::Vector2i, vector2_hash_fxn<int>>
+		std::unordered_set<Vector2i, vector2_hash_fxn<int>>
 	> Day22Puzzle::parse(const std::vector<std::string>& _inputLines) {
 		core::Region<Node> region;
-		std::unordered_set<ze::Vector2i, vector2_hash_fxn<int>> nodeLocs;
+		std::unordered_set<Vector2i, vector2_hash_fxn<int>> nodeLocs;
 
 		for (const auto& l : _inputLines) {
 
-			const auto& parts = ze::StringExtensions::splitStringByDelimeter(l, " -T%-xy");
+			const auto& parts = StringExtensions::splitStringByDelimeter(l, " -T%-xy");
 			if (parts.size() != 7) {
 				continue;
 			}

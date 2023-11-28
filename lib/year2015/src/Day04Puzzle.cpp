@@ -1,6 +1,6 @@
 #include <2015/Day04Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
-#include <zeno-engine/Core/Clock.hpp>
+#include <Core/StringExtensions.hpp>
+#include <Core/Clock.hpp>
 #include <Core/MD5.hpp>
 #include <algorithm>
 #include <thread>
@@ -17,7 +17,7 @@ namespace TwentyFifteen {
 
 
 	void Day04Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day04Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -40,7 +40,7 @@ namespace TwentyFifteen {
 		std::string part1;
 		std::string part2;
 
-		ze::Clock clock;
+		Clock clock;
 
 		while (1) {
 			for (unsigned i = 0; i < concurentThreadsSupported; ++i) {

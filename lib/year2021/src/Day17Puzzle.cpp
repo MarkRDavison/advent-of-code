@@ -1,7 +1,7 @@
 #include <2021/Day17Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
-#include <zeno-engine/Core/Vector2.hpp>
-#include <zeno-engine/Core/Rect.hpp>
+#include <Core/StringExtensions.hpp>
+#include <Core/Vector2.hpp>
+#include <Core/Rect.hpp>
 #include <cassert>
 
 namespace TwentyTwentyOne {
@@ -12,17 +12,17 @@ namespace TwentyTwentyOne {
 
 
 	void Day17Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day17Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
 		m_InputLines = std::vector<std::string>(_inputLines);
 	}
 
-	std::pair<IntegerType, bool> simulate(const ze::Vector2<IntegerType>& _velocity, const ze::Rect<IntegerType>& _target) {
+	std::pair<IntegerType, bool> simulate(const Vector2<IntegerType>& _velocity, const Rect<IntegerType>& _target) {
 
-		ze::Vector2<IntegerType> position;
-		ze::Vector2<IntegerType> velocity(_velocity);
+		Vector2<IntegerType> position;
+		Vector2<IntegerType> velocity(_velocity);
 		auto target = _target; // TODO: When contains is a const method dont have this
 
 		IntegerType maxY = 0;
@@ -50,7 +50,7 @@ namespace TwentyTwentyOne {
 	}
 
 	std::pair<std::string, std::string> Day17Puzzle::fastSolve() {
-		const auto& splits = ze::StringExtensions::splitStringByDelimeter(m_InputLines[0], " =.,");
+		const auto& splits = StringExtensions::splitStringByDelimeter(m_InputLines[0], " =.,");
 		constexpr IntegerType MULTIPLIER = 4;
 
 		assert(splits.size() == 8);
@@ -60,7 +60,7 @@ namespace TwentyTwentyOne {
 		const IntegerType yStart = std::stol(splits[6]);
 		const IntegerType yEnd = std::stol(splits[7]);
 
-		const ze::Rect<IntegerType> target({ xStart, yStart }, { xEnd - xStart + 1, yEnd - yStart + 1 });
+		const Rect<IntegerType> target({ xStart, yStart }, { xEnd - xStart + 1, yEnd - yStart + 1 });
 
 		IntegerType part1 = 0;
 		IntegerType part2 = 0;

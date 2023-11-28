@@ -1,5 +1,5 @@
 #include <2016/Day20Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 
 namespace TwentySixteen {
 	
@@ -13,7 +13,7 @@ namespace TwentySixteen {
 
 
 	void Day20Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day20Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -27,7 +27,7 @@ namespace TwentySixteen {
 	std::pair<std::string, std::string> Day20Puzzle::fastSolve(IpValue _max) {
 		std::vector<std::pair<IpValue, IpValue>> ranges;
 		for (const auto& line : m_InputLines) {
-			const auto& parts = ze::StringExtensions::splitStringByDelimeter(line, "-");
+			const auto& parts = StringExtensions::splitStringByDelimeter(line, "-");
 			ranges.emplace_back((IpValue)std::stoull(parts[0]), (IpValue)std::stoull(parts[1]));
 		}
 

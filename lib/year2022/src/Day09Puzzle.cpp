@@ -1,13 +1,13 @@
 #include <2022/Day09Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <Core/Orientation.hpp>
 #include <unordered_map>
 #include <cassert>
 
 namespace std {
 	template<>
-	struct hash<ze::Vector2i> {
-		size_t operator()(const ze::Vector2i& obj) const {
+	struct hash<Vector2i> {
+		size_t operator()(const Vector2i& obj) const {
 			return std::hash<int>()(obj.x) ^ std::hash<int>()(obj.y);
 		}
 	};
@@ -21,14 +21,14 @@ namespace TwentyTwentyTwo {
 
 
 	void Day09Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day09Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
 		m_InputLines = std::vector<std::string>(_inputLines);
 	}
 
-	void print(const std::vector<ze::Vector2i>& _knots, const ze::Vector2i& _min, const ze::Vector2i& _max)
+	void print(const std::vector<Vector2i>& _knots, const Vector2i& _min, const Vector2i& _max)
 	{
 		const auto height = _max.y - _min.y + 1;
 		const auto width = _max.x - _min.x + 1;
@@ -65,12 +65,12 @@ namespace TwentyTwentyTwo {
 
 	std::size_t solve(const std::vector<std::string>& _input, int _length, bool _verbose)
 	{
-		ze::Vector2i min{-10, -10};
-		ze::Vector2i max{+10, +10};
+		Vector2i min{-10, -10};
+		Vector2i max{+10, +10};
 
-		std::vector<ze::Vector2i> knotLocations(_length);
+		std::vector<Vector2i> knotLocations(_length);
 
-		std::unordered_map < ze::Vector2i, int> tailVisits;
+		std::unordered_map < Vector2i, int> tailVisits;
 		tailVisits[knotLocations.back()]++;
 
 
@@ -82,7 +82,7 @@ namespace TwentyTwentyTwo {
 				print(knotLocations, min, max);
 			}
 
-			const auto& p = ze::StringExtensions::splitStringByDelimeter(l, " ");
+			const auto& p = StringExtensions::splitStringByDelimeter(l, " ");
 
 			const int amount = std::stoi(p[1]);
 			core::Orientation dir;
@@ -122,11 +122,11 @@ namespace TwentyTwentyTwo {
 					const auto aheadKnot = knotLocations[knotIndex - 1];
 					auto& currentKnot = knotLocations[knotIndex];
 
-					const auto difference = ze::Vector2i{
+					const auto difference = Vector2i{
 						std::abs(aheadKnot.x - currentKnot.x),
 						std::abs(aheadKnot.y - currentKnot.y)
 					};
-					auto offset = ze::Vector2i{
+					auto offset = Vector2i{
 						aheadKnot.x - currentKnot.x,
 						aheadKnot.y - currentKnot.y
 					};

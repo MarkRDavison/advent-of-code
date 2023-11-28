@@ -1,5 +1,5 @@
 #include <2022/Day22Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <cassert>
 #include <queue>
 #include <unordered_set>
@@ -13,7 +13,7 @@ namespace TwentyTwentyTwo {
 
 
 	void Day22Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByLines(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
+		setInputLines(StringExtensions::splitStringByLines(StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
 	}
 
 	void Day22Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -56,7 +56,7 @@ namespace TwentyTwentyTwo {
 	std::pair<std::string, std::string> Day22Puzzle::fastSolve(int _cubeSize)
 	{
 		bool locationSet = false;
-		ze::Vector2i location{ 0, 0 };
+		Vector2i location{ 0, 0 };
 		core::Orientation facing = core::Orientation::Right;
 
 		Map map;
@@ -147,7 +147,7 @@ namespace TwentyTwentyTwo {
 				const auto cell = _map[y][x];
 				if (cell == '.')
 				{
-					auto& neighbours = adjacent[ze::Vector2i(x, y)];
+					auto& neighbours = adjacent[Vector2i(x, y)];
 
 					{	// LEFT
 						int nextX = x;
@@ -180,7 +180,7 @@ namespace TwentyTwentyTwo {
 								assert(false);
 							}
 						}
-						neighbours[core::Orientation::Left] = ze::Vector2i(validNextX, y);
+						neighbours[core::Orientation::Left] = Vector2i(validNextX, y);
 					}
 					{	// RIGHT
 						int nextX = x;
@@ -213,7 +213,7 @@ namespace TwentyTwentyTwo {
 								assert(false);
 							}
 						}
-						neighbours[core::Orientation::Right] = ze::Vector2i(validNextX, y);
+						neighbours[core::Orientation::Right] = Vector2i(validNextX, y);
 					}
 					{	// UP
 						int nextY = y;
@@ -252,7 +252,7 @@ namespace TwentyTwentyTwo {
 								assert(false);
 							}
 						}
-						neighbours[core::Orientation::Up] = ze::Vector2i(x, validNextY);
+						neighbours[core::Orientation::Up] = Vector2i(x, validNextY);
 					}
 					{	// DOWN
 						int nextY = y;
@@ -291,7 +291,7 @@ namespace TwentyTwentyTwo {
 								assert(false);
 							}
 						}
-						neighbours[core::Orientation::Down] = ze::Vector2i(x, validNextY);
+						neighbours[core::Orientation::Down] = Vector2i(x, validNextY);
 					}
 				}
 			}
@@ -300,23 +300,23 @@ namespace TwentyTwentyTwo {
 		return adjacent;
 	}
 
-	std::pair<Adjacency, OrientationAdjacency> Day22Puzzle::processAdjacency3D(const Map& _map, int _cubeSize, const ze::Vector2i& _startingLocation)
+	std::pair<Adjacency, OrientationAdjacency> Day22Puzzle::processAdjacency3D(const Map& _map, int _cubeSize, const Vector2i& _startingLocation)
 	{
 		assert(_map.size() % _cubeSize == 0);
 		Adjacency adjacent;
 		OrientationAdjacency orientationAdjacent;
 
-		std::unordered_map<char, ze::Vector2i> faceStarts;
-		std::unordered_map<char, ze::Vector2i> orientationMultipliers;
+		std::unordered_map<char, Vector2i> faceStarts;
+		std::unordered_map<char, Vector2i> orientationMultipliers;
 
 		if (_cubeSize == 4)
 		{
-			const ze::Vector2i frontFace(8, 0);
-			const ze::Vector2i downFace(8, 4);
-			const ze::Vector2i leftFace(4, 4);
-			const ze::Vector2i topFace(0, 4);
-			const ze::Vector2i backFace(8, 8);
-			const ze::Vector2i rightFace(12, 8);
+			const Vector2i frontFace(8, 0);
+			const Vector2i downFace(8, 4);
+			const Vector2i leftFace(4, 4);
+			const Vector2i topFace(0, 4);
+			const Vector2i backFace(8, 8);
+			const Vector2i rightFace(12, 8);
 
 			faceStarts['f'] = frontFace;
 			faceStarts['d'] = downFace;
@@ -360,61 +360,61 @@ namespace TwentyTwentyTwo {
 						if (y != start.y)
 						{
 							// Can go up without changing
-							auto next = ze::Vector2i(x, y - 1);
+							auto next = Vector2i(x, y - 1);
 							if (_map[next.y][next.x] != '.')
 							{
-								adjacent[ze::Vector2i(x, y)][core::Orientation::Up] = next;
-								orientationAdjacent[ze::Vector2i(x, y)][core::Orientation::Up] = core::Orientation::Up;
+								adjacent[Vector2i(x, y)][core::Orientation::Up] = next;
+								orientationAdjacent[Vector2i(x, y)][core::Orientation::Up] = core::Orientation::Up;
 							}
 							else
 							{
-								adjacent[ze::Vector2i(x, y)][core::Orientation::Up] = ze::Vector2i(x, y);
-								orientationAdjacent[ze::Vector2i(x, y)][core::Orientation::Up] = core::Orientation::Up;
+								adjacent[Vector2i(x, y)][core::Orientation::Up] = Vector2i(x, y);
+								orientationAdjacent[Vector2i(x, y)][core::Orientation::Up] = core::Orientation::Up;
 							}
 						}
 						if (y != start.y + _cubeSize - 1)
 						{
 							// Can go down without changing
-							const auto next = ze::Vector2i(x, y + 1);
+							const auto next = Vector2i(x, y + 1);
 							if (_map[next.y][next.x] != '.')
 							{
-								adjacent[ze::Vector2i(x, y)][core::Orientation::Down] = next;
-								orientationAdjacent[ze::Vector2i(x, y)][core::Orientation::Down] = core::Orientation::Down;
+								adjacent[Vector2i(x, y)][core::Orientation::Down] = next;
+								orientationAdjacent[Vector2i(x, y)][core::Orientation::Down] = core::Orientation::Down;
 							}
 							else
 							{
-								adjacent[ze::Vector2i(x, y)][core::Orientation::Down] = ze::Vector2i(x, y);
-								orientationAdjacent[ze::Vector2i(x, y)][core::Orientation::Down] = core::Orientation::Down;
+								adjacent[Vector2i(x, y)][core::Orientation::Down] = Vector2i(x, y);
+								orientationAdjacent[Vector2i(x, y)][core::Orientation::Down] = core::Orientation::Down;
 							}
 						}
 						if (x != start.x)
 						{
 							// Can go left without changing
-							const auto next = ze::Vector2i(x - 1, y);
+							const auto next = Vector2i(x - 1, y);
 							if (_map[next.y][next.x] != '.')
 							{
-								adjacent[ze::Vector2i(x, y)][core::Orientation::Left] = next;
-								orientationAdjacent[ze::Vector2i(x, y)][core::Orientation::Left] = core::Orientation::Left;
+								adjacent[Vector2i(x, y)][core::Orientation::Left] = next;
+								orientationAdjacent[Vector2i(x, y)][core::Orientation::Left] = core::Orientation::Left;
 							}
 							else
 							{
-								adjacent[ze::Vector2i(x, y)][core::Orientation::Left] = ze::Vector2i(x, y);
-								orientationAdjacent[ze::Vector2i(x, y)][core::Orientation::Left] = core::Orientation::Left;
+								adjacent[Vector2i(x, y)][core::Orientation::Left] = Vector2i(x, y);
+								orientationAdjacent[Vector2i(x, y)][core::Orientation::Left] = core::Orientation::Left;
 							}
 						}
 						if (x != start.x + _cubeSize - 1)
 						{
 							// Can go right without changing
-							const auto next = ze::Vector2i(x + 1, y);
+							const auto next = Vector2i(x + 1, y);
 							if (_map[next.y][next.x] != '.')
 							{
-								adjacent[ze::Vector2i(x, y)][core::Orientation::Right] = next;
-								orientationAdjacent[ze::Vector2i(x, y)][core::Orientation::Right] = core::Orientation::Right;
+								adjacent[Vector2i(x, y)][core::Orientation::Right] = next;
+								orientationAdjacent[Vector2i(x, y)][core::Orientation::Right] = core::Orientation::Right;
 							}
 							else
 							{
-								adjacent[ze::Vector2i(x, y)][core::Orientation::Right] = ze::Vector2i(x, y);
-								orientationAdjacent[ze::Vector2i(x, y)][core::Orientation::Right] = core::Orientation::Right;
+								adjacent[Vector2i(x, y)][core::Orientation::Right] = Vector2i(x, y);
+								orientationAdjacent[Vector2i(x, y)][core::Orientation::Right] = core::Orientation::Right;
 							}
 						}
 					}
@@ -428,7 +428,7 @@ namespace TwentyTwentyTwo {
 			{	// TOP
 				for (int x = start.x; x < start.x + _cubeSize; ++x)
 				{
-					const auto next = ze::Vector2i(x, start.y - 1);
+					const auto next = Vector2i(x, start.y - 1);
 					if (next.y >= 0)
 					{
 						//if (_map[next.y][next.x] )

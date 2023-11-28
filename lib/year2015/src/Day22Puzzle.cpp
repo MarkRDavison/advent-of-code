@@ -1,5 +1,5 @@
 #include <2015/Day22Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <functional>
 #include <algorithm>
 #include <cassert>
@@ -37,7 +37,7 @@ namespace TwentyFifteen {
 
 
 	void Day22Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day22Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -314,8 +314,8 @@ namespace TwentyFifteen {
 
 
 	std::pair<std::string, std::string> Day22Puzzle::fastSolve() {
-		const int boss_hp = std::stoi(ze::StringExtensions::splitStringByDelimeter(m_InputLines[0], " ").back());
-		const int boss_damage = std::stoi(ze::StringExtensions::splitStringByDelimeter(m_InputLines[1], " ").back());
+		const int boss_hp = std::stoi(StringExtensions::splitStringByDelimeter(m_InputLines[0], " ").back());
+		const int boss_damage = std::stoi(StringExtensions::splitStringByDelimeter(m_InputLines[1], " ").back());
 
 		CURRENT_BEST = std::numeric_limits<int>::max();
 		const int part1 = getLeastManaToStillWin(50, 500, boss_hp, boss_damage, false);

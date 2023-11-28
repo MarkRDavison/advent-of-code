@@ -1,5 +1,5 @@
 #include <2022/Day10Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <cassert>
 #include <array>
 
@@ -11,7 +11,7 @@ namespace TwentyTwentyTwo {
 
 
 	void Day10Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day10Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -72,7 +72,7 @@ namespace TwentyTwentyTwo {
 				const long previousCycles = cycles;
 				const long previousRegisterX = registerX;
 
-				const auto& p = ze::StringExtensions::splitStringByDelimeter(l, " ");
+				const auto& p = StringExtensions::splitStringByDelimeter(l, " ");
 
 				const auto& instruction = p[0];
 				if (instruction == "noop")

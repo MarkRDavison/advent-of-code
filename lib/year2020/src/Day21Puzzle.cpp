@@ -1,5 +1,5 @@
 #include <2020/Day21Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <algorithm>
 #include <map>
 
@@ -11,7 +11,7 @@ namespace TwentyTwenty {
 
 
 	void Day21Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day21Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -39,7 +39,7 @@ namespace TwentyTwenty {
 	Day21Struct Day21Puzzle::translate(const std::string& _str) {
 		Day21Struct s{};
 		bool ingredients = true;
-		for (const auto& p : ze::StringExtensions::splitStringByDelimeter(_str, " ,()")) {
+		for (const auto& p : StringExtensions::splitStringByDelimeter(_str, " ,()")) {
 			if (p == "contains") {
 				ingredients = false;
 			}

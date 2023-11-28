@@ -1,5 +1,5 @@
 #include <2021/Day04Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <cassert>
 #include <sstream>
 #include <algorithm>
@@ -12,7 +12,7 @@ namespace TwentyTwentyOne {
 
 
 	void Day04Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByLines(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
+		setInputLines(StringExtensions::splitStringByLines(StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
 	}
 
 	void Day04Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -60,7 +60,7 @@ namespace TwentyTwentyOne {
 		std::vector<int> numbers;
 		std::vector<Day4BingoBoard> boards;
 
-		for (const auto& n : ze::StringExtensions::splitStringByDelimeter(_inputLines[0], ",")) {
+		for (const auto& n : StringExtensions::splitStringByDelimeter(_inputLines[0], ",")) {
 			numbers.push_back(std::stoi(n));
 		}
 
@@ -68,7 +68,7 @@ namespace TwentyTwentyOne {
 		unsigned boardRowIndex = 0;
 		const unsigned indexOffset = 1;
 		for (unsigned i = indexOffset; i < _inputLines.size(); ++i) {
-			const auto& parts = ze::StringExtensions::splitStringByDelimeter(_inputLines[i], " ");
+			const auto& parts = StringExtensions::splitStringByDelimeter(_inputLines[i], " ");
 			if (parts.empty()) {
 				boards.emplace_back();
 				boardRowIndex = 0;

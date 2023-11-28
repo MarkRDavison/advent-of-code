@@ -2,12 +2,12 @@
 #define INCLUDED_ADVENT_OF_CODE_2021_DAY_22_PUZZLE_HPP_
 
 #include <Core/PuzzleBase.hpp>
-#include <zeno-engine/Core/Vector3.hpp>
+#include <Core/Vector3.hpp>
 
 namespace TwentyTwentyOne {
 
 	using ReactorNumber = long long;
-	using ReactorVector = ze::Vector3<ReactorNumber>;
+	using ReactorVector = Vector3<ReactorNumber>;
 
 
 	struct Cube {

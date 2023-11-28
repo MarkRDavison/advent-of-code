@@ -1,5 +1,5 @@
 #include <2020/Day20Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <algorithm>
 #include <sstream>
 #include <fstream>
@@ -17,7 +17,7 @@ namespace TwentyTwenty {
 
 
 	void Day20Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByLines(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
+		setInputLines(StringExtensions::splitStringByLines(StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
 	}
 
 	void Day20Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {

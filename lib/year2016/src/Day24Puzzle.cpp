@@ -1,5 +1,5 @@
 #include <2016/Day24Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <Core/Pathfinding.hpp>
 #include <Core/Region.hpp>
 
@@ -15,7 +15,7 @@ namespace TwentySixteen {
 
 
 	void Day24Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day24Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -27,7 +27,7 @@ namespace TwentySixteen {
 		core::CartesianNetwork<DuctCell> cnet;
 
 		core::Region<char> region;
-		std::vector<std::pair<char, ze::Vector2i>> locationsPair;
+		std::vector<std::pair<char, Vector2i>> locationsPair;
 
 		for (unsigned y = 0; y < m_InputLines.size(); ++y) {
 			auto& rows = cnet.getCells().emplace_back();
@@ -39,7 +39,7 @@ namespace TwentySixteen {
 				cnetCell.open = cell != '#';
 
 				if ('0' <= cell && cell <= '9') {
-					locationsPair.emplace_back(cell, ze::Vector2i(x, y));
+					locationsPair.emplace_back(cell, Vector2i(x, y));
 				}
 			}
 		}

@@ -1,7 +1,7 @@
 #ifndef INCLUDED_ADVENT_OF_CODE_CORE_PATHFINDING_HPP_
 #define INCLUDED_ADVENT_OF_CODE_CORE_PATHFINDING_HPP_
 
-#include <zeno-engine/Core/Vector2.hpp>
+#include <Core/Vector2.hpp>
 #include <unordered_map>
 #include <unordered_set>
 #include <algorithm>
@@ -10,14 +10,14 @@
 
 namespace std {
 	template<>
-	struct hash<ze::Vector2i> {
-		size_t operator()(const ze::Vector2i& obj) const {
+	struct hash<Vector2i> {
+		size_t operator()(const Vector2i& obj) const {
 			return std::hash<int>()(obj.x) ^ std::hash<int>()(obj.y);
 		}
 	};
 	template<class T>
-	struct hash<ze::Vector2<T>> {
-		size_t operator()(const ze::Vector2<T>& obj) const {
+	struct hash<Vector2<T>> {
+		size_t operator()(const Vector2<T>& obj) const {
 			return std::hash<T>()(obj.x) ^ std::hash<T>()(obj.y);
 		}
 	};
@@ -71,7 +71,7 @@ namespace internal {
 	template <typename Cell>
 	struct CartesianGraph {
 
-		std::vector<ze::Vector2i> neighbours(const ze::Vector2i& _id) {
+		std::vector<Vector2i> neighbours(const Vector2i& _id) {
 			if (cells.empty() || cells[0].empty()) {
 				return {};
 			}
@@ -79,7 +79,7 @@ namespace internal {
 			const int height = (int)cells.size();
 			const int width = (int)cells[0].size();
 
-			std::vector<ze::Vector2i> n;
+			std::vector<Vector2i> n;
 
 			if (_id.y > 0) {
 				if (cells[_id.y - 1][_id.x].valid()) {
@@ -105,11 +105,11 @@ namespace internal {
 			return n;
 		}
 
-		float cost(const ze::Vector2i& _from, const ze::Vector2i& _to) {
+		float cost(const Vector2i& _from, const Vector2i& _to) {
 			return cells[_from.y][_from.x].costTo(cells[_to.y][_to.x]);
 		}
 
-		float heuristic(const ze::Vector2i& _a, const ze::Vector2i& _b) {
+		float heuristic(const Vector2i& _a, const Vector2i& _b) {
 			return static_cast<float>(std::abs(_a.x - _b.x) + std::abs(_a.y - _b.y));
 		}
 
@@ -361,10 +361,10 @@ namespace core {
 	template <typename Cell>
 	class CartesianNetwork {
 	public:
-		std::vector<ze::Vector2i> performAStarSearch(const ze::Vector2i& _start, const ze::Vector2i& _end) {
-			std::unordered_map<ze::Vector2i, ze::Vector2i> origins;
-			std::unordered_map<ze::Vector2i, float> costs;
-			internal::aStarSearch<internal::CartesianGraph<Cell>, ze::Vector2i>(cg, _start, _end, origins, costs);
+		std::vector<Vector2i> performAStarSearch(const Vector2i& _start, const Vector2i& _end) {
+			std::unordered_map<Vector2i, Vector2i> origins;
+			std::unordered_map<Vector2i, float> costs;
+			internal::aStarSearch<internal::CartesianGraph<Cell>, Vector2i>(cg, _start, _end, origins, costs);
 			return internal::reconstruct_path(_start, _end, origins);			
 		}
 

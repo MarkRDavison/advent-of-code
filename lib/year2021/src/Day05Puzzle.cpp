@@ -1,5 +1,5 @@
 #include <2021/Day05Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <Core/Region.hpp>
 #include <algorithm>
 #include <cassert>
@@ -12,7 +12,7 @@ namespace TwentyTwentyOne {
 
 
 	void Day05Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day05Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -30,12 +30,12 @@ namespace TwentyTwentyOne {
 		VecPoints parsed;
 
 		for (const auto& i : _inputLines) {
-			const auto& s = ze::StringExtensions::splitStringByDelimeter(i, ", ->");
+			const auto& s = StringExtensions::splitStringByDelimeter(i, ", ->");
 
 			assert(s.size() == 4);
 
-			const auto p1 = ze::Vector2i(std::stoi(s[0]), std::stoi(s[1]));
-			const auto p2 = ze::Vector2i(std::stoi(s[2]), std::stoi(s[3]));
+			const auto p1 = Vector2i(std::stoi(s[0]), std::stoi(s[1]));
+			const auto p2 = Vector2i(std::stoi(s[2]), std::stoi(s[3]));
 
 			if (_straightOnly) {
 				if (p1.x != p2.x && p1.y != p2.y) {
@@ -54,8 +54,8 @@ namespace TwentyTwentyOne {
 		core::Region<int> region;
 
 		for (const auto& [p1t, p2t] : _points) {
-			ze::Vector2i p1(p1t);
-			ze::Vector2i p2(p2t);
+			Vector2i p1(p1t);
+			Vector2i p2(p2t);
 
 			if (p1.x != p2.x && p1.y != p2.y) {
 
@@ -64,7 +64,7 @@ namespace TwentyTwentyOne {
 					p2 = p1t;
 				}
 
-				ze::Vector2i dir;
+				Vector2i dir;
 
 				if (p1.y > p2.y) {
 					dir = { 1, -1 };

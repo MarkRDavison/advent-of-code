@@ -1,6 +1,6 @@
 #include <2016/Day17Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
-#include <zeno-engine/Core/Vector2.hpp>
+#include <Core/StringExtensions.hpp>
+#include <Core/Vector2.hpp>
 #include <Core/MD5.hpp>
 #include <functional>
 #include <limits>
@@ -17,7 +17,7 @@ namespace TwentySixteen {
 
 
 	void Day17Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day17Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -49,12 +49,12 @@ namespace TwentySixteen {
 	
 	std::string Day17Puzzle::explore(const std::string& _passcode, bool _shortest) {
 
-		const std::function<std::string(const ze::Vector2i&, const std::string&, unsigned)> recurserShortest =
-			[&_passcode, &recurserShortest](const ze::Vector2i& _pos, const std::string& _path, unsigned _bestPathLength) -> std::string {const auto state = getRoomDoorState(_passcode, _path);
+		const std::function<std::string(const Vector2i&, const std::string&, unsigned)> recurserShortest =
+			[&_passcode, &recurserShortest](const Vector2i& _pos, const std::string& _path, unsigned _bestPathLength) -> std::string {const auto state = getRoomDoorState(_passcode, _path);
 
 		std::string bestPath;
 
-		if (_pos == ze::Vector2i(3, 3)) {
+		if (_pos == Vector2i(3, 3)) {
 			return _path;
 		}
 
@@ -64,7 +64,7 @@ namespace TwentySixteen {
 
 		if (state.D && _pos.y < 3) {
 			// Can go down
-			const auto path = recurserShortest(_pos + ze::Vector2i(0, +1), _path + 'D', _bestPathLength);
+			const auto path = recurserShortest(_pos + Vector2i(0, +1), _path + 'D', _bestPathLength);
 			if (!path.empty()) {
 				if (path.size() < _bestPathLength) {
 					_bestPathLength = path.size();
@@ -75,7 +75,7 @@ namespace TwentySixteen {
 
 		if (state.R && _pos.x < 3) {
 			// Can go right
-			const auto path = recurserShortest(_pos + ze::Vector2i(+1, 0), _path + 'R', _bestPathLength);
+			const auto path = recurserShortest(_pos + Vector2i(+1, 0), _path + 'R', _bestPathLength);
 			if (!path.empty()) {
 				if (path.size() < _bestPathLength) {
 					_bestPathLength = path.size();
@@ -86,7 +86,7 @@ namespace TwentySixteen {
 
 		if (state.U && _pos.y > 0) {
 			// Can go up
-			const auto path = recurserShortest(_pos + ze::Vector2i(0, -1), _path + 'U', _bestPathLength);
+			const auto path = recurserShortest(_pos + Vector2i(0, -1), _path + 'U', _bestPathLength);
 			if (!path.empty()) {
 				if (path.size() < _bestPathLength) {
 					_bestPathLength = path.size();
@@ -97,7 +97,7 @@ namespace TwentySixteen {
 
 		if (state.L && _pos.x > 0) {
 			// Can go left
-			const auto path = recurserShortest(_pos + ze::Vector2i(-1, 0), _path + 'L', _bestPathLength);
+			const auto path = recurserShortest(_pos + Vector2i(-1, 0), _path + 'L', _bestPathLength);
 			if (!path.empty()) {
 				if (path.size() < _bestPathLength) {
 					_bestPathLength = path.size();
@@ -109,19 +109,19 @@ namespace TwentySixteen {
 		return bestPath;
 		};
 
-		const std::function<std::string(const ze::Vector2i&, const std::string&, unsigned)> recurserLongest =
-			[&_passcode, &recurserLongest](const ze::Vector2i& _pos, const std::string& _path, unsigned _bestPathLength) -> std::string {const auto state = getRoomDoorState(_passcode, _path);
+		const std::function<std::string(const Vector2i&, const std::string&, unsigned)> recurserLongest =
+			[&_passcode, &recurserLongest](const Vector2i& _pos, const std::string& _path, unsigned _bestPathLength) -> std::string {const auto state = getRoomDoorState(_passcode, _path);
 
 			std::string bestPath;
 
-			if (_pos == ze::Vector2i(3, 3)) {
+			if (_pos == Vector2i(3, 3)) {
 				return _path;
 			}
 
 
 			if (state.D && _pos.y < 3) {
 				// Can go down
-				const auto path = recurserLongest(_pos + ze::Vector2i(0, +1), _path + 'D', _bestPathLength);
+				const auto path = recurserLongest(_pos + Vector2i(0, +1), _path + 'D', _bestPathLength);
 				if (!path.empty()) {
 					if (path.size() > _bestPathLength) {
 						_bestPathLength = path.size();
@@ -132,7 +132,7 @@ namespace TwentySixteen {
 
 			if (state.R && _pos.x < 3) {
 				// Can go right
-				const auto path = recurserLongest(_pos + ze::Vector2i(+1, 0), _path + 'R', _bestPathLength);
+				const auto path = recurserLongest(_pos + Vector2i(+1, 0), _path + 'R', _bestPathLength);
 				if (!path.empty()) {
 					if (path.size() > _bestPathLength) {
 						_bestPathLength = path.size();
@@ -143,7 +143,7 @@ namespace TwentySixteen {
 
 			if (state.U && _pos.y > 0) {
 				// Can go up
-				const auto path = recurserLongest(_pos + ze::Vector2i(0, -1), _path + 'U', _bestPathLength);
+				const auto path = recurserLongest(_pos + Vector2i(0, -1), _path + 'U', _bestPathLength);
 				if (!path.empty()) {
 					if (path.size() > _bestPathLength) {
 						_bestPathLength = path.size();
@@ -154,7 +154,7 @@ namespace TwentySixteen {
 
 			if (state.L && _pos.x > 0) {
 				// Can go left
-				const auto path = recurserLongest(_pos + ze::Vector2i(-1, 0), _path + 'L', _bestPathLength);
+				const auto path = recurserLongest(_pos + Vector2i(-1, 0), _path + 'L', _bestPathLength);
 				if (!path.empty()) {
 					if (path.size() > _bestPathLength) {
 						_bestPathLength = path.size();
@@ -167,10 +167,10 @@ namespace TwentySixteen {
 		};
 
 		if (_shortest) {
-			return recurserShortest(ze::Vector2i(0, 0), "", std::numeric_limits<unsigned>::max());
+			return recurserShortest(Vector2i(0, 0), "", std::numeric_limits<unsigned>::max());
 		}
 		else {
-			return recurserLongest(ze::Vector2i(0, 0), "", std::numeric_limits<unsigned>::min());
+			return recurserLongest(Vector2i(0, 0), "", std::numeric_limits<unsigned>::min());
 		}
 	}
 }

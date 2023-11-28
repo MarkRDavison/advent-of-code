@@ -1,6 +1,6 @@
 #include <2021/Day20Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
-#include <zeno-engine/Core/Vector2.hpp>
+#include <Core/StringExtensions.hpp>
+#include <Core/Vector2.hpp>
 #include <cassert>
 #include <array>
 
@@ -23,7 +23,7 @@ namespace TwentyTwentyOne {
 
 
 	void Day20Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByLines(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
+		setInputLines(StringExtensions::splitStringByLines(StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
 	}
 
 	void Day20Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {

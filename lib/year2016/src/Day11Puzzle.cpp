@@ -1,5 +1,5 @@
 #include <2016/Day11Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <unordered_map>
 
 namespace TwentySixteen {
@@ -14,7 +14,7 @@ namespace TwentySixteen {
 
 
 	void Day11Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day11Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -170,7 +170,7 @@ namespace TwentySixteen {
 
 		for (unsigned i = 0; i < 4; ++i) {
 			const int floor = (int)(i)+1;
-			const auto& splits = ze::StringExtensions::splitStringByDelimeter(_input[i], " -.,");
+			const auto& splits = StringExtensions::splitStringByDelimeter(_input[i], " -.,");
 			for (unsigned j = 0; j < splits.size() - 1; ++j) {
 				if (splits[j + 1] == "generator") {
 					generatorFloors[splits[j]] = floor;

@@ -1,6 +1,6 @@
 #include <2022/Day12Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
-#include <zeno-engine/Core/Vector2.hpp>
+#include <Core/StringExtensions.hpp>
+#include <Core/Vector2.hpp>
 #include <Core/Pathfinding.hpp>
 #include <cassert>
 #include <unordered_set>
@@ -8,7 +8,7 @@
 namespace TwentyTwentyTwo {
 	template<typename T>
 	struct vector2_hash_fxn_TODO_CORE_ME {
-		std::size_t operator()(const ze::Vector2<T>& _vec) const {
+		std::size_t operator()(const Vector2<T>& _vec) const {
 			return  std::hash<T>()(_vec.x) ^ std::hash<T>()(_vec.y);
 		}
 	};
@@ -19,7 +19,7 @@ namespace TwentyTwentyTwo {
 
 
 	void Day12Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day12Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -46,10 +46,10 @@ namespace TwentyTwentyTwo {
 	std::pair<std::string, std::string> Day12Puzzle::fastSolve() {
 		core::CartesianNetwork<HillCell> network;
 
-		ze::Vector2i start;
-		ze::Vector2i target;
+		Vector2i start;
+		Vector2i target;
 
-		std::unordered_set<ze::Vector2i, vector2_hash_fxn_TODO_CORE_ME<int>> possibleStartingPoints;
+		std::unordered_set<Vector2i, vector2_hash_fxn_TODO_CORE_ME<int>> possibleStartingPoints;
 
 		network.cg.cells.resize(m_InputLines.size());
 
@@ -71,7 +71,7 @@ namespace TwentyTwentyTwo {
 
 				if (val == 'a')
 				{
-					possibleStartingPoints.insert(ze::Vector2i(x, y));
+					possibleStartingPoints.insert(Vector2i(x, y));
 				}
 
 				auto& cell = network.cg.cells[y][x];
@@ -82,7 +82,7 @@ namespace TwentyTwentyTwo {
 		}
 
 		const auto& path = network.performAStarSearch(start, target);
-		std::vector<ze::Vector2i> pathPart2;
+		std::vector<Vector2i> pathPart2;
 		int minSize = path.size() - 1;
 
 		for (auto starting : possibleStartingPoints)

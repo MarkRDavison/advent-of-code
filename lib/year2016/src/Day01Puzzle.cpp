@@ -1,13 +1,13 @@
 #include <2016/Day01Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
-#include <zeno-engine/Core/VectorMath.hpp>
+#include <Core/StringExtensions.hpp>
+#include <Core/VectorMath.hpp>
 #include <Core/Orientation.hpp>
 #include <unordered_set>
 
 namespace std {
 	template<>
-	struct hash<ze::Vector2i> {
-		size_t operator()(const ze::Vector2i& obj) const {
+	struct hash<Vector2i> {
+		size_t operator()(const Vector2i& obj) const {
 			return std::hash<int>()(obj.x) ^ std::hash<int>()(obj.y);
 		}
 	};
@@ -24,7 +24,7 @@ namespace TwentySixteen {
 
 
 	void Day01Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day01Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -38,11 +38,11 @@ namespace TwentySixteen {
 
 	std::pair<int, int> Day01Puzzle::getAnswers(const std::string& _input) {
 		int part2 = -1;
-		std::unordered_set<ze::Vector2i> visited;
+		std::unordered_set<Vector2i> visited;
 		core::Orientation orientation{ core::Orientation::Up };
-		ze::Vector2i position;
+		Vector2i position;
 		visited.insert(position);
-		for (const auto& s : ze::StringExtensions::splitStringByDelimeter(_input, ", ")) {
+		for (const auto& s : StringExtensions::splitStringByDelimeter(_input, ", ")) {
 			orientation = core::OrientationHelper::turn(orientation, s[0] == 'R'
 				? core::Orientation::Right
 				: core::Orientation::Left);

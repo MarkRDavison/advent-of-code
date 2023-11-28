@@ -1,6 +1,6 @@
 #include <2021/Day11Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
-#include <zeno-engine/Core/Vector2.hpp>
+#include <Core/StringExtensions.hpp>
+#include <Core/Vector2.hpp>
 #include <queue>
 
 namespace TwentyTwentyOne {
@@ -11,7 +11,7 @@ namespace TwentyTwentyOne {
 
 
 	void Day11Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day11Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -52,7 +52,7 @@ namespace TwentyTwentyOne {
 	
 	long Day11Puzzle::iterate(core::Region<Octopus>& _region) {
 		long flashCount = 0;
-		std::queue<ze::Vector2i> flashed;
+		std::queue<Vector2i> flashed;
 		for (int y = 0; y < 10; ++y) {
 			for (int x = 0; x < 10; ++x) {
 				auto& o = _region.getCell(x, y);

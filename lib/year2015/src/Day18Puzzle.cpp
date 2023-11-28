@@ -1,5 +1,5 @@
 #include <2015/Day18Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 
 namespace TwentyFifteen {
 	
@@ -13,7 +13,7 @@ namespace TwentyFifteen {
 
 
 	void Day18Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day18Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -64,7 +64,7 @@ namespace TwentyFifteen {
 						cell.nextOn = true;
 					}
 					else {
-						const auto numNeighboursOn = neighboursOn(_region, ze::Vector2i(x, y));
+						const auto numNeighboursOn = neighboursOn(_region, Vector2i(x, y));
 						if (cell.on) {
 							cell.nextOn = numNeighboursOn == 2 || numNeighboursOn == 3;
 						} else {
@@ -93,12 +93,12 @@ namespace TwentyFifteen {
 		}
 		return lightsOn;
 	}
-	int Day18Puzzle::neighboursOn(const core::Region<LightCell>& _region, const ze::Vector2i& _coord) {
+	int Day18Puzzle::neighboursOn(const core::Region<LightCell>& _region, const Vector2i& _coord) {
 		int on = 0;
 		for (int y = -1; y <= +1; ++y) {
 			for (int x = -1; x <= +1; ++x) {
 				if (x == 0 && y == 0) { continue; }
-				const auto absoluteCoord = _coord + ze::Vector2i(x, y);
+				const auto absoluteCoord = _coord + Vector2i(x, y);
 				if (absoluteCoord.x < _region.minX ||
 					absoluteCoord.y < _region.minY ||
 					absoluteCoord.x > _region.maxX ||

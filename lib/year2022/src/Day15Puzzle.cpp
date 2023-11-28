@@ -1,7 +1,7 @@
 #include <2022/Day15Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
-#include <zeno-engine/Core/Vector2.hpp>
-#include <zeno-engine/Core/Clock.hpp>
+#include <Core/StringExtensions.hpp>
+#include <Core/Vector2.hpp>
+#include <Core/Clock.hpp>
 #include <Core/Region.hpp>
 #include <unordered_map>
 #include <cassert>
@@ -9,7 +9,7 @@
 namespace TwentyTwentyTwo {
 	template<typename T>
 	struct vector2_hash_fxn_TODO_CORE_ME2 {
-		std::size_t operator()(const ze::Vector2<T>& _vec) const {
+		std::size_t operator()(const Vector2<T>& _vec) const {
 			return  std::hash<T>()(_vec.x) ^ std::hash<T>()(_vec.y);
 		}
 	};
@@ -20,20 +20,20 @@ namespace TwentyTwentyTwo {
 
 
 	void Day15Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day15Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
 		m_InputLines = std::vector<std::string>(_inputLines);
 	}
 
-	using SensorBeacons = std::unordered_map<ze::Vector2i, ze::Vector2i, vector2_hash_fxn_TODO_CORE_ME2<int>>;
+	using SensorBeacons = std::unordered_map<Vector2i, Vector2i, vector2_hash_fxn_TODO_CORE_ME2<int>>;
 
 	struct BeaconCell {
 		char c{ '.' };
 	};
 
-	void applySensorInfoBeacon(core::Region<BeaconCell>& _region, const ze::Vector2i& _sensor, const ze::Vector2i& _beacon, int _targetRow)
+	void applySensorInfoBeacon(core::Region<BeaconCell>& _region, const Vector2i& _sensor, const Vector2i& _beacon, int _targetRow)
 	{
 		const auto manhatten = std::abs(_sensor.x - _beacon.x) + std::abs(_sensor.y - _beacon.y);
 
@@ -52,7 +52,7 @@ namespace TwentyTwentyTwo {
 
 	}
 
-	bool isValidDistressLocation(SensorBeacons& _sensorBeacons, const ze::Vector2i& _possible)
+	bool isValidDistressLocation(SensorBeacons& _sensorBeacons, const Vector2i& _possible)
 	{
 		bool possible = true;
 		for (const auto& [sensor, beacon] : _sensorBeacons)
@@ -80,10 +80,10 @@ namespace TwentyTwentyTwo {
 
 		for (const auto& l : m_InputLines)
 		{
-			const auto& p = ze::StringExtensions::splitStringByDelimeter(l, " =,:");
+			const auto& p = StringExtensions::splitStringByDelimeter(l, " =,:");
 
-			const auto sensor = ze::Vector2i(std::stoi(p[3]), std::stoi(p[5]));
-			const auto beacon = ze::Vector2i(std::stoi(p[11]), std::stoi(p[13]));
+			const auto sensor = Vector2i(std::stoi(p[3]), std::stoi(p[5]));
+			const auto beacon = Vector2i(std::stoi(p[11]), std::stoi(p[13]));
 
 			region.getCell(sensor.x, sensor.y).c = 'S';
 			region.getCell(beacon.x, beacon.y).c = 'B';
@@ -107,10 +107,10 @@ namespace TwentyTwentyTwo {
 			}
 		}
 
-		const ze::Vector2i minDistressLocation = { 0, 0 };
-		const ze::Vector2i maxDistressLocation = { _maxDistressLocation, _maxDistressLocation };
+		const Vector2i minDistressLocation = { 0, 0 };
+		const Vector2i maxDistressLocation = { _maxDistressLocation, _maxDistressLocation };
 
-		ze::Vector2i loc;
+		Vector2i loc;
 		bool found = false;
 
 		for (const auto& [sensor, beacon] : sensors)

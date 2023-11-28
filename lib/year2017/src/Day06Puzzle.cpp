@@ -1,5 +1,5 @@
 #include <2017/Day06Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 
 #include <unordered_set>
 #include <unordered_map>
@@ -16,7 +16,7 @@ namespace TwentySeventeen {
 
 
 	void Day06Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day06Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -35,7 +35,7 @@ namespace TwentySeventeen {
 	std::pair<std::string, std::string> Day06Puzzle::fastSolve() {
 		std::vector<int> blocks;
 
-		for (const auto& part : ze::StringExtensions::splitStringByDelimeter(m_InputLines[0], " \t")) {
+		for (const auto& part : StringExtensions::splitStringByDelimeter(m_InputLines[0], " \t")) {
 			blocks.push_back(std::stoi(part));
 		}
 

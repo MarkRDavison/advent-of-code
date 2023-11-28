@@ -1,6 +1,6 @@
 #include <2017/Day20Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
-#include <zeno-engine/Core/Vector3.hpp>
+#include <Core/StringExtensions.hpp>
+#include <Core/Vector3.hpp>
 #include <unordered_map>
 #include <algorithm>
 
@@ -8,7 +8,7 @@ namespace TwentySeventeen {
 
 	template<typename T>
 	struct vector3_hash_fxn {
-		std::size_t operator()(const ze::Vector3<T>& _vec) const {
+		std::size_t operator()(const Vector3<T>& _vec) const {
 			return  std::hash<T>()(_vec.x) ^ std::hash<T>()(_vec.y) ^ std::hash<T>()(_vec.z);
 		}
 	};
@@ -23,7 +23,7 @@ namespace TwentySeventeen {
 
 
 	void Day20Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day20Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -31,22 +31,22 @@ namespace TwentySeventeen {
 	}
 
 	struct Particle {
-		ze::Vector3i p;
-		ze::Vector3i v;
-		ze::Vector3i a;
+		Vector3i p;
+		Vector3i v;
+		Vector3i a;
 	};
 
 	std::pair<std::string, std::string> Day20Puzzle::fastSolve() {
 		std::vector<Particle> particles;
 
 		for (const auto& l : m_InputLines) {
-			const auto& parts = ze::StringExtensions::splitStringByDelimeter(l, "=<>,");
+			const auto& parts = StringExtensions::splitStringByDelimeter(l, "=<>,");
 
 			auto& particle = particles.emplace_back();
 
-			particle.p = ze::Vector3i(std::stoi(parts[1]), std::stoi(parts[2]), std::stoi(parts[3]));
-			particle.v = ze::Vector3i(std::stoi(parts[5]), std::stoi(parts[6]), std::stoi(parts[7]));
-			particle.a = ze::Vector3i(std::stoi(parts[9]), std::stoi(parts[10]), std::stoi(parts[11]));
+			particle.p = Vector3i(std::stoi(parts[1]), std::stoi(parts[2]), std::stoi(parts[3]));
+			particle.v = Vector3i(std::stoi(parts[5]), std::stoi(parts[6]), std::stoi(parts[7]));
+			particle.a = Vector3i(std::stoi(parts[9]), std::stoi(parts[10]), std::stoi(parts[11]));
 		}
 
 		std::size_t part1 = 0;
@@ -65,7 +65,7 @@ namespace TwentySeventeen {
 		std::size_t collisionThreshold = 10;
 		i = 0;
 		while (i < collisionThreshold) {
-			std::unordered_map<ze::Vector3i, int, vector3_hash_fxn<int>> positions;
+			std::unordered_map<Vector3i, int, vector3_hash_fxn<int>> positions;
 			for (auto& p : particles) {
 				p.v += p.a;
 				p.p += p.v;

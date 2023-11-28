@@ -1,6 +1,6 @@
 #include <2017/Day19Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
-#include <zeno-engine/Core/Vector2.hpp>
+#include <Core/StringExtensions.hpp>
+#include <Core/Vector2.hpp>
 #include <Core/Region.hpp>
 
 namespace TwentySeventeen {
@@ -15,7 +15,7 @@ namespace TwentySeventeen {
 
 
 	void Day19Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day19Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -26,7 +26,7 @@ namespace TwentySeventeen {
 
 		core::Region<char> map;
 		
-		ze::Vector2i startCoords;
+		Vector2i startCoords;
 
 		for (std::size_t y = 0; y < m_InputLines.size(); ++y) {
 			for (std::size_t x = 0; x < m_InputLines[y].size(); ++x) {
@@ -37,8 +37,8 @@ namespace TwentySeventeen {
 			}
 		}
 
-		ze::Vector2i curr = startCoords;
-		ze::Vector2i prev = { curr.x, curr.y - 1};
+		Vector2i curr = startCoords;
+		Vector2i prev = { curr.x, curr.y - 1};
 		map.getCell(prev.x, prev.y) = '|';
 
 		std::string part1;
@@ -48,12 +48,12 @@ namespace TwentySeventeen {
 			const auto& p = map.getCell(prev.x, prev.y);
 			const auto& c = map.getCell(curr.x, curr.y);
 
-			ze::Vector2i next = curr;
+			Vector2i next = curr;
 			if (c == '+') {
-				ze::Vector2i l{ curr.x - 1, curr.y };
-				ze::Vector2i r{ curr.x + 1, curr.y };
-				ze::Vector2i u{ curr.x, curr.y - 1 };
-				ze::Vector2i d{ curr.x, curr.y + 1 };
+				Vector2i l{ curr.x - 1, curr.y };
+				Vector2i r{ curr.x + 1, curr.y };
+				Vector2i u{ curr.x, curr.y - 1 };
+				Vector2i d{ curr.x, curr.y + 1 };
 
 				if (l != prev) {
 					const auto nc = map.getCell(l.x, l.y);

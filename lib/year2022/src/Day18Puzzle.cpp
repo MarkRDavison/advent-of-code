@@ -1,6 +1,6 @@
 #include <2022/Day18Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
-#include <zeno-engine/Core/Vector4.hpp>
+#include <Core/StringExtensions.hpp>
+#include <Core/Vector4.hpp>
 #include <cassert>
 #include <queue>
 #include <unordered_set>
@@ -10,14 +10,14 @@ namespace TwentyTwentyTwo {
 
 	template<typename T>
 	struct vector3_hash_fxn_TODO_CORE_ME3 {
-		std::size_t operator()(const ze::Vector3<T>& _vec) const {
+		std::size_t operator()(const Vector3<T>& _vec) const {
 			return  std::hash<T>()(_vec.x) ^ std::hash<T>()(_vec.y) ^ std::hash<T>()(_vec.z);
 		}
 	};
 
 	template<typename T>
 	struct vector4_hash_fxn_TODO_CORE_ME3 {
-		std::size_t operator()(const ze::Vector4<T>& _vec) const {
+		std::size_t operator()(const Vector4<T>& _vec) const {
 			return  std::hash<T>()(_vec.x) ^ std::hash<T>()(_vec.y) ^ std::hash<T>()(_vec.z) ^ std::hash<T>()(_vec.w);
 		}
 	};
@@ -28,29 +28,29 @@ namespace TwentyTwentyTwo {
 
 
 	void Day18Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day18Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
 		m_InputLines = std::vector<std::string>(_inputLines);
 	}
 
-	using CoordSet = std::unordered_set<ze::Vector3i, vector3_hash_fxn_TODO_CORE_ME3<int>>;
-	using CoordSet4 = std::unordered_set<ze::Vector4i, vector4_hash_fxn_TODO_CORE_ME3<int>>;
+	using CoordSet = std::unordered_set<Vector3i, vector3_hash_fxn_TODO_CORE_ME3<int>>;
+	using CoordSet4 = std::unordered_set<Vector4i, vector4_hash_fxn_TODO_CORE_ME3<int>>;
 
-	std::vector<ze::Vector3i> neighbours(const ze::Vector3i& _c)
+	std::vector<Vector3i> neighbours(const Vector3i& _c)
 	{
-		std::vector<ze::Vector3i> n;
-		n.push_back(_c + ze::Vector3i(+1, +0, +0));
-		n.push_back(_c + ze::Vector3i(-1, +0, +0));
-		n.push_back(_c + ze::Vector3i(+0, +1, +0));
-		n.push_back(_c + ze::Vector3i(+0, -1, +0));
-		n.push_back(_c + ze::Vector3i(+0, +0, +1));
-		n.push_back(_c + ze::Vector3i(+0, +0, -1));
+		std::vector<Vector3i> n;
+		n.push_back(_c + Vector3i(+1, +0, +0));
+		n.push_back(_c + Vector3i(-1, +0, +0));
+		n.push_back(_c + Vector3i(+0, +1, +0));
+		n.push_back(_c + Vector3i(+0, -1, +0));
+		n.push_back(_c + Vector3i(+0, +0, +1));
+		n.push_back(_c + Vector3i(+0, +0, -1));
 		return n;
 	}
 
-	bool inRange(const ze::Vector3i& _c, const ze::Vector3i& _min, const ze::Vector3i& _max)
+	bool inRange(const Vector3i& _c, const Vector3i& _min, const Vector3i& _max)
 	{
 		return !(
 			_c.x < _min.x || _max.x < _c.x ||
@@ -63,16 +63,16 @@ namespace TwentyTwentyTwo {
 
 		std::unordered_map<std::string, int> faces;
 		CoordSet coordsSet;
-		std::vector<ze::Vector3i> coords;
+		std::vector<Vector3i> coords;
 
-		ze::Vector3i min;
-		ze::Vector3i max;
+		Vector3i min;
+		Vector3i max;
 
 		for (const auto& l : m_InputLines)
 		{
-			const auto& p = ze::StringExtensions::splitStringByDelimeter(l, ",");
+			const auto& p = StringExtensions::splitStringByDelimeter(l, ",");
 
-			ze::Vector3i coord = {
+			Vector3i coord = {
 				std::stoi(p[0]),
 				std::stoi(p[1]),
 				std::stoi(p[2])
@@ -139,13 +139,13 @@ namespace TwentyTwentyTwo {
 
 		int part2 = 0;
 
-		ze::Vector3i start = { min.x - 1, min.y - 1, min.z - 1 };
+		Vector3i start = { min.x - 1, min.y - 1, min.z - 1 };
 
-		ze::Vector3i minimumRange = min - ze::Vector3i(MARGIN, MARGIN, MARGIN);
-		ze::Vector3i maximumRange = max + ze::Vector3i(MARGIN, MARGIN, MARGIN);
+		Vector3i minimumRange = min - Vector3i(MARGIN, MARGIN, MARGIN);
+		Vector3i maximumRange = max + Vector3i(MARGIN, MARGIN, MARGIN);
 
 		CoordSet seen;
-		std::queue<ze::Vector3i> queue;
+		std::queue<Vector3i> queue;
 		queue.push(start);
 
 		CoordSet4 surface;
@@ -155,10 +155,10 @@ namespace TwentyTwentyTwo {
 			queue.pop();
 
 			{	// TOP
-				const auto n = current + ze::Vector3i(+0, +1, +0);
+				const auto n = current + Vector3i(+0, +1, +0);
 				if (coordsSet.contains(n))
 				{
-					surface.insert(ze::Vector4i(n, 0));
+					surface.insert(Vector4i(n, 0));
 				}
 				else {
 					if (!seen.contains(n) && inRange(n, minimumRange, maximumRange))
@@ -169,10 +169,10 @@ namespace TwentyTwentyTwo {
 				}
 			}
 			{	// BOTTOM
-				const auto n = current + ze::Vector3i(+0, -1, +0);
+				const auto n = current + Vector3i(+0, -1, +0);
 				if (coordsSet.contains(n))
 				{
-					surface.insert(ze::Vector4i(n, 1));
+					surface.insert(Vector4i(n, 1));
 				}
 				else {
 					if (!seen.contains(n) && inRange(n, minimumRange, maximumRange))
@@ -183,10 +183,10 @@ namespace TwentyTwentyTwo {
 				}
 			}
 			{	// LEFT
-				const auto n = current + ze::Vector3i(-1, +0, +0);
+				const auto n = current + Vector3i(-1, +0, +0);
 				if (coordsSet.contains(n))
 				{
-					surface.insert(ze::Vector4i(n, 2));
+					surface.insert(Vector4i(n, 2));
 				}
 				else {
 					if (!seen.contains(n) && inRange(n, minimumRange, maximumRange))
@@ -197,10 +197,10 @@ namespace TwentyTwentyTwo {
 				}
 			}
 			{	// RIGHT
-				const auto n = current + ze::Vector3i(+1, +0, +0);
+				const auto n = current + Vector3i(+1, +0, +0);
 				if (coordsSet.contains(n))
 				{
-					surface.insert(ze::Vector4i(n, 3));
+					surface.insert(Vector4i(n, 3));
 				}
 				else {
 					if (!seen.contains(n) && inRange(n, minimumRange, maximumRange))
@@ -211,10 +211,10 @@ namespace TwentyTwentyTwo {
 				}
 			}
 			{	// IN
-				const auto n = current + ze::Vector3i(+0, +0, -1);
+				const auto n = current + Vector3i(+0, +0, -1);
 				if (coordsSet.contains(n))
 				{
-					surface.insert(ze::Vector4i(n, 4));
+					surface.insert(Vector4i(n, 4));
 				}
 				else {
 					if (!seen.contains(n) && inRange(n, minimumRange, maximumRange))
@@ -225,10 +225,10 @@ namespace TwentyTwentyTwo {
 				}
 			}
 			{	// OUT
-				const auto n = current + ze::Vector3i(+0, +0, +1);
+				const auto n = current + Vector3i(+0, +0, +1);
 				if (coordsSet.contains(n))
 				{
-					surface.insert(ze::Vector4i(n, 5));
+					surface.insert(Vector4i(n, 5));
 				}
 				else {
 					if (!seen.contains(n) && inRange(n, minimumRange, maximumRange))

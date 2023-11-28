@@ -13,17 +13,17 @@ namespace TwentyFifteen {
 		SECTION("Parsing on instruction works") {
 			const auto p = parsed[0];
 			REQUIRE(Day06InputLine::Action::On == p.action);
-			REQUIRE(ze::IntRect(0, 0, 1000, 1000) == p.bounds);
+			REQUIRE(IntRect(0, 0, 1000, 1000) == p.bounds);
 		}
 		SECTION("Parsing toggle instruction works") {
 			const auto p = parsed[1];
 			REQUIRE(Day06InputLine::Action::Toggle == p.action);
-			REQUIRE(ze::IntRect(0, 0, 1000, 1) == p.bounds);
+			REQUIRE(IntRect(0, 0, 1000, 1) == p.bounds);
 		}
 		SECTION("Parsing off instruction works") {
 			const auto p = parsed[2];
 			REQUIRE(Day06InputLine::Action::Off == p.action);
-			REQUIRE(ze::IntRect(499, 499, 2, 2) == p.bounds);
+			REQUIRE(IntRect(499, 499, 2, 2) == p.bounds);
 		}
 	}
 
@@ -34,13 +34,13 @@ namespace TwentyFifteen {
 
 		Day06Puzzle::applyLinePart1<size>(
 			grid,
-			Day06InputLine(ze::IntRect(0, 0, 10, 5), Day06InputLine::Action::On));
+			Day06InputLine(IntRect(0, 0, 10, 5), Day06InputLine::Action::On));
 		Day06Puzzle::applyLinePart1<size>(
 			grid,
-			Day06InputLine(ze::IntRect(0, 5, 10, 5), Day06InputLine::Action::Toggle));
+			Day06InputLine(IntRect(0, 5, 10, 5), Day06InputLine::Action::Toggle));
 		Day06Puzzle::applyLinePart1<size>(
 			grid,
-			Day06InputLine(ze::IntRect(0, 5, 5, 5), Day06InputLine::Action::Off));
+			Day06InputLine(IntRect(0, 5, 5, 5), Day06InputLine::Action::Off));
 
 		int setLights = 0;
 		for (auto y = 0; y < size; ++y) {
@@ -59,28 +59,28 @@ namespace TwentyFifteen {
 
 		Day06Puzzle::applyLinePart2<size>(
 			grid,
-			Day06InputLine(ze::IntRect(0, 0, 10, 5), Day06InputLine::Action::On));
+			Day06InputLine(IntRect(0, 0, 10, 5), Day06InputLine::Action::On));
 		Day06Puzzle::applyLinePart2<size>(
 			grid,
-			Day06InputLine(ze::IntRect(0, 5, 10, 5), Day06InputLine::Action::Toggle));
+			Day06InputLine(IntRect(0, 5, 10, 5), Day06InputLine::Action::Toggle));
 		Day06Puzzle::applyLinePart2<size>(
 			grid,
-			Day06InputLine(ze::IntRect(0, 5, 5, 5), Day06InputLine::Action::Off));
+			Day06InputLine(IntRect(0, 5, 5, 5), Day06InputLine::Action::Off));
 		Day06Puzzle::applyLinePart2<size>(
 			grid,
-			Day06InputLine(ze::IntRect(0, 0, 1, 1), Day06InputLine::Action::Off));
+			Day06InputLine(IntRect(0, 0, 1, 1), Day06InputLine::Action::Off));
 		Day06Puzzle::applyLinePart2<size>(
 			grid,
-			Day06InputLine(ze::IntRect(0, 0, 1, 1), Day06InputLine::Action::Off));
+			Day06InputLine(IntRect(0, 0, 1, 1), Day06InputLine::Action::Off));
 		Day06Puzzle::applyLinePart2<size>(
 			grid,
-			Day06InputLine(ze::IntRect(0, 0, 1, 1), Day06InputLine::Action::Off));
+			Day06InputLine(IntRect(0, 0, 1, 1), Day06InputLine::Action::Off));
 		Day06Puzzle::applyLinePart2<size>(
 			grid,
-			Day06InputLine(ze::IntRect(0, 0, 1, 1), Day06InputLine::Action::Off));
+			Day06InputLine(IntRect(0, 0, 1, 1), Day06InputLine::Action::Off));
 		Day06Puzzle::applyLinePart2<size>(
 			grid,
-			Day06InputLine(ze::IntRect(0, 0, 1, 1), Day06InputLine::Action::Off));
+			Day06InputLine(IntRect(0, 0, 1, 1), Day06InputLine::Action::Off));
 
 		int setLights = 0;
 		for (auto y = 0; y < size; ++y) {

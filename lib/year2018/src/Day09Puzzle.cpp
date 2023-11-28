@@ -1,5 +1,5 @@
 #include <2018/Day09Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <unordered_map>
 #include <algorithm>
 
@@ -15,7 +15,7 @@ namespace TwentyEighteen {
 
 
 	void Day09Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day09Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -23,7 +23,7 @@ namespace TwentyEighteen {
 	}
 
 	std::pair<std::string, std::string> Day09Puzzle::fastSolve() {
-		const auto& p = ze::StringExtensions::splitStringByDelimeter(m_InputLines[0], " ");
+		const auto& p = StringExtensions::splitStringByDelimeter(m_InputLines[0], " ");
 
 		const int players = std::stoi(p[0]);
 		const int marbles = std::stoi(p[6]);

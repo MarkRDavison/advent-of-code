@@ -11,13 +11,13 @@ namespace TwentyFifteen {
 	class Day03Puzzle : public core::PuzzleBase {
 		template<typename T>
 		struct vector2_hash_fxn {
-			std::size_t operator()(const ze::Vector2<T>& _vec) const {
+			std::size_t operator()(const Vector2<T>& _vec) const {
 				return  std::hash<T>()(_vec.x) ^ std::hash<T>()(_vec.y);
 			}
 		};
 	public:
 
-		using VisitMap = std::unordered_map<ze::Vector2i, int, vector2_hash_fxn<int>>;
+		using VisitMap = std::unordered_map<Vector2i, int, vector2_hash_fxn<int>>;
 		Day03Puzzle();
 		~Day03Puzzle() override;
 

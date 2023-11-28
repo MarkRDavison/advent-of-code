@@ -21,26 +21,26 @@ namespace TwentyFifteen {
 			const auto& map = Day03Puzzle::visitLocations(directions[0], 1);
 
 			REQUIRE(2 == map.size());
-			REQUIRE(1 == map.at(ze::Vector2i(0, 0)));
-			REQUIRE(1 == map.at(ze::Vector2i(1, 0)));
+			REQUIRE(1 == map.at(Vector2i(0, 0)));
+			REQUIRE(1 == map.at(Vector2i(1, 0)));
 		}
 
 		SECTION("Visiting " + directions.at(1) + " works") {
 			const auto& map = Day03Puzzle::visitLocations(directions[1], 1);
 
 			REQUIRE(4 == map.size());
-			REQUIRE(2 == map.at(ze::Vector2i(0, 0)));
-			REQUIRE(1 == map.at(ze::Vector2i(0, 1)));
-			REQUIRE(1 == map.at(ze::Vector2i(1, 1)));
-			REQUIRE(1 == map.at(ze::Vector2i(1, 0)));
+			REQUIRE(2 == map.at(Vector2i(0, 0)));
+			REQUIRE(1 == map.at(Vector2i(0, 1)));
+			REQUIRE(1 == map.at(Vector2i(1, 1)));
+			REQUIRE(1 == map.at(Vector2i(1, 0)));
 		}
 
 		SECTION("Visiting " + directions.at(2) + " works") {
 			const auto& map = Day03Puzzle::visitLocations(directions[2], 1);
 
 			REQUIRE(2 == map.size());
-			REQUIRE(6 == map.at(ze::Vector2i(0, 0)));
-			REQUIRE(5 == map.at(ze::Vector2i(0, 1)));
+			REQUIRE(6 == map.at(Vector2i(0, 0)));
+			REQUIRE(5 == map.at(Vector2i(0, 1)));
 		}
 	}
 

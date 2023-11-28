@@ -1,5 +1,5 @@
 #include <2017/Day25Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <unordered_map>
 
 namespace TwentySeventeen {
@@ -16,7 +16,7 @@ namespace TwentySeventeen {
 
 
 	void Day25Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByLines(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
+		setInputLines(StringExtensions::splitStringByLines(StringExtensions::loadFileToString(_initialisationInfo.parameters[0])));
 	}
 
 	void Day25Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -35,23 +35,23 @@ namespace TwentySeventeen {
 
 	std::pair<std::string, std::string> Day25Puzzle::fastSolve() {
 
-		const auto startState = ze::StringExtensions::splitStringByDelimeter(m_InputLines[0], " .")[3][0];
+		const auto startState = StringExtensions::splitStringByDelimeter(m_InputLines[0], " .")[3][0];
 
-		const auto checkSumStep = (ChecksumNumber)std::stoull(ze::StringExtensions::splitStringByDelimeter(m_InputLines[1], " .")[5]);
+		const auto checkSumStep = (ChecksumNumber)std::stoull(StringExtensions::splitStringByDelimeter(m_InputLines[1], " .")[5]);
 
 		std::unordered_map<char, Process> processes;
 		std::unordered_map<ChecksumNumber, ChecksumNumber> tape;
 
 		for (std::size_t i = 3; i < m_InputLines.size(); i += 10) {
-			const auto state = ze::StringExtensions::splitStringByDelimeter(m_InputLines[i + 0], " .:")[2][0];
+			const auto state = StringExtensions::splitStringByDelimeter(m_InputLines[i + 0], " .:")[2][0];
 
-			const auto writeIfZero = ze::StringExtensions::splitStringByDelimeter(m_InputLines[i + 2], " .:-")[3];
-			const auto moveOffsetIfZero = ze::StringExtensions::splitStringByDelimeter(m_InputLines[i + 3], " .:-")[5] == "left" ? -1 : +1;
-			const auto nextStateIfZero = ze::StringExtensions::splitStringByDelimeter(m_InputLines[i + 4], " .:-")[3][0];
+			const auto writeIfZero = StringExtensions::splitStringByDelimeter(m_InputLines[i + 2], " .:-")[3];
+			const auto moveOffsetIfZero = StringExtensions::splitStringByDelimeter(m_InputLines[i + 3], " .:-")[5] == "left" ? -1 : +1;
+			const auto nextStateIfZero = StringExtensions::splitStringByDelimeter(m_InputLines[i + 4], " .:-")[3][0];
 
-			const auto writeIfOne = ze::StringExtensions::splitStringByDelimeter(m_InputLines[i + 6], " .:-")[3];
-			const auto moveOffsetIfOne = ze::StringExtensions::splitStringByDelimeter(m_InputLines[i + 7], " .:-")[5] == "left" ? -1 : +1;
-			const auto nextStateIfOne = ze::StringExtensions::splitStringByDelimeter(m_InputLines[i + 8], " .:-")[3][0];
+			const auto writeIfOne = StringExtensions::splitStringByDelimeter(m_InputLines[i + 6], " .:-")[3];
+			const auto moveOffsetIfOne = StringExtensions::splitStringByDelimeter(m_InputLines[i + 7], " .:-")[5] == "left" ? -1 : +1;
+			const auto nextStateIfOne = StringExtensions::splitStringByDelimeter(m_InputLines[i + 8], " .:-")[3][0];
 
 			auto& currentProcess = processes[state];
 			currentProcess.zero_writeValue = std::stoll(writeIfZero);

@@ -1,5 +1,5 @@
 #include <2015/Day21Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <unordered_map>
 #include <algorithm>
 #include <numeric>
@@ -18,7 +18,7 @@ namespace TwentyFifteen {
 
 
 	void Day21Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day21Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -54,9 +54,9 @@ namespace TwentyFifteen {
 		for (const auto& i : rings) { items.push_back(i); }		
 
 		CharacterStats boss;
-		boss.hp = std::stoi(ze::StringExtensions::splitStringByDelimeter(m_InputLines[0], " ").back());
-		boss.damage = std::stoi(ze::StringExtensions::splitStringByDelimeter(m_InputLines[1], " ").back());
-		boss.armour = std::stoi(ze::StringExtensions::splitStringByDelimeter(m_InputLines[2], " ").back());
+		boss.hp = std::stoi(StringExtensions::splitStringByDelimeter(m_InputLines[0], " ").back());
+		boss.damage = std::stoi(StringExtensions::splitStringByDelimeter(m_InputLines[1], " ").back());
+		boss.armour = std::stoi(StringExtensions::splitStringByDelimeter(m_InputLines[2], " ").back());
 		CharacterStats player{ 100,0,0 };
 
 		const auto& result = findBestBattles(boss, player, items);

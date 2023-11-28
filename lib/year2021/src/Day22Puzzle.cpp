@@ -1,5 +1,5 @@
 #include <2021/Day22Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <cassert>
 #include <algorithm>
 #include <unordered_set>
@@ -13,7 +13,7 @@ namespace TwentyTwentyOne {
 		return os;
 	}
 	template <typename T>
-	std::ostream& operator<<(std::ostream& os, const ze::Vector3<T>& _vec) {
+	std::ostream& operator<<(std::ostream& os, const Vector3<T>& _vec) {
 		os << "(" << _vec.x << ", " << _vec.y << ", " << _vec.z << ")";
 		return os;
 	}
@@ -32,7 +32,7 @@ namespace TwentyTwentyOne {
 
 
 	void Day22Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day22Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -126,7 +126,7 @@ namespace TwentyTwentyOne {
 		std::vector<Cube> parsed;
 
 		for (const auto& i : _inputLines) {
-			const auto& parts = ze::StringExtensions::splitStringByDelimeter(i, " =.,");
+			const auto& parts = StringExtensions::splitStringByDelimeter(i, " =.,");
 			auto& input = parsed.emplace_back();
 			assert(parts.size() == 10);
 			

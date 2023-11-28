@@ -1,5 +1,5 @@
 #include <2016/Day21Puzzle.hpp>
-#include <zeno-engine/Utility/StringExtensions.hpp>
+#include <Core/StringExtensions.hpp>
 #include <algorithm>
 #include <cassert>
 
@@ -15,7 +15,7 @@ namespace TwentySixteen {
 
 
 	void Day21Puzzle::initialise(const core::InitialisationInfo& _initialisationInfo) {
-		setInputLines(ze::StringExtensions::splitStringByDelimeter(ze::StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
+		setInputLines(StringExtensions::splitStringByDelimeter(StringExtensions::loadFileToString(_initialisationInfo.parameters[0]), "\n"));
 	}
 
 	void Day21Puzzle::setInputLines(const std::vector<std::string>& _inputLines) {
@@ -58,7 +58,7 @@ namespace TwentySixteen {
 	}
 
 	Instruction Day21Puzzle::parse(const std::string& _input) {
-		const auto& parts = ze::StringExtensions::splitStringByDelimeter(_input, " ");
+		const auto& parts = StringExtensions::splitStringByDelimeter(_input, " ");
 
 
 		if (parts[0] == "swap" && parts[1] == "position") {
