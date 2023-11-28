@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ProjectOutputs>
+    <ProjectOutput>
+      <FullPath>F:\Workspace\Git\advent-of-code\testbuild\x64\Debug\ZERO_CHECK</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>F:\Workspace\Git\advent-of-code\testbuild\app\Debug\advent-of-code.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>F:\Workspace\Git\advent-of-code\testbuild\test\Core\Debug\advent-of-code-core-test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>F:\Workspace\Git\advent-of-code\testbuild\test\2015\Debug\advent-of-code-year2015-test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>F:\Workspace\Git\advent-of-code\testbuild\test\2016\Debug\advent-of-code-year2016-test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>F:\Workspace\Git\advent-of-code\testbuild\test\2017\Debug\advent-of-code-year2017-test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>F:\Workspace\Git\advent-of-code\testbuild\test\2018\Debug\advent-of-code-year2018-test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>F:\Workspace\Git\advent-of-code\testbuild\test\2019\Debug\advent-of-code-year2019-test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>F:\Workspace\Git\advent-of-code\testbuild\test\2020\Debug\advent-of-code-year2020-test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>F:\Workspace\Git\advent-of-code\testbuild\test\2021\Debug\advent-of-code-year2021-test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>F:\Workspace\Git\advent-of-code\testbuild\test\2022\Debug\advent-of-code-year2022-test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>F:\Workspace\Git\advent-of-code\testbuild\test\2023\Debug\advent-of-code-year2023-test.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>F:\Workspace\Git\advent-of-code\testbuild\x64\Debug\ALL_BUILD</FullPath>
+    </ProjectOutput>
+  </ProjectOutputs>
+  <ContentFiles />
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
+</Project>

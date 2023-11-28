@@ -1,0 +1,10 @@
+^F:\WORKSPACE\GIT\ADVENT-OF-CODE\TEST\2019\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SF:/Workspace/Git/advent-of-code -BF:/Workspace/Git/advent-of-code/testbuild --check-stamp-file F:/Workspace/Git/advent-of-code/testbuild/test/2019/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

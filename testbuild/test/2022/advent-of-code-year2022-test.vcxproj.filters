@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\Day01PuzzleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\Day02PuzzleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\Day03PuzzleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\Day04PuzzleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\Day05PuzzleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\Day06PuzzleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\Day07PuzzleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\Day08PuzzleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\Day09PuzzleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\Day10PuzzleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\Day11PuzzleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\Day12PuzzleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\Day13PuzzleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\Day14PuzzleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\Day15PuzzleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\Day16PuzzleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\Day17PuzzleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\Day18PuzzleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\Day19PuzzleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\Day20PuzzleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\Day21PuzzleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\Day22PuzzleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\Day23PuzzleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\Day24PuzzleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\Workspace\Git\advent-of-code\test\2022\Day25PuzzleTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="F:\Workspace\Git\advent-of-code\test\2022\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{DBF8E259-7253-3B3A-9866-2282AB596320}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

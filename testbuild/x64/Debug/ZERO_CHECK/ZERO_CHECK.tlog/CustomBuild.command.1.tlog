@@ -1,0 +1,10 @@
+^F:\WORKSPACE\GIT\ADVENT-OF-CODE\TESTBUILD\CMAKEFILES\30D19A9A1C6D0E614E6C9E72BD0A7F03\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SF:/Workspace/Git/advent-of-code -BF:/Workspace/Git/advent-of-code/testbuild --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file F:/Workspace/Git/advent-of-code/testbuild/AdventOfCode.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
