@@ -175,7 +175,7 @@ namespace TwentyEighteen {
 		{
 			std::size_t currentEdge = edgeCount;
 			edgeCount = iterateMap(map, coords);
-		} while (i++ < (int)(std::sqrtf((float)_part2Threshold)));
+		} while (i++ < (int)(std::sqrt((float)_part2Threshold)));
 
 		auto part1 = calculateLargestNonInfinite(map);
 		auto part2 = calculateWithinThresholdRegionSize(map, coords, _part2Threshold);
