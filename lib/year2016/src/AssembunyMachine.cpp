@@ -1,6 +1,7 @@
 #include <2016/AssembunyMachine.hpp>
 #include <Core/StringExtensions.hpp>
-
+#include <exception>
+	
 namespace TwentySixteen {
 
 	static bool isRegister(const std::string& _str) {
