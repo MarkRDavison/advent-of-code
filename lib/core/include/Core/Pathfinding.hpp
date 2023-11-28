@@ -1,6 +1,7 @@
 #ifndef INCLUDED_ADVENT_OF_CODE_CORE_PATHFINDING_HPP_
 #define INCLUDED_ADVENT_OF_CODE_CORE_PATHFINDING_HPP_
 
+#include <numeric>
 #include <Core/Vector2.hpp>
 #include <unordered_map>
 #include <unordered_set>
