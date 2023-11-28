@@ -1,5 +1,6 @@
 #include <catch/catch.hpp>
 #include <Core/States.hpp>
+#include <sstream>
 
 struct PointlessStateInfo {};
 
