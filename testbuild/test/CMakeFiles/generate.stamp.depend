@@ -1,7 +1,0 @@
-# CMake generation dependency list for this directory.
-C:/Program Files/CMake/share/cmake-3.23/Modules/CTest.cmake
-C:/Program Files/CMake/share/cmake-3.23/Modules/CTestTargets.cmake
-C:/Program Files/CMake/share/cmake-3.23/Modules/CTestUseLaunchers.cmake
-C:/Program Files/CMake/share/cmake-3.23/Modules/DartConfiguration.tcl.in
-F:/Workspace/Git/advent-of-code/test/CMakeLists.txt
-F:/Workspace/Git/advent-of-code/thirdparty/catch/contrib/ParseAndAddCatchTests.cmake
