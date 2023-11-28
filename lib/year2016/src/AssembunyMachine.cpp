@@ -1,7 +1,7 @@
 #include <2016/AssembunyMachine.hpp>
 #include <Core/StringExtensions.hpp>
-#include <exception>
-	
+#include <stdexcept>
+		
 namespace TwentySixteen {
 
 	static bool isRegister(const std::string& _str) {
@@ -108,14 +108,14 @@ namespace TwentySixteen {
 				}
 				else {
 					std::string msg = "Unhandled instruction type to toggle " + instructionToToggle.type;
-					throw std::exception(msg.c_str());
+					throw std::runtime_error(msg.c_str());
 				}
 			}
 
 		}
 		else {
 			std::string msg = "Unhandled instruction type " + instruction.type;
-			throw std::exception(msg.c_str());
+			throw std::runtime_error(msg.c_str());
 		}
 		programCounter++;
 	}
