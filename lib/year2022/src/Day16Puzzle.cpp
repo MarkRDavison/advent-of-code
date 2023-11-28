@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <functional>
+#include <cmath>
 
 #define UNSET -1
 
@@ -59,7 +60,7 @@ namespace TwentyTwentyTwo {
 				
 		Memoized cache;
 
-		const long maxPossibleStates = (long)std::powl(2, valveIds.size()) - 1;
+		const long maxPossibleStates = (long)std::pow(2, valveIds.size()) - 1;
 
 		long best = 0;
 
