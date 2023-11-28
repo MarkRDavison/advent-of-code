@@ -180,7 +180,7 @@ namespace TwentyTwentyTwo {
 				rootRhs = j.rhsName;
 			}
 
-			if (strcmp(j.name.c_str(), "humn") == 0)
+			if (j.name == "humn")
 			{
 				humanJobIndex = i;
 			}
