@@ -2,6 +2,7 @@
 #include <Core/StringExtensions.hpp>
 #include <Core/Vector2.hpp>
 #include <Core/Pathfinding.hpp>
+#include <cmath>
 #include <numeric>
 #include <cassert>
 #include <unordered_set>
@@ -10,7 +11,7 @@
 namespace TwentyTwentyOne {
 
 	EnergyNumber getEnergyForAnphipod(char _c) {
-		return static_cast<EnergyNumber>(std::powl(10, ((int)_c - 'A')));
+		return static_cast<EnergyNumber>(std::pow(10, ((int)_c - 'A')));
 	}
 
 	Day23Puzzle::Day23Puzzle() :
