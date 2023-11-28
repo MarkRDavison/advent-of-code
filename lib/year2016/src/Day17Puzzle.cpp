@@ -3,6 +3,7 @@
 #include <Core/Vector2.hpp>
 #include <Core/MD5.hpp>
 #include <functional>
+#include <numeric>
 #include <limits>
 
 namespace TwentySixteen {

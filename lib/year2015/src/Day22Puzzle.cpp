@@ -3,6 +3,7 @@
 #include <functional>
 #include <algorithm>
 #include <cassert>
+#include <numeric>
 #include <limits>
 
 constexpr const int POISON_TICK{ 3 };

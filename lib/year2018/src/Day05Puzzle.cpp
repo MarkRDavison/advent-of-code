@@ -1,6 +1,6 @@
 #include <2018/Day05Puzzle.hpp>
 #include <Core/StringExtensions.hpp>
-
+#include <numeric>
 
 namespace TwentyEighteen {
 	

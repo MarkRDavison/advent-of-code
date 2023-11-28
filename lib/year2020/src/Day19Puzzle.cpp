@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <cassert>
+#include <numeric>
 #include <limits>
 
 namespace TwentyTwenty {

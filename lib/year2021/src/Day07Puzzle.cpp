@@ -1,6 +1,7 @@
 #include <2021/Day07Puzzle.hpp>
 #include <Core/StringExtensions.hpp>
 #include <algorithm>
+#include <numeric>
 #include <limits>
 #include <cmath>
 

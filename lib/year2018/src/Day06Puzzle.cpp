@@ -4,6 +4,7 @@
 #include <Core/Region.hpp>
 #include <unordered_set>
 #include <unordered_map>
+#include <numeric>
 
 namespace TwentyEighteen {
 	

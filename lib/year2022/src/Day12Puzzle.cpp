@@ -2,8 +2,9 @@
 #include <Core/StringExtensions.hpp>
 #include <Core/Vector2.hpp>
 #include <Core/Pathfinding.hpp>
-#include <cassert>
 #include <unordered_set>
+#include <numeric>
+#include <cassert>
 
 namespace TwentyTwentyTwo {
 	template<typename T>

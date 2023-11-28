@@ -2,6 +2,7 @@
 #include <Core/StringExtensions.hpp>
 #include <Core/Vector2.hpp>
 #include <Core/Pathfinding.hpp>
+#include <numeric>
 #include <cassert>
 #include <unordered_set>
 #include <unordered_map>

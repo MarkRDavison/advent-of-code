@@ -1,6 +1,7 @@
 #include <2018/Day01Puzzle.hpp>
 #include <Core/StringExtensions.hpp>
 #include <unordered_set>
+#include <numeric>
 
 namespace TwentyEighteen {
 	

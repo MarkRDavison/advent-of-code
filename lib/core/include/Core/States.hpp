@@ -6,6 +6,7 @@
 #include <unordered_set>
 #include <functional>
 #include <iostream>
+#include <numeric>
 #include <limits>
 #include <vector>
 #include <queue>

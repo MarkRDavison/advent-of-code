@@ -1,7 +1,8 @@
 #include <2022/Day07Puzzle.hpp>
 #include <Core/StringExtensions.hpp>
-#include <cassert>
 #include <unordered_map>
+#include <numeric>
+#include <cassert>
 
 namespace TwentyTwentyTwo {
 	

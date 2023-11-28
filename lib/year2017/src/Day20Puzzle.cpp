@@ -3,6 +3,7 @@
 #include <Core/Vector3.hpp>
 #include <unordered_map>
 #include <algorithm>
+#include <numeric>
 
 namespace TwentySeventeen {
 

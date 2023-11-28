@@ -1,8 +1,9 @@
 #include <2021/Day09Puzzle.hpp>
 #include <Core/StringExtensions.hpp>
-#include <limits>
 #include <unordered_set>
 #include <algorithm>
+#include <numeric>
+#include <limits>
 #include <queue>
 
 namespace TwentyTwentyOne {

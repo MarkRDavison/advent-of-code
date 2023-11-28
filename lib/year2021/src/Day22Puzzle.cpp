@@ -1,5 +1,6 @@
 #include <2021/Day22Puzzle.hpp>
 #include <Core/StringExtensions.hpp>
+#include <numeric>
 #include <cassert>
 #include <algorithm>
 #include <unordered_set>
