@@ -2,9 +2,10 @@
 #include <Core/StringExtensions.hpp>
 #include <string>
 #include <numeric>
-#include <cassert>
 
 namespace TwentyTwentyThree {
+
+	typedef std::pair<long, bool> NumberString;
 	
 	Day01Puzzle::Day01Puzzle() :
 		core::PuzzleBase("Trebuchet?!", 2023, 1) {
@@ -23,8 +24,9 @@ namespace TwentyTwentyThree {
 		long part1 = 0;
 		long part2 = 0;
 
+		constexpr long MAX_LONG = std::numeric_limits<long>::max();
+
 		const std::vector<std::string> numbers = {
-			"zero",
 			"one",
 			"two",
 			"three",
@@ -38,28 +40,14 @@ namespace TwentyTwentyThree {
 
 		for (const auto& l : m_InputLines)
 		{
-			const auto firstNumeric = l.find_first_of("0123456789");
-			const auto lastNumeric = l.find_last_of("0123456789");
+			std::vector<NumberString> numberStrings;
 
-			{
-				if (firstNumeric != std::numeric_limits<std::size_t>::max() &&
-					lastNumeric != std::numeric_limits<std::size_t>::max())
-				{
-					const auto firstDigit = (long)l[firstNumeric] - (long)'0';
-					const auto lastDigit = (long)l[lastNumeric] - (long)'0';
-
-					part1 += firstDigit * 10 + lastDigit;
-				}
-			}
-
-			std::vector<long> foundNumbers;
-			
 			for (std::size_t i = 0; i < l.size(); ++i)
 			{
 				const char c = l[i];
 				if ('0' <= c && c <= '9')
 				{
-					foundNumbers.push_back((long)(c - '0'));
+					numberStrings.push_back(NumberString((long)(c - '0'), false));
 				}
 				else
 				{
@@ -69,7 +57,7 @@ namespace TwentyTwentyThree {
 						const auto loc = l.find(strNum, i);
 						if (loc == i)
 						{
-							foundNumbers.push_back(index);
+							numberStrings.push_back(NumberString(index+1, true));
 							break;
 						}
 						index++;
@@ -77,17 +65,49 @@ namespace TwentyTwentyThree {
 				}
 			}
 
-			if (getVerbose())
+			long part1First = MAX_LONG;
+			long part2First = MAX_LONG;
+			long part1Last = MAX_LONG;
+			long part2Last = MAX_LONG;
+
+			for (const auto& [number, isString] : numberStrings)
 			{
-				std::cout << l << '\n';
-				for (const auto& d : foundNumbers)
+				if (part1First == MAX_LONG && !isString)
 				{
-					std::cout << " " << d;
+					part1First = number;
 				}
-				std::cout << std::endl;
+				if (part2First == MAX_LONG)
+				{
+					part2First = number;
+				}
+
+				if (part1First != MAX_LONG && part2First != MAX_LONG)
+				{
+					break;
+				}
 			}
 
-			part2 += foundNumbers[0] * 10 + foundNumbers.back();
+			std::reverse(numberStrings.begin(), numberStrings.end());
+
+			for (const auto& [number, isString] : numberStrings)
+			{
+				if (part1Last == MAX_LONG && !isString)
+				{
+					part1Last = number;
+				}
+				if (part2Last == MAX_LONG)
+				{
+					part2Last = number;
+				}
+
+				if (part1Last != MAX_LONG && part2Last != MAX_LONG)
+				{
+					break;
+				}
+			}
+
+			part1 += part1First * 10 + part1Last;
+			part2 += part2First * 10 + part2Last;
 		}
 
 		return { std::to_string(part1), std::to_string(part2) };
