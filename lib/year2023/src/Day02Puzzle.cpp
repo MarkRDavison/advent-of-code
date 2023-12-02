@@ -30,7 +30,6 @@ namespace TwentyTwentyThree {
 			{ "red", 12 }, { "green", 13 }, { "blue", 14 }
 		};
 
-
 		long long part1 = 0;
 		long long part2 = 0;
 		long long gameNumber = 0;
@@ -71,7 +70,10 @@ namespace TwentyTwentyThree {
 				part1 += gameNumber;
 			}
 
-			part2 += minContents.at("red") * minContents.at("green") * minContents.at("blue");
+			part2 += 
+				minContents.at("red") * 
+				minContents.at("green") * 
+				minContents.at("blue");
 		}
 
 		return { std::to_string(part1), std::to_string(part2) };
