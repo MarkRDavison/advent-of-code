@@ -30,7 +30,7 @@ namespace TwentyEighteen {
 	    auto answers = puzzle.fastSolve();
 
 		REQUIRE("325" == answers.first);
-		REQUIRE("325" == answers.second);
+		REQUIRE("999999999374" == answers.second);
 	}
 
 }

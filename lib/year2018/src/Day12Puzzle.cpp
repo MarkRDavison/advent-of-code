@@ -57,8 +57,6 @@ namespace TwentyEighteen {
 			newState = newState.substr(firstPlant, size + 1);
 		}
 
-		
-
 		return { newState, zero };
 	}
 
@@ -67,15 +65,7 @@ namespace TwentyEighteen {
 		const std::string initialState = m_InputLines[0].substr(15);
 
 		std::unordered_map<std::string, bool> notes;
-		std::unordered_set<long long> plants;
 
-		for (long long i = 0; i < initialState.size(); ++i)
-		{
-			if (initialState[i] == '#')
-			{
-				plants.emplace(i);
-			}
-		}
 
 		for (std::size_t i = 2; i < m_InputLines.size(); ++i)
 		{
@@ -85,30 +75,50 @@ namespace TwentyEighteen {
 		}
 
 
+		long long part1 = 0;
+		long long part2 = 0;
 
-		std::cout << "0:  " << initialState << std::endl;
 		long long zero = 0;
 		long long generation = 0;
 		std::string state(initialState);
-		while (generation < 20)
+		while (generation < 200)
 		{
 			const auto& [newState, newZero] = processGeneration(notes, state, zero);
 			generation++;
 			state = newState;
 			zero = newZero;
-			std::cout << generation << ":  " << state << "\t\t\t\t\t\t - zero: " << -zero << std::endl;
+
+			if (generation == 20)
+			{
+				for (long long i = 0; i < state.size(); ++i)
+				{
+					if (state[i] == '#')
+					{
+						part1 += (i - zero);
+					}
+				}
+			}
 		}
 
-		long long part1 = 0;
 
+		const auto& [newState, newZero] = processGeneration(notes, state, zero);
+		assert(newState == state);
+
+		assert(newZero == zero - 1);
+
+		const auto part2Generation = 50000000000;
+		const auto offset = part2Generation - generation;
+
+		const auto part2Zero = zero - offset; 
+		
 		for (long long i = 0; i < state.size(); ++i)
 		{
 			if (state[i] == '#')
 			{
-				part1 += (i - zero);
+				part2 += (i - part2Zero);
 			}
 		}
 
-		return { std::to_string(part1), "Part 2"};
+		return { std::to_string(part1), std::to_string(part2) };
 	}
 }
