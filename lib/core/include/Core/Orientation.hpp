@@ -63,6 +63,27 @@ namespace core {
 			}
 		}
 
+		static Vector2i turn(Vector2i direction, Orientation turnDirection)
+		{
+			if (direction == Vector2i{ 0, +1 })
+			{
+				return toDirection(turn(Orientation::Up, turnDirection));
+			}
+			if (direction == Vector2i{ 0, -1 })
+			{
+				return toDirection(turn(Orientation::Down, turnDirection));
+			}
+			if (direction == Vector2i{ -1, 0 })
+			{
+				return toDirection(turn(Orientation::Left, turnDirection));
+			}
+			if (direction == Vector2i{ +1, 0 })
+			{
+				return toDirection(turn(Orientation::Right, turnDirection));
+			}
+			return direction;
+		}
+
 		static Orientation turn(Orientation _direction, Orientation _turnDirection) {
 			if (_turnDirection == Orientation::Up ||
 				_turnDirection == Orientation::Down ||

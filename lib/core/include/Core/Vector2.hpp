@@ -117,4 +117,13 @@ using Vector2f = Vector2<float>;
 using Vector2i = Vector2<int>;
 using Vector2u = Vector2<unsigned>;
 
+template<typename T>
+struct Vector2_Hash_Fxn
+{
+	std::size_t operator()(const Vector2<T>& _vec) const
+	{
+		return  std::hash<T>()(_vec.x) ^ std::hash<T>()(_vec.y);
+	}
+};
+
 #endif // INCLUDED_ADVENT_OF_CODE_CORE_VECTOR2_HPP_
