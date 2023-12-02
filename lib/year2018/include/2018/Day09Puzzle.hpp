@@ -14,7 +14,7 @@ namespace TwentyEighteen {
 		void setInputLines(const std::vector<std::string>& _inputLines);
 		std::pair<std::string, std::string> fastSolve() override;
 
-		static int solve(int _players, int _marbles);
+		static long long solve(long long _players, long long _marbles);
 
 	private:
 		std::vector<std::string> m_InputLines;

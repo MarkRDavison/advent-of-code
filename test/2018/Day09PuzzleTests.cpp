@@ -15,6 +15,7 @@ namespace TwentyEighteen {
 	    auto answers = puzzle.fastSolve();
 
 		REQUIRE("32" == answers.first);
+		REQUIRE("22563" == answers.second);
 	}
 
 	TEST_CASE("2018 Day 9 solve works", "[2018][Day09]")

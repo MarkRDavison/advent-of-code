@@ -25,18 +25,21 @@ namespace TwentyEighteen {
 	std::pair<std::string, std::string> Day09Puzzle::fastSolve() {
 		const auto& p = StringExtensions::splitStringByDelimeter(m_InputLines[0], " ");
 
-		const int players = std::stoi(p[0]);
-		const int marbles = std::stoi(p[6]);
+		const long long players = std::stoi(p[0]);
+		const long long marbles = std::stoi(p[6]);
 
-		return { std::to_string(solve(players, marbles)), "Part 2"};
+		const auto part1 = solve(players, marbles);
+		const auto part2 = solve(players, marbles * 100);
+
+		return { std::to_string(part1), std::to_string(part2) };
 	}
 
-	int Day09Puzzle::solve(int _players, int _marbles)
+	long long Day09Puzzle::solve(long long _players, long long _marbles)
 	{
 		struct Node {
 			Node* left{ nullptr };
 			Node* right{ nullptr };
-			int value;
+			long long value{ 0 };
 		};
 
 		Node* root = new Node();
@@ -46,67 +49,60 @@ namespace TwentyEighteen {
 
 		Node* curr = root;
 
-		int player = 1;
+		long long player = 1;
 
-		std::unordered_map<int, int> scores;
+		std::unordered_map<long long, long long> scores;
 
-		for (int i = 1; i <= _marbles; ++i) 
+		for (long long i = 1; i <= _marbles; ++i)
 		{
-			auto next = curr->right;
-			auto nextNext = next->right;
+			Node* newMarble = new Node();
+			newMarble->value = i;
 
 			if (i % 23 == 0)
 			{
 				scores[player] += i;
-				Node* spec = curr;
-				for (int j = 0; j < 7; ++j) {
-					spec = spec->left;
-				}
 
-				auto specPrev = spec->left;
-				auto specNext = spec->right;
+				auto off7 = curr->left->left->left->left->left->left->left;
+				scores[player] += off7->value;
 
-				specPrev->right = specNext;
-				specNext->left = specPrev;
+				auto off7L = off7->left;
+				auto off7R = off7->right;
 
-				scores[player] += spec->value;
-				delete spec;
-				curr = specNext;
+				delete off7;
+
+				off7L->right = off7R;
+				off7R->left = off7L;
+
+				delete newMarble;
+
+				newMarble = off7R;
 			}
 			else
 			{
-				auto newNode = new Node();
-				newNode->value = i;
+				auto marble1 = curr->right;
+				auto marble2 = marble1->right;
 
-				next->right = newNode;
-				newNode->left = next;
-
-				nextNext->left = newNode;
-				newNode->right = nextNext;
-
-				curr = newNode;
-
-				// std::cout << next->value << " (" << newNode->value << ") " << nextNext->value << std::endl;
+				newMarble->left = marble1;
+				marble1->right = newMarble;
+				newMarble->right = marble2;
+				marble2->left = newMarble;
 			}
 
-			player++;
-
+			player += 1;
 			if (player > _players)
 			{
-				player -= _players;
+				player = 1;
 			}
+			curr = newMarble;
 		}
 
-		curr = root->right;
-		while (curr != root)
-		{
-			auto next = curr->right;
-			delete curr;
-			curr = next;
-		}
-		delete root;
-
-		const auto max = *std::max_element(scores.begin(), scores.end());
+		const auto max = *std::max_element(
+			scores.begin(), 
+			scores.end(),
+			[](const std::pair<long long, long long>& lhs, const std::pair<long long, long long>& rhs) -> bool
+			{
+				return lhs.second < rhs.second;
+			});
 
 		return max.second;
 	}
