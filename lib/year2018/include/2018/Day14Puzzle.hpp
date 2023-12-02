@@ -4,6 +4,13 @@
 #include <Core/PuzzleBase.hpp>
 
 namespace TwentyEighteen {
+
+	typedef long long ChocolateChartNumber;
+
+	struct Elf
+	{
+		std::size_t recipie;
+	};
 	
 	class Day14Puzzle : public core::PuzzleBase {
 	public:
@@ -13,6 +20,11 @@ namespace TwentyEighteen {
 		void initialise(const core::InitialisationInfo& _initialisationInfo) override;
 		void setInputLines(const std::vector<std::string>& _inputLines);
 		std::pair<std::string, std::string> fastSolve() override;
+
+		static void processChocolateRecipieInfo(std::vector<Elf>& elves, std::vector<ChocolateChartNumber>& recipies);
+
+		static std::string solvePart1(ChocolateChartNumber input);
+		static std::string solvePart2(std::string inputStr, bool verbose);
 
 	private:
 		std::vector<std::string> m_InputLines;
