@@ -7,24 +7,7 @@
 
 namespace TwentyTwentyThree {
 
-	enum class CamelCard : int
-	{
-		_2 = 0,
-		_3 = 1,
-		_4 = 2,
-		_5 = 3,
-		_6 = 4,
-		_7 = 5,
-		_8 = 6,
-		_9 = 7,
-		_T = 8,
-		_J = 9,
-		_Q = 10,
-		_K = 11,
-		_A = 12
-	};
-
-	typedef std::array<CamelCard, 5> CamelCardHand;
+	typedef std::string CamelCardHand;
 	
 	class Day07Puzzle : public core::PuzzleBase {
 	public:
@@ -35,25 +18,19 @@ namespace TwentyTwentyThree {
 		void setInputLines(const std::vector<std::string>& _inputLines);
 		std::pair<std::string, std::string> fastSolve() override;
 
-		static int CompareHand(const CamelCardHand& lhs, const CamelCardHand& rhs);
+		static int CompareHand(const CamelCardHand& lhs, const CamelCardHand& rhs, bool jokers);
 
-		static std::unordered_map<CamelCard, int> GetCardOccurence(const CamelCardHand& hand);
+		static int CompareCardByOrder(const CamelCardHand& lhs, const CamelCardHand& rhs, bool jokers);
 
-		static bool isFiveOfAKind(const CamelCardHand& hand);
-		static bool isFourOfAKind(const CamelCardHand& hand);
-		static bool isFullHouse(const CamelCardHand& hand);
-		static bool isThreeOfAKind(const CamelCardHand& hand);
-		static bool isTwoPair(const CamelCardHand& hand);
-		static bool isOnePair(const CamelCardHand& hand);
-		static bool isHighCard(const CamelCardHand& hand);
+		static std::unordered_map<char, int> GetCardOccurence(const CamelCardHand& hand);
 
-		static int compareFiveOfAKind(const CamelCardHand& lhs, const CamelCardHand& rhs);
-		static int compareFourOfAKind(const CamelCardHand& lhs, const CamelCardHand& rhs);
-		static int compareFullHouse(const CamelCardHand& lhs, const CamelCardHand& rhs);
-		static int compareThreeOfAKind(const CamelCardHand& lhs, const CamelCardHand& rhs);
-		static int compareTwoPair(const CamelCardHand& lhs, const CamelCardHand& rhs);
-		static int compareOnePair(const CamelCardHand& lhs, const CamelCardHand& rhs);
-		static int compareHighCard(const CamelCardHand& lhs, const CamelCardHand& rhs);
+		static bool isFiveOfAKind(const CamelCardHand& hand, bool jokers);
+		static bool isFourOfAKind(const CamelCardHand& hand, bool jokers);
+		static bool isFullHouse(const CamelCardHand& hand, bool jokers);
+		static bool isThreeOfAKind(const CamelCardHand& hand, bool jokers);
+		static bool isTwoPair(const CamelCardHand& hand, bool jokers);
+		static bool isOnePair(const CamelCardHand& hand, bool jokers);
+		static bool isHighCard(const CamelCardHand& hand, bool jokers);
 
 		static CamelCardHand parse(const std::string& str);
 	private:

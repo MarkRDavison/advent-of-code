@@ -10,7 +10,30 @@ namespace TwentyTwentyThree {
 		core::PuzzleBase("Camel Cards", 2023, 7) {
 	}
 
-	CamelCard GetFromOccurrenceByCount(const std::unordered_map<CamelCard, int>& occ, int c)
+	char GetHighestOccurenceHighestValueCard(std::unordered_map<char, int> occ)
+	{
+		if (occ.contains('J'))
+		{
+			occ.erase('J');
+		}
+		const auto m = std::max_element(
+			occ.begin(),
+			occ.end(),
+			[](const auto& lhs, const auto& rhs) -> bool
+			{
+				if (lhs.second == rhs.second)
+				{
+					return lhs.first < rhs.first;
+				}
+
+				return lhs.second < rhs.second;
+			}
+		);
+
+		return (*m).first;
+	}
+
+	char GetFromOccurrenceByCount(const std::unordered_map<char, int>& occ, int c)
 	{
 		for (const auto& [card, count] : occ)
 		{
@@ -23,7 +46,7 @@ namespace TwentyTwentyThree {
 		throw std::runtime_error("Expected count was not found");
 	}
 
-	CamelCard GetFromNthOccurrenceByCount(const std::unordered_map<CamelCard, int>& occ, int c, int occurence)
+	char GetFromNthOccurrenceByCount(const std::unordered_map<char, int>& occ, int c, int occurence)
 	{
 		for (const auto& [card, count] : occ)
 		{
@@ -44,10 +67,62 @@ namespace TwentyTwentyThree {
 		m_InputLines = std::vector<std::string>(_inputLines);
 	}
 
-	int Day07Puzzle::CompareHand(const CamelCardHand& lhs, const CamelCardHand& rhs)
+	int Day07Puzzle::CompareCardByOrder(const CamelCardHand& lhs, const CamelCardHand& rhs, bool jokers)
 	{
-		const bool lhsFiveOfAKind = isFiveOfAKind(lhs);
-		const bool rhsFiveOfAKind = isFiveOfAKind(rhs);
+		const std::unordered_map<char, int> part1Map = {
+			{'2', 1},
+			{'3', 2},
+			{'4', 3},
+			{'5', 4},
+			{'6', 5},
+			{'7', 6},
+			{'8', 7},
+			{'9', 8},
+			{'T', 9},
+			{'J', 10},
+			{'Q', 11},
+			{'K', 12},
+			{'A', 13},
+		};
+
+		const std::unordered_map<char, int> part2Map = {
+			{'2', 1},
+			{'3', 2},
+			{'4', 3},
+			{'5', 4},
+			{'6', 5},
+			{'7', 6},
+			{'8', 7},
+			{'9', 8},
+			{'T', 9},
+			{'J', 0},
+			{'Q', 11},
+			{'K', 12},
+			{'A', 13},
+		};
+
+		for (std::size_t i = 0; i < 5; ++i)
+		{
+			if (lhs[i] != rhs[i])
+			{
+				if (!jokers)
+				{
+					return part1Map.at(lhs[i]) > part1Map.at(rhs[i]) ? -1 : +1;
+				}
+				else
+				{
+					return part2Map.at(lhs[i]) > part2Map.at(rhs[i]) ? -1 : +1;
+				}
+			}
+		}
+
+		return 0;
+	}
+
+	int Day07Puzzle::CompareHand(const CamelCardHand& lhs, const CamelCardHand& rhs, bool jokers)
+	{
+		const bool lhsFiveOfAKind = isFiveOfAKind(lhs, jokers);
+		const bool rhsFiveOfAKind = isFiveOfAKind(rhs, jokers);
 		if (lhsFiveOfAKind && !rhsFiveOfAKind)
 		{
 			return -1;
@@ -58,11 +133,11 @@ namespace TwentyTwentyThree {
 		}
 		if (lhsFiveOfAKind && rhsFiveOfAKind)
 		{
-			return compareFiveOfAKind(lhs, rhs);
+			return CompareCardByOrder(lhs, rhs, jokers);
 		}
 
-		const bool lhsFourOfAKind = isFourOfAKind(lhs);
-		const bool rhsFourOfAKind = isFourOfAKind(rhs);
+		const bool lhsFourOfAKind = isFourOfAKind(lhs, jokers);
+		const bool rhsFourOfAKind = isFourOfAKind(rhs, jokers);
 		if (lhsFourOfAKind && !rhsFourOfAKind)
 		{
 			return -1;
@@ -73,11 +148,11 @@ namespace TwentyTwentyThree {
 		}
 		if (lhsFourOfAKind && rhsFourOfAKind)
 		{
-			return compareFourOfAKind(lhs, rhs);
+			return CompareCardByOrder(lhs, rhs, jokers);
 		}
 
-		const bool lhsFullHouse = isFullHouse(lhs);
-		const bool rhsFullHouse = isFullHouse(rhs);
+		const bool lhsFullHouse = isFullHouse(lhs, jokers);
+		const bool rhsFullHouse = isFullHouse(rhs, jokers);
 		if (lhsFullHouse && !rhsFullHouse)
 		{
 			return -1;
@@ -88,11 +163,11 @@ namespace TwentyTwentyThree {
 		}
 		if (lhsFullHouse && rhsFullHouse)
 		{
-			return compareFullHouse(lhs, rhs);
+			return CompareCardByOrder(lhs, rhs, jokers);
 		}
 
-		const bool lhsThreeOfAKind = isThreeOfAKind(lhs);
-		const bool rhsThreeOfAKind = isThreeOfAKind(rhs);
+		const bool lhsThreeOfAKind = isThreeOfAKind(lhs, jokers);
+		const bool rhsThreeOfAKind = isThreeOfAKind(rhs, jokers);
 		if (lhsThreeOfAKind && !rhsThreeOfAKind)
 		{
 			return -1;
@@ -103,11 +178,11 @@ namespace TwentyTwentyThree {
 		}
 		if (lhsThreeOfAKind && rhsThreeOfAKind)
 		{
-			return compareThreeOfAKind(lhs, rhs);
+			return CompareCardByOrder(lhs, rhs, jokers);
 		}
 
-		const bool lhsTwoPair = isTwoPair(lhs);
-		const bool rhsTwoPair = isTwoPair(rhs);
+		const bool lhsTwoPair = isTwoPair(lhs, jokers);
+		const bool rhsTwoPair = isTwoPair(rhs, jokers);
 		if (lhsTwoPair && !rhsTwoPair)
 		{
 			return -1;
@@ -118,11 +193,11 @@ namespace TwentyTwentyThree {
 		}
 		if (lhsTwoPair && rhsTwoPair)
 		{
-			return compareTwoPair(lhs, rhs);
+			return CompareCardByOrder(lhs, rhs, jokers);
 		}
 
-		const bool lhsOnePair = isOnePair(lhs);
-		const bool rhsOnePair = isOnePair(rhs);
+		const bool lhsOnePair = isOnePair(lhs, jokers);
+		const bool rhsOnePair = isOnePair(rhs, jokers);
 		if (lhsOnePair && !rhsOnePair)
 		{
 			return -1;
@@ -133,11 +208,11 @@ namespace TwentyTwentyThree {
 		}
 		if (lhsOnePair && rhsOnePair)
 		{
-			return compareOnePair(lhs, rhs);
+			return CompareCardByOrder(lhs, rhs, jokers);
 		}
 
-		const bool lhsHighCard = isHighCard(lhs);
-		const bool rhsHighCard = isHighCard(rhs);
+		const bool lhsHighCard = isHighCard(lhs, jokers);
+		const bool rhsHighCard = isHighCard(rhs, jokers);
 		if (lhsHighCard && !rhsHighCard)
 		{
 			return -1;
@@ -148,7 +223,7 @@ namespace TwentyTwentyThree {
 		}
 		if (lhsHighCard && rhsHighCard)
 		{
-			return compareHighCard(lhs, rhs);
+			return CompareCardByOrder(lhs, rhs, jokers);
 		}
 
 		throw std::runtime_error("Unhandled combination");
@@ -161,13 +236,7 @@ namespace TwentyTwentyThree {
 			std::cout << "BAD STR HAND: " << str << std::endl;
 		}
 		assert(str.size() == 5);
-		CamelCardHand hand = {
-			CamelCard::_A,
-			CamelCard::_A,
-			CamelCard::_A,
-			CamelCard::_A,
-			CamelCard::_A
-		};
+		CamelCardHand hand = "AAAAA";
 
 		for (std::size_t i = 0; i < 5; ++i)
 		{
@@ -175,67 +244,67 @@ namespace TwentyTwentyThree {
 			{
 				case '2':
 				{
-					hand[i] = CamelCard::_2;
+					hand[i] = '2';
 					break;
 				}
 				case '3':
 				{
-					hand[i] = CamelCard::_3;
+					hand[i] = '3';
 					break;
 				}
 				case '4':
 				{
-					hand[i] = CamelCard::_4;
+					hand[i] = '4';
 					break;
 				}
 				case '5':
 				{
-					hand[i] = CamelCard::_5;
+					hand[i] = '5';
 					break;
 				}
 				case '6':
 				{
-					hand[i] = CamelCard::_6;
+					hand[i] = '6';
 					break;
 				}
 				case '7':
 				{
-					hand[i] = CamelCard::_7;
+					hand[i] = '7';
 					break;
 				}
 				case '8':
 				{
-					hand[i] = CamelCard::_8;
+					hand[i] = '8';
 					break;
 				}
 				case '9':
 				{
-					hand[i] = CamelCard::_9;
+					hand[i] = '9';
 					break;
 				}
 				case 'T':
 				{
-					hand[i] = CamelCard::_T;
+					hand[i] = 'T';
 					break;
 				}
 				case 'J':
 				{
-					hand[i] = CamelCard::_J;
+					hand[i] = 'J';
 					break;
 				}
 				case 'Q':
 				{
-					hand[i] = CamelCard::_Q;
+					hand[i] = 'Q';
 					break;
 				}
 				case 'K':
 				{
-					hand[i] = CamelCard::_K;
+					hand[i] = 'K';
 					break;
 				}
 				case 'A':
 				{
-					hand[i] = CamelCard::_A;
+					hand[i] = 'A';
 					break;
 				}
 				default:
@@ -246,9 +315,9 @@ namespace TwentyTwentyThree {
 		return hand;
 	}
 
-	std::unordered_map<CamelCard, int> Day07Puzzle::GetCardOccurence(const CamelCardHand& hand)
+	std::unordered_map<char, int> Day07Puzzle::GetCardOccurence(const CamelCardHand& hand)
 	{
-		std::unordered_map<CamelCard, int> occ;
+		std::unordered_map<char, int> occ;
 
 		for (const auto& c : hand)
 		{
@@ -258,14 +327,42 @@ namespace TwentyTwentyThree {
 		return occ;
 	}
 
-	bool Day07Puzzle::isFiveOfAKind(const CamelCardHand& hand) {
-		const auto& occ = GetCardOccurence(hand);
+	std::unordered_map<char, int> GetJokerisedOccurences(const std::unordered_map<char, int>& occ)
+	{
+		auto jokerOccurence = occ;
+		if (jokerOccurence.contains('J'))
+		{
+			const auto jokerCount = jokerOccurence.at('J');
+			if (jokerCount == 5)
+			{
+				return { {'A',5} };
+			}
+			const auto toReplace = GetHighestOccurenceHighestValueCard(occ);
+			jokerOccurence[toReplace] += jokerCount;
+			jokerOccurence.erase('J');
 
+		}
+		return jokerOccurence;
+	}
+
+	bool isFiveOfAKindInternal(const std::unordered_map<char, int>& occ)
+	{
 		return occ.size() == 1 && (*occ.begin()).second == 5;
 	}
-	bool Day07Puzzle::isFourOfAKind(const CamelCardHand& hand) {
+
+	bool Day07Puzzle::isFiveOfAKind(const CamelCardHand& hand, bool jokers) {
 		const auto& occ = GetCardOccurence(hand);
 
+		if (jokers)
+		{
+			return isFiveOfAKindInternal(GetJokerisedOccurences(occ));
+		}
+
+		return isFiveOfAKindInternal(occ);
+	}
+
+	bool isFourOfAKindInternal(const std::unordered_map<char, int>& occ)
+	{
 		if (occ.size() != 2)
 		{
 			return false;
@@ -288,10 +385,19 @@ namespace TwentyTwentyThree {
 
 		return fourFound && oneFound;
 	}
-	bool Day07Puzzle::isFullHouse(const CamelCardHand& hand) 
-	{
+	bool Day07Puzzle::isFourOfAKind(const CamelCardHand& hand, bool jokers) {
 		const auto& occ = GetCardOccurence(hand);
 
+		if (jokers)
+		{
+			return isFourOfAKindInternal(GetJokerisedOccurences(occ));
+		}
+
+		return isFourOfAKindInternal(occ);
+	}
+
+	bool isFullHouseInternal(const std::unordered_map<char, int>& occ)
+	{
 		if (occ.size() != 2)
 		{
 			return false;
@@ -314,10 +420,19 @@ namespace TwentyTwentyThree {
 
 		return threeFound && twoFound;
 	}
-	bool Day07Puzzle::isThreeOfAKind(const CamelCardHand& hand) 
+	bool Day07Puzzle::isFullHouse(const CamelCardHand& hand, bool jokers)
 	{
 		const auto& occ = GetCardOccurence(hand);
 
+		if (jokers)
+		{
+			return isFullHouseInternal(GetJokerisedOccurences(occ));
+		}
+
+		return isFullHouseInternal(occ);
+	}
+	bool isThreeOfAKindInternal(const std::unordered_map<char, int>& occ)
+	{
 		if (occ.size() != 3)
 		{
 			return false;
@@ -340,10 +455,19 @@ namespace TwentyTwentyThree {
 
 		return threeFound && onesFound == 2;
 	}
-	bool Day07Puzzle::isTwoPair(const CamelCardHand& hand) 
-	{ 
+	bool Day07Puzzle::isThreeOfAKind(const CamelCardHand& hand, bool jokers)
+	{
 		const auto& occ = GetCardOccurence(hand);
 
+		if (jokers)
+		{
+			return isThreeOfAKindInternal(GetJokerisedOccurences(occ));
+		}
+
+		return isThreeOfAKindInternal(occ);		
+	}
+	bool isTwoPairInternal(const std::unordered_map<char, int>& occ)
+	{
 		if (occ.size() != 3)
 		{
 			return false;
@@ -364,12 +488,21 @@ namespace TwentyTwentyThree {
 			}
 		}
 
-		return twosFound ==2 && onesFound == 1;
+		return twosFound == 2 && onesFound == 1;
 	}
-	bool Day07Puzzle::isOnePair(const CamelCardHand& hand)
-	{
+	bool Day07Puzzle::isTwoPair(const CamelCardHand& hand, bool jokers)
+	{ 
 		const auto& occ = GetCardOccurence(hand);
 
+		if (jokers)
+		{
+			return isTwoPairInternal(GetJokerisedOccurences(occ));
+		}
+
+		return isTwoPairInternal(occ);
+	}
+	bool isOnePairInternal(const std::unordered_map<char, int>& occ)
+	{
 		if (occ.size() != 4)
 		{
 			return false;
@@ -392,222 +525,31 @@ namespace TwentyTwentyThree {
 
 		return twosFound == 1 && onesFound == 3;
 	}
-	bool Day07Puzzle::isHighCard(const CamelCardHand& hand) 
+	bool Day07Puzzle::isOnePair(const CamelCardHand& hand, bool jokers)
 	{
 		const auto& occ = GetCardOccurence(hand);
 
+		if (jokers)
+		{
+			return isOnePairInternal(GetJokerisedOccurences(occ));
+		}
+
+		return isOnePairInternal(occ);
+	}
+	bool isHighCardInternal(const std::unordered_map<char, int>& occ)
+	{
 		return occ.size() == 5;
 	}
-
-	int Day07Puzzle::compareFiveOfAKind(const CamelCardHand& lhs, const CamelCardHand& rhs) 
+	bool Day07Puzzle::isHighCard(const CamelCardHand& hand, bool jokers)
 	{
-		assert(isFiveOfAKind(lhs) && isFiveOfAKind(rhs));
+		const auto& occ = GetCardOccurence(hand);
 
-		const auto& lhsOcc = GetCardOccurence(lhs);
-		const auto& rhsOcc = GetCardOccurence(rhs);
-
-		const auto lhsval = (int)(*lhsOcc.begin()).first;
-		const auto rhsval = (int)(*rhsOcc.begin()).first;
-
-		if (lhsval == rhsval) { return 0; }
-		return lhsval > rhsval ? -1 : +1;
-	}
-	int Day07Puzzle::compareFourOfAKind(const CamelCardHand& lhs, const CamelCardHand& rhs) 
-	{
-		assert(isFourOfAKind(lhs) && isFourOfAKind(rhs));
-
-		const auto& lhsOcc = GetCardOccurence(lhs);
-		const auto& rhsOcc = GetCardOccurence(rhs);
-
-		const auto& lhs4Card = GetFromOccurrenceByCount(lhsOcc, 4);
-		const auto& lhs1Card = GetFromOccurrenceByCount(lhsOcc, 1);
-		const auto& rhs4Card = GetFromOccurrenceByCount(rhsOcc, 4);
-		const auto& rhs1Card = GetFromOccurrenceByCount(rhsOcc, 1);
-
-		if (lhs4Card == rhs4Card)
+		if (jokers)
 		{
-			if (lhs1Card == rhs1Card)
-			{
-				return 0;
-			}
-
-			return lhs1Card > rhs1Card ? -1 : +1;
+			return isHighCardInternal(GetJokerisedOccurences(occ));
 		}
 
-		return lhs4Card > rhs4Card ? -1 : +1;
-	}
-	int Day07Puzzle::compareFullHouse(const CamelCardHand& lhs, const CamelCardHand& rhs)
-	{
-		assert(isFullHouse(lhs) && isFullHouse(rhs));
-
-		const auto& lhsOcc = GetCardOccurence(lhs);
-		const auto& rhsOcc = GetCardOccurence(rhs);
-
-		const auto& lhs3Card = GetFromOccurrenceByCount(lhsOcc, 3);
-		const auto& lhs1Card = GetFromOccurrenceByCount(lhsOcc, 2);
-		const auto& rhs3Card = GetFromOccurrenceByCount(rhsOcc, 3);
-		const auto& rhs1Card = GetFromOccurrenceByCount(rhsOcc, 2);
-
-		if (lhs3Card == rhs3Card)
-		{
-			if (lhs1Card == rhs1Card)
-			{
-				return 0;
-			}
-
-			return lhs1Card > rhs1Card ? -1 : +1;
-		}
-
-		return lhs3Card > rhs3Card ? -1 : +1;
-	}
-	int Day07Puzzle::compareThreeOfAKind(const CamelCardHand& lhs, const CamelCardHand& rhs)
-	{
-		assert(isThreeOfAKind(lhs) && isThreeOfAKind(rhs));
-
-		const auto& lhsOcc = GetCardOccurence(lhs);
-		const auto& rhsOcc = GetCardOccurence(rhs);
-
-		const auto& lhs3Card = GetFromOccurrenceByCount(lhsOcc, 3);
-		const auto& lhs1HighCard = GetFromNthOccurrenceByCount(lhsOcc, 1, 0);
-		const auto& lhs1LowCard = GetFromNthOccurrenceByCount(lhsOcc, 1, 1);
-		const auto& rhs3Card = GetFromOccurrenceByCount(rhsOcc, 3);
-		const auto& rhs1HighCard = GetFromNthOccurrenceByCount(rhsOcc, 1, 0);
-		const auto& rhs1LowCard = GetFromNthOccurrenceByCount(rhsOcc, 1, 1);
-
-		if (lhs3Card == rhs3Card)
-		{
-			if (lhs1HighCard == rhs1HighCard)
-			{
-				if (lhs1LowCard == rhs1LowCard)
-				{
-					return 0;
-				}
-
-				return lhs1LowCard > rhs1LowCard ? -1 : +1;
-			}
-
-			return lhs1HighCard > rhs1HighCard ? -1 : +1;
-		}
-
-		return lhs3Card > rhs3Card ? -1 : +1;
-	}
-
-	int Day07Puzzle::compareTwoPair(const CamelCardHand& lhs, const CamelCardHand& rhs) 
-	{
-		assert(isTwoPair(lhs) && isTwoPair(rhs));
-
-		const auto& lhsOcc = GetCardOccurence(lhs);
-		const auto& rhsOcc = GetCardOccurence(rhs);
-
-		const auto& lhsHighPairCard = GetFromNthOccurrenceByCount(lhsOcc, 2, 0);
-		const auto& lhsLowPairCard = GetFromNthOccurrenceByCount(lhsOcc, 2, 1);
-		const auto& lhs1LowCard = GetFromOccurrenceByCount(lhsOcc, 1);
-		const auto& rhsHighPairCard = GetFromNthOccurrenceByCount(rhsOcc, 2, 0);
-		const auto& rhsLowPairCard = GetFromNthOccurrenceByCount(rhsOcc, 2, 1);
-		const auto& rhs1LowCard = GetFromOccurrenceByCount(rhsOcc, 1);
-
-		if (lhsHighPairCard == rhsHighPairCard)
-		{
-			if (lhsLowPairCard == rhsLowPairCard)
-			{
-				if (lhs1LowCard == rhs1LowCard)
-				{
-					return 0;
-				}
-
-				return lhs1LowCard > rhs1LowCard ? -1 : +1;
-			}
-
-			return lhsLowPairCard > rhsLowPairCard ? -1 : +1;
-		}
-
-		return lhsHighPairCard > rhsHighPairCard ? -1 : +1;
-	}
-	int Day07Puzzle::compareOnePair(const CamelCardHand& lhs, const CamelCardHand& rhs)
-	{
-		assert(isOnePair(lhs) && isOnePair(rhs));
-
-		const auto& lhsOcc = GetCardOccurence(lhs);
-		const auto& rhsOcc = GetCardOccurence(rhs);
-
-		const auto& lhsPairCard = GetFromOccurrenceByCount(lhsOcc, 2);
-		const auto& lhsHigh1Card = GetFromNthOccurrenceByCount(lhsOcc, 1, 0);
-		const auto& lhsMed1Card = GetFromNthOccurrenceByCount(lhsOcc, 1, 1);
-		const auto& lhsLow1Card = GetFromNthOccurrenceByCount(lhsOcc, 1, 2);
-
-		const auto& rhsPairCard = GetFromOccurrenceByCount(rhsOcc, 2);
-		const auto& rhsHigh1Card = GetFromNthOccurrenceByCount(rhsOcc, 1, 0);
-		const auto& rhsMed1Card = GetFromNthOccurrenceByCount(rhsOcc, 1, 1);
-		const auto& rhsLow1Card = GetFromNthOccurrenceByCount(rhsOcc, 1, 2);
-
-		if (lhsPairCard == rhsPairCard)
-		{
-			if (lhsHigh1Card == rhsHigh1Card)
-			{
-				if (lhsMed1Card == rhsMed1Card)
-				{
-					if (lhsLow1Card == rhsLow1Card)
-					{
-						return 0;
-					}
-
-					return lhsLow1Card > rhsLow1Card ? -1 : +1;
-				}
-
-				return lhsMed1Card > rhsMed1Card ? -1 : +1;
-			}
-
-			return lhsHigh1Card > rhsHigh1Card ? -1 : +1;
-		}
-
-		return lhsPairCard > rhsPairCard ? -1 : +1;
-	}
-
-	int Day07Puzzle::compareHighCard(const CamelCardHand& lhs, const CamelCardHand& rhs)
-	{
-		assert(isHighCard(lhs) && isHighCard(rhs));
-
-		const auto& lhsOcc = GetCardOccurence(lhs);
-		const auto& rhsOcc = GetCardOccurence(rhs);
-
-		const auto& lhs0Card = GetFromNthOccurrenceByCount(lhsOcc, 1, 0);
-		const auto& lhs1Card = GetFromNthOccurrenceByCount(lhsOcc, 1, 1);
-		const auto& lhs2Card = GetFromNthOccurrenceByCount(lhsOcc, 1, 2);
-		const auto& lhs3Card = GetFromNthOccurrenceByCount(lhsOcc, 1, 3);
-		const auto& lhs4Card = GetFromNthOccurrenceByCount(lhsOcc, 1, 4);
-
-		const auto& rhs0Card = GetFromNthOccurrenceByCount(rhsOcc, 1, 0);
-		const auto& rhs1Card = GetFromNthOccurrenceByCount(rhsOcc, 1, 1);
-		const auto& rhs2Card = GetFromNthOccurrenceByCount(rhsOcc, 1, 2);
-		const auto& rhs3Card = GetFromNthOccurrenceByCount(rhsOcc, 1, 3);
-		const auto& rhs4Card = GetFromNthOccurrenceByCount(rhsOcc, 1, 4);
-
-		if (lhs0Card == rhs0Card)
-		{
-			if (lhs1Card == rhs1Card)
-			{
-				if (lhs2Card == rhs2Card)
-				{
-					if (lhs3Card == rhs3Card)
-					{
-						if (lhs4Card == rhs4Card)
-						{
-							return 0;
-						}
-
-						return lhs4Card > rhs4Card ? -1 : +1;
-					}
-
-					return lhs3Card > rhs3Card ? -1 : +1;
-				}
-
-				return lhs2Card > rhs2Card ? -1 : +1;
-			}
-
-			return lhs1Card > rhs1Card ? -1 : +1;
-		}
-
-		return lhs0Card > rhs0Card ? -1 : +1;
+		return isHighCardInternal(occ);
 	}
 
 	struct HandBid
@@ -617,7 +559,49 @@ namespace TwentyTwentyThree {
 		long long bid;
 	};
 
-	std::pair<std::string, std::string> Day07Puzzle::fastSolve() {
+	long long part1(const std::vector<std::string>& m_InputLines)
+	{
+		std::vector<HandBid> handBids;
+
+		for (const auto& l : m_InputLines)
+		{
+			if (l.empty()) { continue; }
+
+			const auto& parts = StringExtensions::splitStringByDelimeter(l, " ");
+
+			auto& hb = handBids.emplace_back();
+
+			if (parts[0].size() != 5)
+			{
+				std::cout << "BAD HAND LINE: " << l << std::endl;
+			}
+
+			hb.strhand = parts[0];
+			hb.hand = Day07Puzzle::parse(parts[0]);
+			hb.bid = std::stoll(parts[1]);
+		}
+
+		std::sort(
+			handBids.begin(),
+			handBids.end(),
+			[](const HandBid& lhs, const HandBid& rhs) -> bool
+			{
+				return Day07Puzzle::CompareHand(lhs.hand, rhs.hand, false) == -1 ? false : true;
+			});
+
+		long long part1 = 0;
+
+		for (std::size_t i = 1; i <= handBids.size(); ++i)
+		{
+			part1 += (long long)(i)*handBids[i - 1].bid;
+		}
+
+		return part1;
+	}
+
+
+	long long part2(const std::vector<std::string>& m_InputLines)
+	{
 
 		std::vector<HandBid> handBids;
 
@@ -635,7 +619,7 @@ namespace TwentyTwentyThree {
 			}
 
 			hb.strhand = parts[0];
-			hb.hand = parse(parts[0]);
+			hb.hand = Day07Puzzle::parse(parts[0]);
 			hb.bid = std::stoll(parts[1]);
 		}
 
@@ -644,19 +628,22 @@ namespace TwentyTwentyThree {
 			handBids.end(),
 			[](const HandBid& lhs, const HandBid& rhs) -> bool
 			{
-				return CompareHand(lhs.hand, rhs.hand) == -1 ? false : true;
+				return Day07Puzzle::CompareHand(lhs.hand, rhs.hand, true) == -1 ? false : true;
 			});
 
-		long long part1 = 0;
+		long long part2 = 0;
 
 		for (std::size_t i = 1; i <= handBids.size(); ++i)
 		{
-			part1 += (long long)(i)*handBids[i - 1].bid;			
-			std::cout << handBids[i - 1].strhand << std::endl;
+			part2 += (long long)(i)*handBids[i - 1].bid;
 		}
 
-		std::cout << "248310101 is too high" << std::endl;
+		return part2;
+	}
 
-		return { std::to_string(part1), "Part 2"};
+	std::pair<std::string, std::string> Day07Puzzle::fastSolve() {
+
+
+		return { std::to_string(part1(m_InputLines)), std::to_string(part2(m_InputLines)) };
 	}
 }
