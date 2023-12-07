@@ -51,5 +51,8 @@ namespace TwentyEighteen {
 		puzzle.setInputLines(input);
 
 		auto answers = puzzle.fastSolve();
+
+		REQUIRE("57" == answers.first);
+		REQUIRE("29" == answers.second);
 	}
 }

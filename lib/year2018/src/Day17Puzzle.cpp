@@ -1,6 +1,7 @@
 #include <2018/Day17Puzzle.hpp>
 #include <Core/StringExtensions.hpp>
 #include <Core/Vector2.hpp>
+#include <Core/Pathfinding.hpp>
 #include <queue>
 
 #define CLAY '#'
@@ -32,35 +33,64 @@ namespace TwentyEighteen {
 		m_InputLines = std::vector<std::string>(_inputLines);
 	}
 
-	void dumpMap(core::Region<char>& _map) {
+	void dumpMap(core::Region<Day17Puzzle::ClayCell>& _map, int maxYToDraw, int height) {
 		std::cout << "=======================" << std::endl;
-		for (int y = _map.minY; y <= _map.maxY; ++y) {
+		for (int y = maxYToDraw - height; y <= maxYToDraw; ++y) {
 			for (int x = _map.minX; x <= _map.maxX; ++x) {
-				std::cout << _map.getCell(x, y);
+				std::cout << _map.getCell(x, y).c;
 			}
 			std::cout << std::endl;
 		}
 	}
 
-	std::pair<std::string, std::string> Day17Puzzle::fastSolve() {
-		core::Region<char> map;
+	void safelyFlowUp(core::Region<Day17Puzzle::ClayCell>& map, internal::PriorityQueue<Vector2i, int>& locations, int x, int y)
+	{
+		auto& curr = map.getCell(x, y).c;
+		if (curr == FLOW && map.getCell(x, y).c == FLOW)
+		{
+			locations.put({ x, y - 1 }, y - 1);
+		}
+	}
 
-		map.getCell(500, 0) = SOURCE;
+	std::pair<std::string, std::string> Day17Puzzle::fastSolve() {
+		core::Region<ClayCell> map;
+
+		map.getCell(500, 0).c = SOURCE;
 		map.minX = 500;
 		map.maxX = 500;
-		populateMap(map, parseInput(m_InputLines));
-		std::queue<Vector2i> locations;
-		locations.push({ 500, 0 });
+		const auto& parsed = parseInput(m_InputLines);
+		populateMap(map, parsed);
+		internal::PriorityQueue<Vector2i, int> locations;
 
-		dumpMap(map);
+		locations.put({ 500, 0 }, 0);
+
+		int displayHeight = 64;
+		int currentY = displayHeight;
+
+		int minY = 500;
+		for (const auto& p : parsed)
+		{
+			minY = std::min(minY, p.minY);
+		}
+		const auto maxY = map.maxY;
+
+
+		if (getVerbose())
+		{
+			dumpMap(map, currentY, displayHeight);
+		}
 
 		while (!locations.empty()) {
-			//int v = getchar();
 
-			Vector2i loc = locations.front();locations.pop();
-			auto& below = map.getCell(loc.x, loc.y + 1);
+			Vector2i loc = locations.get();
+
+			if (loc.y > maxY + 2) { continue; }
+
+			currentY = std::max(currentY, loc.y + displayHeight / 2);
+
+			auto& below = map.getCell(loc.x, loc.y + 1).c;
 			if (IS_EMPTY(below)) {
-				locations.push({ loc.x, loc.y + 1 });
+				locations.put({ loc.x, loc.y + 1 }, loc.y + 1);
 				below = FLOW;
 			}
 			else if (IS_SOLID(below)) {
@@ -69,33 +99,124 @@ namespace TwentyEighteen {
 				int minX = loc.x;
 				int maxX = loc.x;
 
-				for (int x = minX;; --x) {
-					if (IS_CLAY(map.getCell(x - 1, loc.y))) {
+				while (true)
+				{
+					const int leftX = minX - 1;
+
+					const auto belowLeftCoord = Vector2i{ leftX, loc.y + 1 };
+					const auto adjLeftCoord = Vector2i{ leftX, loc.y };
+
+					if (IS_SOLID(map.getCell(adjLeftCoord.x, adjLeftCoord.y).c))
+					{
+						containedLeft = true;
 						break;
 					}
-					if (IS_CLAY(map.getCell(x - 1, loc.y + 1))) {
+					else if (IS_SOLID(map.getCell(belowLeftCoord.x, belowLeftCoord.y).c))
+					{
+						minX--;
+					}
+					else 
+					{
 						break;
 					}
-					minX--;
 				}
-				for (int x = maxX;; ++x) {
-					if (IS_CLAY(map.getCell(x + 1, loc.y))) {
+
+				while (true)
+				{
+					const int rightX = maxX + 1;
+
+					const auto belowRightCoord = Vector2i{ rightX, loc.y + 1 };
+					const auto adjRightCoord = Vector2i{ rightX, loc.y };
+
+					if (IS_SOLID(map.getCell(adjRightCoord.x, adjRightCoord.y).c))
+					{
+						containedRight = true;
 						break;
 					}
-					if (IS_CLAY(map.getCell(x + 1, loc.y + 1))) {
+					else if (IS_SOLID(map.getCell(belowRightCoord.x, belowRightCoord.y).c))
+					{
+						maxX++;
+					}
+					else
+					{
 						break;
 					}
-					maxX++;
 				}
-				std::cout << "On level " << loc.y << " goes from " << minX << " to " << maxX << std::endl;
+								
+				if (containedLeft && containedRight)
+				{
+					for (int x = minX; x <= maxX; ++x)
+					{
+						map.getCell(x, loc.y).c = SETTLED;
+					}
+
+					locations.put({ loc.x, loc.y - 1 }, loc.y - 1);
+				}
+				else
+				{
+					// Flowing water over the top
+					for (int x = minX; x <= loc.x; ++x)
+					{
+						safelyFlowUp(map, locations, x, loc.y);
+						map.getCell(x, loc.y).c = FLOW;
+					}
+					if (!containedLeft)
+					{
+						safelyFlowUp(map, locations, minX, loc.y);
+						safelyFlowUp(map, locations, minX-1, loc.y);
+						map.getCell(minX, loc.y).c = FLOW;
+						map.getCell(minX - 1, loc.y).c = FLOW;
+						locations.put({ minX - 1, loc.y }, loc.y);
+					}
+
+					for (int x = loc.x; x <= maxX; ++x)
+					{
+						safelyFlowUp(map, locations, x, loc.y);
+						map.getCell(x, loc.y).c = FLOW;
+					}
+					if (!containedRight)
+					{
+						safelyFlowUp(map, locations, maxX, loc.y);
+						safelyFlowUp(map, locations, maxX+1, loc.y);
+						map.getCell(maxX, loc.y).c = FLOW;
+						map.getCell(maxX + 1, loc.y).c = FLOW;
+						locations.put({ maxX + 1, loc.y }, loc.y);
+					}
+				}
 			}
 
-
-			dumpMap(map);
+			if (getVerbose())
+			{
+				dumpMap(map, currentY, displayHeight);
+			}
 		}
 
+		long long part1 = 0;
+		long long part2 = 0;
 
-		return { "Part 1", "Part 2" };
+		for (int y = minY; y <= maxY; ++y)
+		{
+			for (int x = map.minX; x <= map.maxX; ++x)
+			{
+				const auto& c = map.getCell(x, y).c;
+				if (c == SETTLED)
+				{
+					part1++;
+					part2++;
+				}
+				if (c == FLOW)
+				{
+					part1++;
+				}
+			}
+		}
+
+		if (getVerbose())
+		{
+			dumpMap(map, map.maxY, map.maxY);
+		}
+
+		return { std::to_string(part1), std::to_string(part2) };
 	}
 
 	std::vector<Day17Puzzle::ParsedClayVein> Day17Puzzle::parseInput(const std::vector<std::string>& _input) {
@@ -124,11 +245,11 @@ namespace TwentyEighteen {
 
 		return parsed;
 	}
-	void Day17Puzzle::populateMap(core::Region<char>& _map, const std::vector<ParsedClayVein>& _parsedInput) {
+	void Day17Puzzle::populateMap(core::Region<ClayCell>& _map, const std::vector<ParsedClayVein>& _parsedInput) {
 		for (const auto& pcv : _parsedInput) {
 			for (int y = pcv.minY; y <= pcv.maxY; ++y){
 				for (int x = pcv.minX; x <= pcv.maxX; ++x) {
-					_map.getCell(x, y) = CLAY;
+					_map.getCell(x, y).c = CLAY;
 				}
 			}
 		}

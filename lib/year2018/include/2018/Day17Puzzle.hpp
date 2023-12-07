@@ -8,6 +8,11 @@ namespace TwentyEighteen {
 	
 	class Day17Puzzle : public core::PuzzleBase {
 	public:
+		struct ClayCell
+		{
+			char c{ ' ' };
+		};
+
 		struct ParsedClayVein {
 			int minX{ 0 };
 			int maxX{ 0 };
@@ -23,7 +28,7 @@ namespace TwentyEighteen {
 		std::pair<std::string, std::string> fastSolve() override;
 
 		static std::vector<ParsedClayVein> parseInput(const std::vector<std::string>& _input);
-		static void populateMap(core::Region<char>& _map, const std::vector<ParsedClayVein>& _parsedInput);
+		static void populateMap(core::Region<ClayCell>& _map, const std::vector<ParsedClayVein>& _parsedInput);
 
 	private:
 		std::vector<std::string> m_InputLines;
