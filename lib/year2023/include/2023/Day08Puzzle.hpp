@@ -14,6 +14,9 @@ namespace TwentyTwentyThree {
 		void setInputLines(const std::vector<std::string>& _inputLines);
 		std::pair<std::string, std::string> fastSolve() override;
 
+		static std::string solvePart1(const std::vector<std::string>& input);
+		static std::string solvePart2(const std::vector<std::string>& input);
+
 	private:
 		std::vector<std::string> m_InputLines;
 	};
