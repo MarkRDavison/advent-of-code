@@ -4,7 +4,16 @@
 #include <Core/PuzzleBase.hpp>
 
 namespace TwentyTwentyThree {
-	
+
+	typedef long long MirageNumber;
+
+	typedef std::vector<MirageNumber> MirageVector;
+
+	struct MirageHistory
+	{
+		std::vector<std::vector<MirageNumber>> data;
+	};
+
 	class Day09Puzzle : public core::PuzzleBase {
 	public:
 		Day09Puzzle();
