@@ -4,13 +4,27 @@
 namespace TwentyTwentyThree {
 
 	TEST_CASE("Day 11 Examples work", "[2023][Day11]") {
-	    const std::vector<std::string> input = {};
+	    const std::vector<std::string> input = {
+"...#......",
+".......#..",
+"#.........",
+"..........",
+"......#...",
+".#........",
+".........#",
+"..........",
+".......#..",
+"#...#.....",
+		};
 
 	    Day11Puzzle puzzle{};
 	    puzzle.setVerbose(true);
 	    puzzle.setInputLines(input);
 
 	    auto answers = puzzle.fastSolve();
+
+		REQUIRE("374" == answers.first);
+		REQUIRE("82000210" == answers.second);
 	}
 
 }

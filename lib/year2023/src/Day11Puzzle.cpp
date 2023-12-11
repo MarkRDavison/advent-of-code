@@ -18,10 +18,53 @@ namespace TwentyTwentyThree {
 		m_InputLines = std::vector<std::string>(_inputLines);
 	}
 
-	struct CosmicCell
+	int getCountOfElementsLessThan(const std::vector<int>& vec, int val)
 	{
-		char c{ '.' };
-	};
+		int count = 0;
+
+		for (const auto& v : vec)
+		{
+			if (v < val)
+			{
+				count++;
+			}
+		}
+
+		return count;
+	}
+
+	long long calculateAnswerForExpansion(
+		const std::vector<std::pair<int, Vector2i>>& galaxyLocationsVec,
+		const std::vector<int>& extraColumns,
+		const std::vector<int>& extraRows,
+		int multi)
+	{
+		long long answer = 0;
+
+		for (std::size_t i = 0; i < galaxyLocationsVec.size(); ++i)
+		{
+			for (std::size_t j = i + 1; j < galaxyLocationsVec.size(); ++j)
+			{
+				if (i == j) { continue; }
+
+				const auto locI = galaxyLocationsVec[i].second;
+				const auto locJ = galaxyLocationsVec[j].second;
+
+				const auto extraX_I = multi * getCountOfElementsLessThan(extraColumns, locI.x);
+				const auto extraX_J = multi * getCountOfElementsLessThan(extraColumns, locJ.x);
+
+				const auto extraY_I = multi * getCountOfElementsLessThan(extraRows, locI.y);
+				const auto extraY_J = multi * getCountOfElementsLessThan(extraRows, locJ.y);
+
+				const auto distanceX = (locI.x + extraX_I) - (locJ.x + extraX_J);
+				const auto distanceY = (locI.y + extraY_I) - (locJ.y + extraY_J);
+
+				answer += std::abs(distanceX) + std::abs(distanceY);
+			}
+		}
+
+		return answer;
+	}
 
 	std::pair<std::string, std::string> Day11Puzzle::fastSolve() {
 
@@ -30,31 +73,16 @@ namespace TwentyTwentyThree {
 		std::vector<int> extraColumns;
 		std::vector<int> extraRows;
 
-		std::cout << "Original" << std::endl;
-		for (const auto& r : m_InputLines)
-		{
-			std::cout << r << std::endl;
-		}
-
 		for (std::size_t y = 0; y < m_InputLines.size(); ++y)
 		{
 			universe.push_back(m_InputLines[y]);
 			if (m_InputLines[y].find('#') == std::string::npos)
 			{
 				extraRows.push_back(y);
-				universe.push_back(m_InputLines[y]);
 			}
 		}
 
 
-		std::cout << "With extra rows" << std::endl;
-		for (const auto& r : universe)
-		{
-			std::cout << r << std::endl;
-		}
-
-
-		int expandedColumns = 0;
 		for (std::size_t x = 0; x < m_InputLines[0].size(); ++x)
 		{
 			bool emptyColumn = true;
@@ -68,24 +96,10 @@ namespace TwentyTwentyThree {
 			}
 			if (emptyColumn)
 			{
-				const int expandedX = x + expandedColumns;
-				expandedColumns++;
-
 				extraColumns.push_back(x);
-				for (auto& row : universe)
-				{
-					row.insert(row.begin() + expandedX, '.');
-				}
 			}
 		}
 
-		std::cout << "With extra columns" << std::endl;
-		for (const auto& r : universe)
-		{
-			std::cout << r << std::endl;
-		}
-
-		std::unordered_map<int, Vector2i> galaxyLocations;
 		std::vector<std::pair<int, Vector2i>> galaxyLocationsVec;
 
 		int galaxyNum = 1;
@@ -95,43 +109,16 @@ namespace TwentyTwentyThree {
 			{
 				if (universe[y][x] == '#')
 				{
-					galaxyLocations.emplace(galaxyNum, Vector2i{ (int)x,(int)y });
 					galaxyLocationsVec.emplace_back(galaxyNum, Vector2i{ (int)x,(int)y });
 					galaxyNum++;
 				}
 			}
 		}
 
-		long long part1 = 0;
-		std::vector<long long> distances;
+		const auto part1 = calculateAnswerForExpansion(galaxyLocationsVec, extraColumns, extraRows, 1);
 
-		for (std::size_t i = 0; i < galaxyLocationsVec.size(); ++i)
-		{
-			for (std::size_t j = i + 1; j < galaxyLocationsVec.size(); ++j)
-			{
-				if (i == j) { continue; }
+		const auto part2 = calculateAnswerForExpansion(galaxyLocationsVec, extraColumns, extraRows, 1000000-1);
 
-				const auto locI = galaxyLocationsVec[i].second;
-				const auto locJ = galaxyLocationsVec[j].second;
-
-				const auto distanceX = locI.x - locJ.x;
-				const auto distanceY = locI.y - locJ.y;
-
-				distances.push_back(distanceX + distanceY);
-
-				part1 += std::abs(distanceX) + std::abs(distanceY);
-			}
-		}
-
-		for (const auto& r : extraRows)
-		{
-			std::cout << "Extra row at x = " << r << std::endl;
-		}
-		for (const auto& c : extraColumns)
-		{
-			std::cout << "Extra col at y = " << c << std::endl;
-		}
-
-		return { std::to_string(part1), "Part 2"};
+		return { std::to_string(part1), std::to_string(part2) };
 	}
 }
