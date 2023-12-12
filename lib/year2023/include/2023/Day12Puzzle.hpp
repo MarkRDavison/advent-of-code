@@ -4,7 +4,7 @@
 #include <Core/PuzzleBase.hpp>
 
 namespace TwentyTwentyThree {
-	
+
 	class Day12Puzzle : public core::PuzzleBase {
 	public:
 		Day12Puzzle();
