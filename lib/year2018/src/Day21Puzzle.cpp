@@ -60,10 +60,10 @@ namespace TwentyEighteen {
 		}
 
 		OpCodeNumber part1 = -1;
-		OpCodeNumber last;
+		OpCodeNumber part2;
 		std::unordered_set<OpCodeNumber> seen;
 
-		{
+		{ // TODO: Find the index of the register with the big number, instead of hardcoding [1]
 			OpCodeComputer<6> computer;
 			computer.registers = { 0,0,0,0,0,0 };
 			OpCodeNumber& pc = computer.registers[pcRegisterIndex];
@@ -90,14 +90,14 @@ namespace TwentyEighteen {
 					{
 						std::cout << "seen size: " << seen.size() << ", this took until there were 15500 entries on my input " << std::endl;
 					}
-					last = computer.registers[1];
-					seen.insert(last);
+					part2 = computer.registers[1];
+					seen.insert(part2);
 				}
 
 			}
 		}
 
 
-		return { std::to_string(part1), std::to_string(last) };
+		return { std::to_string(part1), std::to_string(part2) };
 	}
 }
