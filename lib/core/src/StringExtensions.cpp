@@ -57,7 +57,15 @@ std::size_t StringExtensions::hash(const std::string& _string)
 
 std::vector<std::string> StringExtensions::splitStringByLines(const std::string& _string)
 {
-	return splitStringByString(_string, "\n");
+	std::vector<std::string> result;
+	std::stringstream stringStream(_string);
+	std::string line;
+	while (std::getline(stringStream, line))
+	{
+		result.push_back(line);
+	}
+
+	return result;
 }
 std::vector<std::string> StringExtensions::splitStringByString(const std::string& _string, const std::string& _splitString)
 {
