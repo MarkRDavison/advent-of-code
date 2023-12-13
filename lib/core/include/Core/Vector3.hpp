@@ -116,5 +116,13 @@ using Vector3f = Vector3<float>;
 using Vector3i = Vector3<int>;
 using Vector3u = Vector3<unsigned>;
 
+template<typename T>
+struct Vector3_Hash_Fxn
+{
+    std::size_t operator()(const Vector3<T>& _vec) const
+    {
+        return  std::hash<T>()(_vec.x) ^ std::hash<T>()(_vec.y) ^ std::hash<T>()(_vec.z);
+    }
+};
 
 #endif // INCLUDED_ADVENT_OF_CODE_CORE_VECTOR3_HPP_
