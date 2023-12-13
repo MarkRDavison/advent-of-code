@@ -34,8 +34,6 @@ namespace TwentyTwentyThree {
 		for (std::size_t reflectIndex = 0; reflectIndex < mirror[0].size(); ++reflectIndex)
 		{
 			int errors = 0;
-			std::vector<std::string> leftRef;
-			std::vector<std::string> rightRef;
 			for (std::size_t y = 0; y < mirror.size(); ++y)
 			{
 				std::string left;
@@ -63,8 +61,6 @@ namespace TwentyTwentyThree {
 				}
 
 				assert(left.size() == right.size());
-				leftRef.push_back(left);
-				rightRef.push_back(right);
 
 				if (left.empty() || right.empty())
 				{
