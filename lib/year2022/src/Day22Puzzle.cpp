@@ -53,399 +53,195 @@ namespace TwentyTwentyTwo {
 		return instr;
 	}
 
-	std::pair<std::string, std::string> Day22Puzzle::fastSolve(int _cubeSize)
+	std::size_t findFaceSize(std::size_t w, std::size_t h)
 	{
-		bool locationSet = false;
-		Vector2i location{ 0, 0 };
-		core::Orientation facing = core::Orientation::Right;
-
-		Map map;
-
-		std::size_t i = 0;
-		for (i = 0; i < m_InputLines.size(); ++i)
+		const std::vector<std::pair<std::size_t, std::size_t>> pairs = {
+			{2,5},{3,4},{4,3},{5,2}
+		};
+		for (const auto& [x, y] : pairs)
 		{
-			const auto& l = m_InputLines[i];
+			if (h / x == w / y)
+			{
+				return h / x;
+			}
+		}
+
+		assert(false);
+	}
+
+
+
+	long long solvePart1(
+		const Vector2i& start,
+		const std::vector<std::string>& map, 
+		const std::vector<std::string>& instructions)
+	{
+		Vector2i pos(start);
+		// ">v<^"
+		core::Orientation dir(core::Orientation::Right);
+		std::unordered_map<std::string, char> dirChars = {
+			{ core::OrientationHelper::toString(core::Orientation::Right), '>' },
+			{ core::OrientationHelper::toString(core::Orientation::Left), '<' },
+			{ core::OrientationHelper::toString(core::Orientation::Down), 'v' },
+			{ core::OrientationHelper::toString(core::Orientation::Up), '^' }
+		};
+		std::unordered_map<std::string, long long> facingScores = {
+			{ core::OrientationHelper::toString(core::Orientation::Right), 0 },
+			{ core::OrientationHelper::toString(core::Orientation::Down), 1 },
+			{ core::OrientationHelper::toString(core::Orientation::Left), 2 },
+			{ core::OrientationHelper::toString(core::Orientation::Up), 3 }
+		};
+		std::unordered_map<Vector2i, char, Vector2_Hash_Fxn<int>> locations;
+
+		const auto printMap = 
+			[&locations, &dirChars](const std::vector<std::string>& map) -> void
+			{
+				auto mapOutput(map);
+
+				for (const auto& [loc, c] : locations)
+				{
+					mapOutput[(std::size_t)loc.y][(std::size_t)loc.x] = c;
+				}
+
+				std::cout << "===================================================" << std::endl;
+				for (const auto& l : mapOutput)
+				{
+					std::cout << l << std::endl;
+				}
+			};
+
+		const auto getNextLocation2d = 
+			[](
+				const std::vector<std::string>& map, 
+				const Vector2i& pos, 
+				core::Orientation dir
+			) -> Vector2i
+			{
+				auto dirOffset = core::OrientationHelper::toDirection(dir);
+				dirOffset.y *= -1;
+
+				bool xChange = dirOffset.x != 0;
+
+				char cell = ' ';
+				Vector2i next = pos;
+
+				while (cell == ' ')
+				{
+					next = next + dirOffset;
+
+					if (dirOffset.x == 0)
+					{
+						while (next.y < 0)
+						{
+							next.y += (int)map.size();
+						}
+						while (next.y >= (int)map.size())
+						{
+							next.y -= (int)map.size();
+						}
+
+						const auto currWidth = (int)map[(std::size_t)next.y].size();
+
+						while (next.x < 0)
+						{
+							next.x += currWidth;
+						}
+						while (next.x >= currWidth)
+						{
+							next.x -= currWidth;
+						}
+					}
+					else
+					{
+						const auto currWidth = (int)map[(std::size_t)next.y].size();
+
+						while (next.x < 0)
+						{
+							next.x += currWidth;
+						}
+						while (next.x >= currWidth)
+						{
+							next.x -= currWidth;
+						}
+
+						while (next.y < 0)
+						{
+							next.y += (int)map.size();
+						}
+						while (next.y >= (int)map.size())
+						{
+							next.y -= (int)map.size();
+						}
+
+					}
+
+					cell = map[(std::size_t)next.y][(std::size_t)next.x];
+				}
+
+				if (cell == '.')
+				{
+					return next;
+				}
+
+				return pos;
+			};
+
+		locations[pos] = dirChars.at(core::OrientationHelper::toString(dir));
+
+		for (const auto& i : instructions)
+		{
+			if (i == "L")
+			{
+				dir = core::OrientationHelper::turn(dir, core::Orientation::Left);
+				locations[pos] = dirChars.at(core::OrientationHelper::toString(dir));
+				continue;
+			}
+			if (i == "R")
+			{
+				dir = core::OrientationHelper::turn(dir, core::Orientation::Right);
+				locations[pos] = dirChars.at(core::OrientationHelper::toString(dir));
+				continue;
+			}
+
+			int offset = std::stoi(i);
+			while (offset > 0)
+			{
+				pos = getNextLocation2d(map, pos, dir);
+				locations[pos] = dirChars.at(core::OrientationHelper::toString(dir));
+				offset--;
+			}
+		}
+
+		const long long score = 1000 * (pos.y + 1) + 4 * (pos.x + 1) + facingScores[core::OrientationHelper::toString(dir)];
+
+		return score;
+	}
+
+	std::pair<std::string, std::string> Day22Puzzle::fastSolve()
+	{
+		Vector2i start;
+		const auto instructions = extractInstructions(m_InputLines.back());
+		std::size_t maxWidth = 0;
+		std::vector<std::string> map;
+		for (const auto& l : m_InputLines)
+		{
 			if (l.empty())
 			{
 				break;
 			}
 
 			map.push_back(l);
-
-			int x = 0;
-			for (const char c : l)
-			{
-				if (!locationSet && c == '.')
-				{
-					locationSet = true;
-					location.x = x;
-				}
-				++x;
-			}
+			maxWidth = std::max(maxWidth, l.size());
 		}
 
-		Adjacency adjacent = processAdjacency2D(map);
+		const auto faceSize = findFaceSize(maxWidth, map.size());
 
-		const auto& instructions = extractInstructions(m_InputLines.back());
+		start.x = (int)map.front().find_first_not_of(' ');
 
-		for (const auto& instr : instructions)
-		{
-			if (instr == "L")
-			{
-				facing = core::OrientationHelper::turn(facing, core::Orientation::Left);
-			}
-			else if (instr == "R")
-			{
-				facing = core::OrientationHelper::turn(facing, core::Orientation::Right);
-			}
-			else
-			{
-				const int val = std::stoi(instr);
-				auto offset = core::OrientationHelper::toDirection(facing);
-				offset.y *= -1;
+		auto part1 = solvePart1(start, map, instructions);
+		auto part2 = 0;
 
-				for (int i = 0; i < val; ++i)
-				{
-					location = adjacent.at(location).at(facing);
-				}
-			}
-		}
-
-		int part1 = 1000 * (location.y + 1) + 4 * (location.x + 1);
-
-		if (facing == core::Orientation::Right)
-		{
-			part1 += 0;
-		}
-		else if (facing == core::Orientation::Down)
-		{
-			part1 += 1;
-		}
-		else if (facing == core::Orientation::Left)
-		{
-			part1 += 2;
-		}
-		else if (facing == core::Orientation::Up)
-		{
-			part1 += 3;
-		}
-
-		return { std::to_string(part1), "Part 2" };
-	}
-	std::pair<std::string, std::string> Day22Puzzle::fastSolve() {
-		return fastSolve(50);
+		return { std::to_string(part1), std::to_string(part2) };
 	}
 
-	Adjacency Day22Puzzle::processAdjacency2D(const Map& _map)
-	{
-		Adjacency adjacent;
-
-		for (int y = 0; y < (int)_map.size(); ++y)
-		{
-			for (int x = 0; x < (int)_map[y].size(); ++x)
-			{
-				const auto cell = _map[y][x];
-				if (cell == '.')
-				{
-					auto& neighbours = adjacent[Vector2i(x, y)];
-
-					{	// LEFT
-						int nextX = x;
-						int validNextX = x;
-						while (true)
-						{
-							int nextNextX = nextX - 1;
-							if (nextNextX < 0)
-							{
-								nextX = (int)(_map[y].size()); continue;
-							}
-
-							const auto nextNextXVal = _map[y][nextNextX];
-
-							if (nextNextXVal == '.')
-							{
-								validNextX = nextNextX;
-								break;
-							}
-							else if (nextNextXVal == '#')
-							{
-								break;
-							}
-							else if (nextNextXVal == ' ')
-							{
-								nextX--;
-							}
-							else
-							{
-								assert(false);
-							}
-						}
-						neighbours[core::Orientation::Left] = Vector2i(validNextX, y);
-					}
-					{	// RIGHT
-						int nextX = x;
-						int validNextX = x;
-						while (true)
-						{
-							int nextNextX = nextX + 1;
-							if (nextNextX >= _map[y].size())
-							{
-								nextX = -1; continue;
-							}
-
-							const auto nextNextXVal = _map[y][nextNextX];
-
-							if (nextNextXVal == '.')
-							{
-								validNextX = nextNextX;
-								break;
-							}
-							else if (nextNextXVal == '#')
-							{
-								break;
-							}
-							else if (nextNextXVal == ' ')
-							{
-								nextX++;
-							}
-							else
-							{
-								assert(false);
-							}
-						}
-						neighbours[core::Orientation::Right] = Vector2i(validNextX, y);
-					}
-					{	// UP
-						int nextY = y;
-						int validNextY = y;
-						while (true)
-						{
-							int nextNextY = nextY - 1;
-							if (nextNextY < 0)
-							{
-								nextY = (int)(_map.size()); continue;
-							}
-
-							if (_map[nextNextY].size() <= x)
-							{
-								nextY--;
-								continue;
-							}
-
-							const auto nextNextYVal = _map[nextNextY][x];
-
-							if (nextNextYVal == '.')
-							{
-								validNextY = nextNextY;
-								break;
-							}
-							else if (nextNextYVal == '#')
-							{
-								break;
-							}
-							else if (nextNextYVal == ' ')
-							{
-								nextY--;
-							}
-							else
-							{
-								assert(false);
-							}
-						}
-						neighbours[core::Orientation::Up] = Vector2i(x, validNextY);
-					}
-					{	// DOWN
-						int nextY = y;
-						int validNextY = y;
-						while (true)
-						{
-							int nextNextY = nextY + 1;
-							if (nextNextY >= _map.size())
-							{
-								nextY = -1; continue;
-							}
-
-							if (_map[nextNextY].size() <= x)
-							{
-								nextY++;
-								continue;
-							}
-
-							const auto nextNextYVal = _map[nextNextY][x];
-
-							if (nextNextYVal == '.')
-							{
-								validNextY = nextNextY;
-								break;
-							}
-							else if (nextNextYVal == '#')
-							{
-								break;
-							}
-							else if (nextNextYVal == ' ')
-							{
-								nextY++;
-							}
-							else
-							{
-								assert(false);
-							}
-						}
-						neighbours[core::Orientation::Down] = Vector2i(x, validNextY);
-					}
-				}
-			}
-		}
-
-		return adjacent;
-	}
-
-	std::pair<Adjacency, OrientationAdjacency> Day22Puzzle::processAdjacency3D(const Map& _map, int _cubeSize, const Vector2i& _startingLocation)
-	{
-		assert(_map.size() % _cubeSize == 0);
-		Adjacency adjacent;
-		OrientationAdjacency orientationAdjacent;
-
-		std::unordered_map<char, Vector2i> faceStarts;
-		std::unordered_map<char, Vector2i> orientationMultipliers;
-
-		if (_cubeSize == 4)
-		{
-			const Vector2i frontFace(8, 0);
-			const Vector2i downFace(8, 4);
-			const Vector2i leftFace(4, 4);
-			const Vector2i topFace(0, 4);
-			const Vector2i backFace(8, 8);
-			const Vector2i rightFace(12, 8);
-
-			faceStarts['f'] = frontFace;
-			faceStarts['d'] = downFace;
-			faceStarts['l'] = leftFace;
-			faceStarts['t'] = topFace;
-			faceStarts['b'] = backFace;
-			faceStarts['r'] = rightFace;
-
-			orientationMultipliers['f'] = { 1,1 };
-			orientationMultipliers['d'] = { 1,1 };
-			orientationMultipliers['l'] = { 1,1 };
-			orientationMultipliers['t'] = { 1,1 };
-			orientationMultipliers['b'] = { 1,1 };
-			orientationMultipliers['r'] = { 1,1 };
-		}
-		else if (_cubeSize == 50)
-		{
-			assert(false); // TODO
-		}
-		else
-		{
-			assert(false);
-		}
-
-		assert(_map[faceStarts['f'].y][faceStarts['f'].x] != ' ');
-		assert(_map[faceStarts['d'].y][faceStarts['d'].x] != ' ');
-		assert(_map[faceStarts['l'].y][faceStarts['l'].x] != ' ');
-		assert(_map[faceStarts['t'].y][faceStarts['t'].x] != ' ');
-		assert(_map[faceStarts['b'].y][faceStarts['b'].x] != ' ');
-		assert(_map[faceStarts['r'].y][faceStarts['r'].x] != ' ');
-
-		for (const auto& [f, start] : faceStarts)
-		{
-			for (int y = start.y; y < start.y + _cubeSize; ++y)
-			{
-				for (int x = start.x; x < start.x + _cubeSize; ++x)
-				{
-					const auto cell = _map[y][x];
-					if (cell == '.')
-					{
-						if (y != start.y)
-						{
-							// Can go up without changing
-							auto next = Vector2i(x, y - 1);
-							if (_map[next.y][next.x] != '.')
-							{
-								adjacent[Vector2i(x, y)][core::Orientation::Up] = next;
-								orientationAdjacent[Vector2i(x, y)][core::Orientation::Up] = core::Orientation::Up;
-							}
-							else
-							{
-								adjacent[Vector2i(x, y)][core::Orientation::Up] = Vector2i(x, y);
-								orientationAdjacent[Vector2i(x, y)][core::Orientation::Up] = core::Orientation::Up;
-							}
-						}
-						if (y != start.y + _cubeSize - 1)
-						{
-							// Can go down without changing
-							const auto next = Vector2i(x, y + 1);
-							if (_map[next.y][next.x] != '.')
-							{
-								adjacent[Vector2i(x, y)][core::Orientation::Down] = next;
-								orientationAdjacent[Vector2i(x, y)][core::Orientation::Down] = core::Orientation::Down;
-							}
-							else
-							{
-								adjacent[Vector2i(x, y)][core::Orientation::Down] = Vector2i(x, y);
-								orientationAdjacent[Vector2i(x, y)][core::Orientation::Down] = core::Orientation::Down;
-							}
-						}
-						if (x != start.x)
-						{
-							// Can go left without changing
-							const auto next = Vector2i(x - 1, y);
-							if (_map[next.y][next.x] != '.')
-							{
-								adjacent[Vector2i(x, y)][core::Orientation::Left] = next;
-								orientationAdjacent[Vector2i(x, y)][core::Orientation::Left] = core::Orientation::Left;
-							}
-							else
-							{
-								adjacent[Vector2i(x, y)][core::Orientation::Left] = Vector2i(x, y);
-								orientationAdjacent[Vector2i(x, y)][core::Orientation::Left] = core::Orientation::Left;
-							}
-						}
-						if (x != start.x + _cubeSize - 1)
-						{
-							// Can go right without changing
-							const auto next = Vector2i(x + 1, y);
-							if (_map[next.y][next.x] != '.')
-							{
-								adjacent[Vector2i(x, y)][core::Orientation::Right] = next;
-								orientationAdjacent[Vector2i(x, y)][core::Orientation::Right] = core::Orientation::Right;
-							}
-							else
-							{
-								adjacent[Vector2i(x, y)][core::Orientation::Right] = Vector2i(x, y);
-								orientationAdjacent[Vector2i(x, y)][core::Orientation::Right] = core::Orientation::Right;
-							}
-						}
-					}
-				}
-			}
-		}
-
-
-		for (const auto& [f, start] : faceStarts)
-		{
-			{	// TOP
-				for (int x = start.x; x < start.x + _cubeSize; ++x)
-				{
-					const auto next = Vector2i(x, start.y - 1);
-					if (next.y >= 0)
-					{
-						//if (_map[next.y][next.x] )
-					}
-				}
-			}
-			{	// BOTTOM
-
-			}
-			{	// LEFT
-
-			}
-			{	// RIGHT
-
-			}
-		}
-
-		return { adjacent, orientationAdjacent };
-	}
 }
