@@ -123,4 +123,13 @@ using Vector4f = Vector4<float>;
 using Vector4i = Vector4<int>;
 using Vector4u = Vector4<unsigned>;
 
+template<typename T>
+struct Vector4_Hash_Fxn
+{
+    std::size_t operator()(const Vector4<T>& _vec) const
+    {
+        return  std::hash<T>()(_vec.x) ^ std::hash<T>()(_vec.y) ^ std::hash<T>()(_vec.z) ^ std::hash<T>()(_vec.w);
+    }
+};
+
 #endif // INCLUDED_ADVENT_OF_CODE_CORE_VECTOR4_HPP_
