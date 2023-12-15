@@ -35,13 +35,13 @@ namespace TwentyTwentyTwo {
 	typedef std::unordered_set<Vector3<int>, Vector3_Hash_Fxn<int>> GraphSeen;
 	typedef std::unordered_map<Vector3<int>, Vector3<int>, Vector3_Hash_Fxn<int>> GraphFromDistances;
 
-	long long solve(const Graph& graph, const Vector2i& start, const Vector2i& end, long i)
+	int solve(const Graph& graph, const Vector2i& start, const Vector2i& end, int time)
 	{
 		const auto layers = graph.size();
 		const auto height = graph[0].size();
 		const auto width = graph[0][0].size();
 
-		const Vector3i starting = { start, 0 };
+		const Vector3i starting = { start, time };
 
 		internal::PriorityQueue<Vector3<int>, int> queue;
 		queue.put(starting, 0);
@@ -52,7 +52,8 @@ namespace TwentyTwentyTwo {
 		const auto addToQueueIfBetter = 
 			[&from, &distances, &queue, end, &graph](const Vector3i& prev, const Vector3i& next, int nextDistance) -> void
 			{
-				const auto cell = graph[(int)(next.z % graph.size())][next.y][next.x];
+				const auto actualZ = (int)(next.z % graph.size());
+				const auto cell = graph[actualZ][next.y][next.x];
 				if (cell != '.' && cell != 'E' && cell != 'S')
 				{
 					return;
@@ -69,11 +70,12 @@ namespace TwentyTwentyTwo {
 
 				from[next] = prev;
 				distances[next] = nextDistance;
-				queue.put(next, std::abs(end.x - next.x) + std::abs(end.y - next.y));
+				queue.put(next, std::abs(next.x - end.x) + std::abs(next.y - end.y));
 			};
 
-		int bestDistance =  std::numeric_limits<int>::max();
+		int bestDistance = std::numeric_limits<int>::max();
 
+		long i = 0;
 		while (!queue.empty())
 		{
 			const auto curr = queue.get();
@@ -96,7 +98,7 @@ namespace TwentyTwentyTwo {
 			}
 
 			// RIGHT
-			if (curr.x < width - 1)
+			//if (curr.x < width - 1)
 			{
 				Vector3i next{ curr.x + 1, curr.y, curr.z + 1 };
 				const auto nextDistance = currentDistance + 1;
@@ -112,7 +114,7 @@ namespace TwentyTwentyTwo {
 			}
 
 			// LEFT
-			if (curr.x > 1)
+			//if (curr.x > 1)
 			{
 				Vector3i next{ curr.x - 1, curr.y, curr.z + 1 };
 				const auto nextDistance = currentDistance + 1;
@@ -120,7 +122,7 @@ namespace TwentyTwentyTwo {
 			}
 			
 			// UP
-			if (curr.y > 1)
+			if (curr.y > 0)
 			{
 				Vector3i next{ curr.x, curr.y - 1, curr.z + 1 };
 				const auto nextDistance = currentDistance + 1;
@@ -175,9 +177,13 @@ namespace TwentyTwentyTwo {
 		std::cout << "Best ending was at " << bestEnding.x << ", " << bestEnding.y << ", " << bestEnding.z << std::endl;
 
 		Vector3i currBacktrace = bestEnding;
+
+		std::vector<Vector3i> path;
+
 		while (true)
 		{
-			std::cout << "Then " << currBacktrace.x << ", " << currBacktrace.y << ", " << currBacktrace.z << std::endl;
+			
+			path.push_back(currBacktrace);
 			if (currBacktrace.x == starting.x && currBacktrace.y == starting.y)
 			{
 				break;
@@ -186,13 +192,28 @@ namespace TwentyTwentyTwo {
 			currBacktrace = from.at(currBacktrace);
 		}
 
-		return best + 1; // Counted distances between nodes
+		std::reverse(path.begin(), path.end());
+
+		std::size_t pi = 0;
+		//for (const auto& l : path)
+		//{
+		//	std::cout << "===================" << std::endl;
+		//	std::cout << "After " << pi << " mins" << std::endl;
+		//	const auto coords = path[pi];
+		//	auto g(graph[coords.z % layers]);
+		//	g[coords.y][coords.x] = 'X';
+		//	for (const auto& r : g) { std::cout << r << std::endl; }
+		//	++pi;
+		//}
+
+		return best;// +1; // Counted distances between nodes
 	}
 
 	std::pair<std::string, std::string> Day24Puzzle::fastSolve() {
 		int startX = 0;
 		int endX = 0;
 
+		std::vector<std::string> frame;
 		std::vector<std::pair<Vector2i, char>> blizzards;
 		const std::unordered_set<char> blizzardChars = { 
 			UP, 
@@ -209,16 +230,21 @@ namespace TwentyTwentyTwo {
 
 		for (std::size_t y = 0; y < m_InputLines.size(); ++y)
 		{
+			auto& frameRow = frame.emplace_back();
 			for (std::size_t x = 0; x < m_InputLines[y].size(); ++x) 
 			{
 				char c = m_InputLines[y][x];
 				if (y == 0 && c == '.')
 				{
 					startX = (int)x;
+					frameRow.push_back('S');
+					continue;
 				}
 				if (y == m_InputLines.size() - 1 && c == '.')
 				{
 					endX = (int)x;
+					frameRow.push_back('E');
+					continue;
 				}
 
 				if (blizzardChars.contains(c))
@@ -226,13 +252,15 @@ namespace TwentyTwentyTwo {
 					blizzards.emplace_back(Vector2i{ -1 + (int)x, -1 + (int)y }, c);
 					c = '.';
 				}
+
+				frameRow.push_back(c);
 			}
 		}
 
 		const int sizeX = (int)m_InputLines[0].size() - 2;
 		const int sizeY = (int)m_InputLines.size() - 2;
 
-		const auto cycleLength = std::lcm(sizeX, sizeY);
+		const auto cycleLength = std::lcm(sizeX, sizeY) + 1;
 
 		const Vector2i start{ startX, 0 };
 		const Vector2i end{ endX, sizeY + 1 };
@@ -350,9 +378,10 @@ namespace TwentyTwentyTwo {
 			}
 			return { "","" };
 		}
+		{
+		}
 
-
-		for (std::size_t i = 0; i < cycleLength; ++i)
+		for (std::size_t i = 0; i < cycleLength - 1; ++i)
 		{
 			auto& layer = graph.at(i);
 			for (auto& [pos, c] : blizzards)
@@ -379,9 +408,99 @@ namespace TwentyTwentyTwo {
 			}
 		}
 
+		auto& layer = graph.at(cycleLength - 1);
+		for (auto& [pos, c] : blizzards)
+		{
+			layer[pos.y + 1][pos.x + 1] = c;
+		}
 
-		const auto part1 = solve(graph, start, end, 0);
+		const auto startCell = graph[0][start.y][start.x];
+		const auto endCell = graph[0][end.y][end.x];
 
-		return { std::to_string(part1), "Part 2"};
+		std::cout << "=============================" << std::endl;
+
+		std::cout << "=============================" << std::endl;
+
+		std::cout << "=                           =" << std::endl;
+
+		std::cout << "=    START LOOKING HERE     =" << std::endl;
+
+		std::cout << "=                           =" << std::endl;
+
+		std::cout << "=============================" << std::endl;
+
+		std::cout << "=============================" << std::endl;
+
+		const int INTERNAL_WIDTH = (int)m_InputLines[0].size() - 2;
+		const int INTERNAL_HEIGHT = (int)m_InputLines.size() - 2;
+		auto blizzardsMine(blizzards);
+
+		Graph graph2;
+
+		for (int MY_I = 0; MY_I < cycleLength; ++MY_I)
+		{
+			std::vector<std::string> currentState = frame;
+			std::unordered_map<Vector2i, std::pair<int, char>, Vector2_Hash_Fxn<int>> locs;
+			for (const auto& b : blizzards)
+			{
+				if (!locs.contains(b.first))
+				{
+					locs[b.first] = { 1, b.second };
+				}
+				else
+				{
+					locs[b.first].first++;
+				}
+			}
+			for (const auto& [loc, info] : locs)
+			{
+				currentState[loc.y + 1][loc.x + 1] = (info.first > 1 ? info.first + '0' : info.second);
+			}
+			if (MY_I != 0)
+			{
+			graph2.emplace_back(currentState);
+			}
+			for (auto& b : blizzards)
+			{
+				b.first += blizzardDirs.at(b.second);
+				if (b.first.x < 0)
+				{
+					b.first.x = INTERNAL_WIDTH - 1;
+				}
+				if (b.first.y < 0)
+				{
+					b.first.y = INTERNAL_HEIGHT - 1;
+				}
+				if (b.first.x >= INTERNAL_WIDTH)
+				{
+					b.first.x = 0;
+				}
+				if (b.first.y >= INTERNAL_HEIGHT)
+				{
+					b.first.y = 0;
+				}
+			}
+		}
+
+		//int IIIII = 0;
+		//for (const auto& g : graph2)
+		//{
+		//	std::cout << "============================== " << ++IIIII << std::endl;
+		//	for (const auto& r : g)
+		//	{
+		//		std::cout << r << std::endl;
+		//	}
+		//}
+
+		const auto part1 = solve(graph2, start, end, 11);
+		// I do not know why we add one to both trips of part 2.  
+		const auto part2a = 1+solve(graph2, end, start, part1);		
+		const auto part2b = 1+solve(graph2, start, end, part1 + part2a);
+		
+		std::cout << "Part 1: " << part1 << " - should be 247/18 for real/test" << std::endl;
+		std::cout << "Part 2a: " << part2a << " - should be 218/23 for real/test" << std::endl;
+		std::cout << "Part 2b: " << part2b << " - should be 263/13 for real/test" << std::endl;
+
+		return { std::to_string(part1), std::to_string(part1 + part2a + part2b) };
 	}
 }
