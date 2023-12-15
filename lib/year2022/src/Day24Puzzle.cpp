@@ -214,7 +214,7 @@ namespace TwentyTwentyTwo {
 		int endX = 0;
 
 		std::vector<std::string> frame;
-		std::vector<std::pair<Vector2i, char>> blizzards;
+		std::vector<std::pair<Vector2i, char>> blizzards2;
 		const std::unordered_set<char> blizzardChars = { 
 			UP, 
 			DOWN, 
@@ -249,7 +249,7 @@ namespace TwentyTwentyTwo {
 
 				if (blizzardChars.contains(c))
 				{
-					blizzards.emplace_back(Vector2i{ -1 + (int)x, -1 + (int)y }, c);
+					blizzards2.emplace_back(Vector2i{ -1 + (int)x, -1 + (int)y }, c);
 					c = '.';
 				}
 
@@ -312,107 +312,12 @@ namespace TwentyTwentyTwo {
 			temp = false;
 		}
 
-
-		if (false) {
-			std::vector<std::vector<std::string>> testLayers;
-
-			auto testInit(test);
-			for (const auto& [pos, c] : blizzards)
-			{
-				testInit[pos.y + 1][pos.x + 1] = c;
-			}
-			std::cout << "LCM: " << cycleLength << " - TEST INITIAL" << std::endl;
-			for (const auto& r : testInit)
-			{
-				std::cout << r << std::endl;
-			}
-			int i = 0;
-			while (i < cycleLength * 4)
-			{
-				auto& testCurr = testLayers.emplace_back(test);
-				for (auto& [pos, c] : blizzards)
-				{
-					const auto offset = blizzardDirs.at(c);
- 					pos += offset;
-					if (pos.x < 0)
-					{
-						pos.x += sizeX;
-					}
-					if (pos.y < 0)
-					{
-						pos.y += sizeY;
-					}
-					if (pos.x >= sizeX)
-					{
-						pos.x -= sizeX;
-					}
-					if (pos.y >= sizeY)
-					{
-						pos.y -= sizeY;
-					}
-
-					testCurr[pos.y + 1][pos.x + 1] = c;
-				}
-				i++;
-				std::cout << "LCM: " << cycleLength << " - TEST " << i << std::endl;
-				for (const auto& r : testCurr)
-				{
-					std::cout << r << std::endl;
-				}
-			}
-
-			for (std::size_t ti = 0; ti < testLayers.size(); ++ti)
-			{
-				const auto& first = testLayers[ti % cycleLength];
-				const auto& curr = testLayers[ti];
-
-				for (std::size_t ty = 0; ty < curr.size(); ty++)
-				{
-					for (std::size_t tx = 0; tx < curr[ty].size(); tx++)
-					{
-						assert(first[ty][tx] == curr[ty][tx]);
-					}
-				}
-
-				std::cout << "Validated " << ti << " against " << ti % cycleLength << std::endl;
-			}
-			return { "","" };
-		}
-		{
-		}
-
 		for (std::size_t i = 0; i < cycleLength - 1; ++i)
 		{
 			auto& layer = graph.at(i);
-			for (auto& [pos, c] : blizzards)
-			{
-				pos += blizzardDirs.at(c);
-				if (pos.x < 0)
-				{
-					pos.x += sizeX;
-				}
-				if (pos.y < 0)
-				{
-					pos.y += sizeY;
-				}
-				if (pos.x >= sizeX)
-				{
-					pos.x -= sizeX;
-				}
-				if (pos.y >= sizeY)
-				{
-					pos.y -= sizeY;
-				}
-
-				layer[pos.y + 1][pos.x + 1] = c;
-			}
 		}
 
 		auto& layer = graph.at(cycleLength - 1);
-		for (auto& [pos, c] : blizzards)
-		{
-			layer[pos.y + 1][pos.x + 1] = c;
-		}
 
 		const auto startCell = graph[0][start.y][start.x];
 		const auto endCell = graph[0][end.y][end.x];
@@ -433,7 +338,6 @@ namespace TwentyTwentyTwo {
 
 		const int INTERNAL_WIDTH = (int)m_InputLines[0].size() - 2;
 		const int INTERNAL_HEIGHT = (int)m_InputLines.size() - 2;
-		auto blizzardsMine(blizzards);
 
 		Graph graph2;
 
@@ -441,7 +345,7 @@ namespace TwentyTwentyTwo {
 		{
 			std::vector<std::string> currentState = frame;
 			std::unordered_map<Vector2i, std::pair<int, char>, Vector2_Hash_Fxn<int>> locs;
-			for (const auto& b : blizzards)
+			for (const auto& b : blizzards2)
 			{
 				if (!locs.contains(b.first))
 				{
@@ -460,7 +364,7 @@ namespace TwentyTwentyTwo {
 			{
 			graph2.emplace_back(currentState);
 			}
-			for (auto& b : blizzards)
+			for (auto& b : blizzards2)
 			{
 				b.first += blizzardDirs.at(b.second);
 				if (b.first.x < 0)
@@ -482,17 +386,7 @@ namespace TwentyTwentyTwo {
 			}
 		}
 
-		//int IIIII = 0;
-		//for (const auto& g : graph2)
-		//{
-		//	std::cout << "============================== " << ++IIIII << std::endl;
-		//	for (const auto& r : g)
-		//	{
-		//		std::cout << r << std::endl;
-		//	}
-		//}
-
-		const auto part1 = solve(graph2, start, end, 11);
+		const auto part1 = solve(graph2, start, end, 0);
 		// I do not know why we add one to both trips of part 2.  
 		const auto part2a = 1+solve(graph2, end, start, part1);		
 		const auto part2b = 1+solve(graph2, start, end, part1 + part2a);
@@ -501,6 +395,6 @@ namespace TwentyTwentyTwo {
 		std::cout << "Part 2a: " << part2a << " - should be 218/23 for real/test" << std::endl;
 		std::cout << "Part 2b: " << part2b << " - should be 263/13 for real/test" << std::endl;
 
-		return { std::to_string(part1), std::to_string(part1 + part2a + part2b) };
+		return { std::to_string(part1 + 1), std::to_string(part1 + part2a + part2b) };
 	}
 }
