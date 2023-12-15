@@ -11,7 +11,7 @@ namespace TwentyEighteen {
 		REQUIRE("5941429882" == Day14Puzzle::solvePart1(2018));
 	}
 
-	TEST_CASE("2018 Day 14 Part 2 Examples work", "[2018][Day14]")
+	TEST_CASE("2018 Day 14 Part 2 Examples work", "[2018][Day14][Slow]")
 	{
 		REQUIRE("9" == Day14Puzzle::solvePart2("51589", false));
 		REQUIRE("5" == Day14Puzzle::solvePart2("01245", false));
