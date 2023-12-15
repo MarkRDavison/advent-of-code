@@ -14,6 +14,9 @@ namespace TwentyTwentyTwo {
 		void setInputLines(const std::vector<std::string>& _inputLines);
 		std::pair<std::string, std::string> fastSolve() override;
 
+		static long long SnafuToDecimal(const std::string& snafu);
+		static std::string DecimalToSnafu(long long decimal);
+
 	private:
 		std::vector<std::string> m_InputLines;
 	};
