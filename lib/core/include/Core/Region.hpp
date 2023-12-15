@@ -33,6 +33,15 @@ namespace core {
 			return r[x & region_minor][y & region_minor];
 		}
 
+		void clear()
+		{
+			world.clear();
+			minX = {};
+			minY = {};
+			maxX = {};
+			maxY = {};
+		}
+
 		int minY{ 0 };
 		int maxY{ 0 };
 		int minX{ 0 };
