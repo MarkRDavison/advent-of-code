@@ -34,6 +34,11 @@ namespace core {
 			}
 		}
 
+		static bool isHorizontal(Orientation _orientation)
+		{
+			return _orientation == Orientation::Left || _orientation == Orientation::Right;
+		}
+
 		static Vector2i toDirection(Orientation _orientation) {
 			switch (_orientation) {
 			case Orientation::Up:
