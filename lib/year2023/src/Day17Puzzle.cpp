@@ -117,16 +117,25 @@ namespace TwentyTwentyThree {
 		}
 	};
 
-	typedef std::vector<std::vector<CrucibleCell>> CrucibleMap;
-
-	long long solveForMinMaxStraightDistance(const CrucibleMap& crucibleNetwork, int min, int max)
+	long long solveForMinMaxRunLength(
+		const std::vector<std::vector<CrucibleCell>>& crucibleNetwork,
+		int min,
+		int max
+	)
 	{
 		internal::PriorityQueue<CrucibleState, long long> queue;
 		std::unordered_map<Vector4i, long long, Vector4_Hash_Fxn<int>> distances;
 
-		const CrucibleState start{ .x = 0, .y = 0, .straightCount = 0, .dir = RIGHT };
-		queue.put(start, 0);
-		distances.emplace(Vector4i(start.x, start.y, start.dir, start.straightCount), 0);
+		{
+			const CrucibleState start{ .x = 0, .y = 0, .straightCount = 0, .dir = RIGHT };
+			queue.put(start, 0);
+			distances.emplace(Vector4i(start.x, start.y, start.dir, start.straightCount), 0);
+		}
+		{
+			const CrucibleState start{ .x = 0, .y = 0, .straightCount = 0, .dir = DOWN };
+			queue.put(start, 0);
+			distances.emplace(Vector4i(start.x, start.y, start.dir, start.straightCount), 0);
+		}
 
 		const int WIDTH = (int)crucibleNetwork[0].size();
 		const int HEIGHT = (int)crucibleNetwork.size();
@@ -134,6 +143,8 @@ namespace TwentyTwentyThree {
 		const Vector2i end{ (int)(WIDTH - 1), (int)(HEIGHT - 1) };
 
 		long long bestDistance = std::numeric_limits<long long>::max();
+
+		bool startRun = true;
 
 		long long i = 0;
 
@@ -144,7 +155,7 @@ namespace TwentyTwentyThree {
 
 			if (i % 100000 == 0)
 			{
-				std::cout << "QUEUE: " << queue.elements.size() << std::endl;
+				std::cout << (min == 1 ? "Part 1 - " : "Part 2 - ") << "QUEUE: " << queue.elements.size() << std::endl;
 			}
 			i++;
 			if (currDistance > bestDistance)
@@ -153,13 +164,10 @@ namespace TwentyTwentyThree {
 			}
 			if (curr.x == end.x && curr.y == end.y)
 			{
-				if (curr.straightCount >= min)
+				if (curr.straightCount >= min && bestDistance > currDistance)
 				{
-					if (bestDistance > currDistance)
-					{
-						std::cout << (min == 1 ? "Part 1 - " : "Part 2 - ") << "FOUND A BETTER END AFTER: " << currDistance << ", queue: " << queue.elements.size() << std::endl;
-						bestDistance = currDistance;
-					}
+					std::cout << "FOUND A BETTER END AFTER: " << currDistance << ", queue: " << queue.elements.size() << std::endl;
+					bestDistance = currDistance;
 				}
 				continue;
 			}
@@ -189,14 +197,14 @@ namespace TwentyTwentyThree {
 			// Left
 			if (curr.straightCount >= min)
 			{
-				const auto newDir = turnLeft(curr.dir);
-				const Vector2i nextPosition = Vector2i{ curr.x, curr.y } + getOffset(newDir);
+				const auto nextDir = turnLeft(curr.dir);
+				const Vector2i nextPosition = Vector2i{ curr.x, curr.y } + min * getOffset(nextDir);
 				const auto nextDistance = currDistance;
 				const CrucibleState next{
 					.x = nextPosition.x,
 					.y = nextPosition.y,
-					.straightCount = 1,
-					.dir = newDir };
+					.straightCount = min,
+					.dir = nextDir };
 
 				const auto& existingDistance = distances.find(Vector4i(nextPosition, next.dir, next.straightCount));
 				if (existingDistance == distances.end() || (*existingDistance).second > nextDistance)
@@ -208,14 +216,14 @@ namespace TwentyTwentyThree {
 			// Right
 			if (curr.straightCount >= min)
 			{
-				const auto newDir = turnLeft(curr.dir);
-				const Vector2i nextPosition = Vector2i{ curr.x, curr.y } + getOffset(newDir);
+				const auto nextDir = turnLeft(curr.dir);
+				const Vector2i nextPosition = Vector2i{ curr.x, curr.y } + min * getOffset(nextDir);
 				const auto nextDistance = currDistance;
 				const CrucibleState next{
 					.x = nextPosition.x,
 					.y = nextPosition.y,
-					.straightCount = 1,
-					.dir = newDir };
+					.straightCount = min,
+					.dir = nextDir };
 
 				const auto& existingDistance = distances.find(Vector4i(nextPosition, next.dir, next.straightCount));
 				if (existingDistance == distances.end() || (*existingDistance).second > nextDistance)
@@ -226,11 +234,11 @@ namespace TwentyTwentyThree {
 			}
 		}
 
-		return bestDistance;
+		return (long long)bestDistance;
 	}
 
 	std::pair<std::string, std::string> Day17Puzzle::fastSolve() {
-		CrucibleMap crucibleNetwork;
+		std::vector<std::vector<CrucibleCell>> crucibleNetwork;
 
 		for (std::size_t y = 0; y < m_InputLines.size(); ++y)
 		{
@@ -242,12 +250,10 @@ namespace TwentyTwentyThree {
 			}
 		}
 
-		const auto part1 = solveForMinMaxStraightDistance(crucibleNetwork, 1, 3);
-
-		const auto part2 = solveForMinMaxStraightDistance(crucibleNetwork, 4, 10);
-
-		std::cout << "Part 2: 1153 too high" << std::endl;
+		const auto part1 = solveForMinMaxRunLength(crucibleNetwork, 1, 3);
+		const auto part2 = solveForMinMaxRunLength(crucibleNetwork, 4, 10);
 
 		return { std::to_string(part1), std::to_string(part2) };
 	}
 }
+
