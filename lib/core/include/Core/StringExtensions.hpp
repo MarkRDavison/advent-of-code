@@ -22,6 +22,19 @@ public:
 
     static void replaceAll(std::string& _string, const std::string& _substring, const std::string& _replacement);
 
+    template <typename T>
+    static std::vector<T> splitLineToNumbers(const std::string& line, const std::string& delimiter)
+    {
+        std::vector<T> nums;
+
+        for (const auto& numToken : splitStringByDelimeter(line, delimiter))
+        {
+            nums.emplace_back((T)std::stoll(numToken));
+        }
+
+        return nums;
+    }
+
 private:
     StringExtensions(void) = delete;
     ~StringExtensions(void) = delete;
