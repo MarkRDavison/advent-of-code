@@ -12,6 +12,7 @@ namespace TwentyTwentyThree {
 
 		void initialise(const core::InitialisationInfo& _initialisationInfo) override;
 		void setInputLines(const std::vector<std::string>& _inputLines);
+		std::pair<std::string, std::string> fastSolve(int numStepsPart1, int numStepsPart2);
 		std::pair<std::string, std::string> fastSolve() override;
 
 	private:
