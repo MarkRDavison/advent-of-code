@@ -21,13 +21,9 @@ namespace TwentyTwentyThree {
 	    Day21Puzzle puzzle{};
 	    puzzle.setVerbose(true);
 	    puzzle.setInputLines(input);
+		auto answers = puzzle.fastSolve(6, 0);
 
-		SECTION("for 6 steps")
-		{
-			auto answers = puzzle.fastSolve(6, 6);
-
-			REQUIRE("16" == answers.first);
-		}
+		REQUIRE("16" == answers.first);
 	}
 
 }
