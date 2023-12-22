@@ -1,4 +1,5 @@
 #include <2019/Day02Puzzle.hpp>
+#include <2019/IntCodeMachine.hpp>
 #include <Core/StringExtensions.hpp>
 #include <cassert>
 
@@ -35,36 +36,37 @@ namespace TwentyNineteen {
 			nums[2] = 2;
 		}
 
-		std::size_t pc = 0;
+		IntCodeNumber part1 = 0;
+		IntCodeNumber part2 = 0;
 
-		while (pc < nums.size())
 		{
-			const auto opCode = nums.at(pc);
+			IntCodeMachine machine(nums);
+			machine.runTillEnd();
 
-			if (opCode == 99) { break; }
+			part1 = machine.instructions[0];
+		}
+		constexpr IntCodeNumber Target = 19690720;
 
-			const auto reg1 = (std::size_t)nums.at(pc + 1);
-			const auto reg2 = (std::size_t)nums.at(pc + 2);
-			const auto val1 = nums.at(reg1);
-			const auto val2 = nums.at(reg2);
-			const auto dest = (std::size_t)nums.at(pc + 3);
-
-			if (opCode == 1)
+		if (gravityAssistOn)
+		{
+			for (IntCodeNumber noun = 0; noun <= 99; ++noun)
 			{
-				nums[dest] = val1 + val2;
-			}
-			else if (opCode == 2)
-			{
-				nums[dest] = val1 * val2;
-			}
-			else
-			{
-				assert(false);
-			}
+				for (IntCodeNumber verb = 0; verb <= 99; ++verb)
+				{
+					IntCodeMachine machine(nums);
+					machine.instructions[1] = noun;
+					machine.instructions[2] = verb;
+					machine.runTillEnd();
 
-			pc += 4;
+					if (machine.instructions[0] == Target)
+					{
+						part2 = 100 * noun + verb;
+						return { std::to_string(part1), std::to_string(part2) };
+					}
+				}
+			}
 		}
 
-		return { std::to_string(nums.at(0)), "Part 2" };
+		return { std::to_string(part1), std::to_string(part2) };
 	}
 }
