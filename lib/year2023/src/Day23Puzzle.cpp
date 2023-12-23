@@ -107,17 +107,23 @@ namespace TwentyTwentyThree {
 		return info;
 	}
 
-	long long recurser(
+	void recurser(
 		Trails& trails,
 		Vector2i current,
 		long long distance,
 		Vector2i goal,
-		TrailsSeenSet seen
+		TrailsSeenSet seen,
+		long long& maxDistance
 	) 
 	{
 		if (current == goal)
 		{
-			return distance;
+			if (maxDistance < distance)
+			{
+				maxDistance = distance;
+				std::cout << "New Max Distance: " << distance << std::endl;
+			}
+			return;
 		}
 
 		seen.insert(current);
@@ -135,10 +141,9 @@ namespace TwentyTwentyThree {
 				seenNeighbour.insert(s);
 			}
 
-			max = std::max(max, recurser(trails, followedInfo.coord, currentDistance, goal, seenNeighbour));
+			recurser(trails, followedInfo.coord, currentDistance, goal, seenNeighbour, maxDistance);
 		}
 
-		return max;
 	}
 
 	std::pair<std::string, std::string> Day23Puzzle::fastSolve() {
@@ -173,10 +178,12 @@ namespace TwentyTwentyThree {
 			}
 		}
 
+		long long part1 = 0;
+		long long part2 = 0;
 		std::cout << "Solving part 1" << std::endl;
-		const auto part1 = recurser(trails1, start, 0, end, {});
+		recurser(trails1, start, 0, end, {}, part1);
 		std::cout << "Solving part 2" << std::endl;
-		const auto part2 = recurser(trails2, start, 0, end, {});
+		recurser(trails2, start, 0, end, {}, part2);
 
 		return { std::to_string(part1), std::to_string(part2) };
 	}
