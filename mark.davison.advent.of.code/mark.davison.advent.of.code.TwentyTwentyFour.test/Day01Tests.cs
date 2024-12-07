@@ -1,7 +1,7 @@
 ﻿namespace mark.davison.advent.of.code.TwentyTwentyFour.test;
 
 [TestClass]
-public class Day01Tests
+public sealed class Day01Tests
 {
     [TestMethod]
     public async Task Day01_Works()
