@@ -5,7 +5,6 @@ public sealed class Day01 : DaySolverBase
 {
     public override async Task<(string Part1, string Part2)> Solve(IList<string> input)
     {
-        Console.WriteLine("Day01 solver");
         await Task.CompletedTask;
 
         var items = input.Select(_ => _.Split(" ", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)).ToList();
