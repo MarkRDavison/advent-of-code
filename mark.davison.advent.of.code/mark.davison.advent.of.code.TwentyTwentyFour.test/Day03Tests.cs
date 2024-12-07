@@ -14,6 +14,7 @@ public sealed class Day03Tests
 
         Assert.AreEqual("161", part1);
     }
+
     [TestMethod]
     public async Task Day03_Part2Works()
     {
