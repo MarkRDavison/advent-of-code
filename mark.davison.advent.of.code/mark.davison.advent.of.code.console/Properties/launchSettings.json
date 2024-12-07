@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "mark.davison.advent.of.code.console": {
+      "commandName": "Project",
+      "commandLineArgs": "-y 2024 -d 1"
+    }
+  }
+}

@@ -1,0 +1,1 @@
+﻿global using mark.davison.advent.of.code.framework;

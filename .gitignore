@@ -5,3 +5,5 @@ conan.lock
 conanbuildinfo.cmake
 conaninfo.txt
 graph_info.json
+obj
+bin
