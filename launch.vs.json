@@ -10,6 +10,15 @@
       "args": [
         "2023 1 ./data/2023/Day01.txt"
       ]
+    },
+    {
+      "name": "advent-of-code-year2022-test.exe",
+      "project": "CMakeLists.txt",
+      "projectTarget": "advent-of-code-year2022-test.exe",
+      "type": "default",
+      "args": [
+        "[Day22]"
+      ]
     }
   ]
 }

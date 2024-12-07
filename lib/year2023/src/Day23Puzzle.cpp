@@ -80,6 +80,8 @@ namespace TwentyTwentyThree {
 		Vector2i next
 	)
 	{
+
+
 		PathFollowedInfo info;
 		TrailsSeenSet followSeen(seen);
 		auto curr = next;
