@@ -18,8 +18,10 @@ public class Options
             return $"The provided day {Day} is invalid, must be between 1 and 25";
         }
 
-        if (!string.IsNullOrEmpty(Input) && !File.Exists(Input))
+
+        if (!string.IsNullOrEmpty(Input) && !File.Exists(Path.Combine(Environment.CurrentDirectory, Input)))
         {
+            Console.WriteLine(Path.Combine(Environment.CurrentDirectory, Input));
             return $"The provided input '{Input}' is invalid, must point to a file";
         }
 
@@ -68,7 +70,14 @@ internal class Program
 
                 var sw = Stopwatch.StartNew();
 
-                var (part1, part2) = await solver.Solve([]);
+                var input = new List<string>();
+
+                if (!string.IsNullOrEmpty(options.Input))
+                {
+                    input = [.. File.ReadAllLines(Path.Combine(Environment.CurrentDirectory, options.Input))];
+                }
+
+                var (part1, part2) = await solver.Solve(input);
 
                 Console.WriteLine("Part 1: {0}", part1);
                 Console.WriteLine("Part 2: {0}", part2);

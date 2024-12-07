@@ -2,7 +2,7 @@
   "profiles": {
     "mark.davison.advent.of.code.console": {
       "commandName": "Project",
-      "commandLineArgs": "-y 2024 -d 1"
+      "commandLineArgs": "-y 2024 -d 1 -i Data/2024/Day01.txt"
     }
   }
 }

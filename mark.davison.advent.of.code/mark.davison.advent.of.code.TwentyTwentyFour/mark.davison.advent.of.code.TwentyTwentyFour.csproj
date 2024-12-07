@@ -10,4 +10,10 @@
     <ProjectReference Include="..\mark.davison.advent.of.code.framework\mark.davison.advent.of.code.framework.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Data\2024\Day01.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
